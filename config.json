@@ -1,0 +1,4 @@
+{
+    "server-listening-port": "8080",
+    "client-writing-port": "8080"
+}
