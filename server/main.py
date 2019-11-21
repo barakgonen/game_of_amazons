@@ -1,23 +1,38 @@
+import json
+import os
 import SimpleHTTPServer
 import SocketServer
-import json
+from player import ComputerPlayer, HumanPlayer
+from game_manager import GameManager
 
-import os
-print os.getcwd()
+def get_config():
+  configurationFile = ""
+  f = open('./config.json', "r")
+  for line in f:
+    configurationFile += line
+  f.close()
+  return configurationFile
 
-configurationFile = ""
-f = open('./config.json', "r")
-for line in f:
-  configurationFile += line
-f.close()
+def run_server():
+  y = json.loads(get_config())
 
-y = json.loads(configurationFile)
+  PORT = y["server-listening-port"]
 
-PORT = y["server-listening-port"]
+  Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 
-Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+  httpd = SocketServer.TCPServer(("", int(PORT)), Handler)
 
-httpd = SocketServer.TCPServer(("", int(PORT)), Handler)
+  print "serving at port", PORT
+  httpd.serve_forever()
 
-print "serving at port", PORT
-httpd.serve_forever()
+def main():
+  p1 = ComputerPlayer("BARAK")
+  p2 = ComputerPlayer("ALGORITHM")
+
+  manager = GameManager(p1, p2)
+  manager.run_game()
+
+
+
+if __name__ == "__main__":
+    main()
