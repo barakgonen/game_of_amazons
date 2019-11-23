@@ -4,6 +4,9 @@ import SimpleHTTPServer
 import SocketServer
 from player import ComputerPlayer, HumanPlayer
 from game_manager import GameManager
+from turn_validator import TurnValidator
+import requests
+from web_socket_adapter import WebSocketAdapter
 
 def get_config():
   configurationFile = ""
@@ -26,13 +29,15 @@ def run_server():
   httpd.serve_forever()
 
 def main():
-  p1 = ComputerPlayer("BARAK")
-  p2 = ComputerPlayer("ALGORITHM")
+  # p1 = HumanPlayer("BARAK")
+  # p2 = ComputerPlayer("ALGORITHM")
+  # turn_validator = TurnValidator("")
 
-  manager = GameManager(p1, p2)
-  manager.run_game()
+  websocket_adapter = WebSocketAdapter('ws://localhost:9900')
+  websocket_adapter.send_message("bla bla")
 
-
+  # manager = GameManager(p1, p2, turn_validator)
+  # manager.run_game()
 
 if __name__ == "__main__":
     main()
