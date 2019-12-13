@@ -1,8 +1,10 @@
 class GameManager:
-    def __init__(self, p1, p2, turn_validator):
+    def __init__(self, p1, p2, turn_validator, board_game, blocking_manager):
         self.player1 = p1
         self.player2 = p2
         self.turn_validator = turn_validator
+        self.board_game = board_game
+        self.blocking_manager = blocking_manager
 
     def run_single_turn(self, player):
         current_player_move = player.make_move()
