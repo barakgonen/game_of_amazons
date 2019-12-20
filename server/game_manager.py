@@ -23,13 +23,5 @@ class GameManager:
 
     def run_game(self):
         # first step, initialize queens on the board
-        board_size = self.board_game.get_size()
-        print ("<GameManager::run_game()> Size of board game is:" + str(board_size))
-        print ("<GameManager::run_game()> Placing amazons in the board")
-        # if (board_size == LARGE_BOARD_SIZE):
-
-
-        # elif(board_size == SMALL_BOARD_SIZE):
-
         while (True):
             self.run_round()

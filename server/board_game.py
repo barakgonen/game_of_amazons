@@ -1,4 +1,5 @@
-from constants import CellState
+from constants import CellState, SMALL_BOARD_SIZE, LARGE_BOARD_SIZE
+from common_funcs import get_col_index, get_raw_index
 
 class BoardCell:
     def __init__(self, color, state):
@@ -14,9 +15,23 @@ class BoardCell:
 class BoardGame:
     def __init__(self, size):
         self.size = size
-        # self.board = [["BW"[(i+j+size%2+1) % 2] for i in range(size)] for j in range(size)]
         self.board = [[BoardCell("BW"[(i+j+size%2+1) % 2], CellState.EMPTY) for i in range(size)] for j in range(size)]
-
+        print ("<BoardGame::BoardGame()> Placing amazons in the board")
+        if (self.size == LARGE_BOARD_SIZE):
+            self.board[get_raw_index(7, self.size)][get_col_index('A')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(10, self.size)][get_col_index('D')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(10, self.size)][get_col_index('G')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(7, self.size)][get_col_index('J')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(4, self.size)][get_col_index('A')].state = CellState.WHITE_AMAZON
+            self.board[get_raw_index(1, self.size)][get_col_index('D')].state = CellState.WHITE_AMAZON
+            self.board[get_raw_index(1, self.size)][get_col_index('G')].state = CellState.WHITE_AMAZON
+            self.board[get_raw_index(4, self.size)][get_col_index('J')].state = CellState.WHITE_AMAZON
+  
+        elif(self.size == SMALL_BOARD_SIZE):
+            self.board[get_raw_index(4, self.size)][get_col_index('A')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(3, self.size)][get_col_index('F')].state = CellState.BLACK_AMAZON
+            self.board[get_raw_index(1, self.size)][get_col_index('C')].state = CellState.WHITE_AMAZON
+            self.board[get_raw_index(6, self.size)][get_col_index('D')].state = CellState.WHITE_AMAZON
              
     def print_board(self):
         for i in range(0, len(self.board)):

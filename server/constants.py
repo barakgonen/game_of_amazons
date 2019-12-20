@@ -8,8 +8,8 @@ NUMBER_OF_ROCKS_IN_LARGE_BOARD = 92
 class CellState(Enum):
     EMPTY = "E" # for empty
     BLOCKED = "BLOCKED" # for blocked
-    WHITE_AMAZON = "W_A" # for white amazon
-    BLACK_AMAZON = "B_A" # for black_amazon
+    WHITE_AMAZON = "w" # for white amazon
+    BLACK_AMAZON = "b" # for black_amazon
 
     def __str__(self):
         return str(self.value)
