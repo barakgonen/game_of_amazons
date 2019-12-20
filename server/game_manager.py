@@ -1,3 +1,5 @@
+from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE 
+
 class GameManager:
     def __init__(self, p1, p2, turn_validator, board_game, blocking_manager):
         self.player1 = p1
@@ -20,5 +22,14 @@ class GameManager:
         print (self.player2.get_name() + " made successfull move!")
 
     def run_game(self):
+        # first step, initialize queens on the board
+        board_size = self.board_game.get_size()
+        print ("<GameManager::run_game()> Size of board game is:" + str(board_size))
+        print ("<GameManager::run_game()> Placing amazons in the board")
+        # if (board_size == LARGE_BOARD_SIZE):
+
+
+        # elif(board_size == SMALL_BOARD_SIZE):
+
         while (True):
             self.run_round()
