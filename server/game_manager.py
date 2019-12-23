@@ -10,10 +10,10 @@ class GameManager:
 
     def run_single_turn(self, player):
         current_player_move = player.make_move()
-        is_move_valid = self.turn_validator.validate_move(current_player_move)
+        is_move_valid = self.turn_validator.validate_move(current_player_move, self.board_game)
         while (not is_move_valid):
             current_player_move = player.make_move()
-            is_move_valid = self.turn_validator.validate_move(current_player_move)
+            is_move_valid = self.turn_validator.validate_move(current_player_move, self.board_game)
             
     def run_round(self):
         self.run_single_turn(self.player1)

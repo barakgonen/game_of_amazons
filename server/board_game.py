@@ -45,4 +45,10 @@ class BoardGame:
     def get_size(self):
         print ("<BoardGame::get_size()> Returning size of the board. size is: " + str(self.size))
         return self.size
-        
+
+    def is_route_empty(self, current_pos, desired_pos):
+        print "<BoardGame::is_route_empty()> Need to check wether all the way from current_pos to desired_pos is_empty and that the road stands the rules"
+
+    
+
+    def is_movement_va
