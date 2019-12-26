@@ -10,7 +10,7 @@ from web_socket_adapter import WebSocketAdapter
 from board_game import BoardGame
 from blocking_rocks_manager import BlockingRocksManager
 from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE 
-
+from auto_tests_runner import turn_validation_job
 def get_config():
   configurationFile = ""
   f = open('./config.json', "r")
@@ -42,17 +42,19 @@ def get_board_size():
       return board_size
 
 def main():
-  board_size = int(get_board_size())
-  board_game = BoardGame(board_size)
-  board_game.print_board()
-  blocking_rocks_manager = BlockingRocksManager(board_size)
+  turn_validation_job()
+# def main():
+#   board_size = int(get_board_size())
+#   board_game = BoardGame(board_size)
+#   board_game.print_board()
+#   blocking_rocks_manager = BlockingRocksManager(board_size)
 
-  p1 = HumanPlayer("BARAK")
-  p2 = ComputerPlayer("ALGORITHM")
-  turn_validator = TurnValidator()
+#   p1 = HumanPlayer("BARAK", "WHITE")
+#   p2 = ComputerPlayer("ALGORITHM", "BLACK")
+#   turn_validator = TurnValidator(board_game)
 
-  manager = GameManager(p1, p2, turn_validator, board_game, blocking_rocks_manager)
-  manager.run_game()
+#   manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+#   manager.run_game()
 
 if __name__ == "__main__":
     main()
