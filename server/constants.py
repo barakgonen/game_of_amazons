@@ -7,7 +7,7 @@ NUMBER_OF_ROCKS_IN_LARGE_BOARD = 92
 
 class CellState(Enum):
     EMPTY = "E" # for empty
-    BLOCKED = "BLOCKED" # for blocked
+    BLOCKED = "B" # for blocked
     WHITE_AMAZON = "w" # for white amazon
     BLACK_AMAZON = "b" # for black_amazon
 

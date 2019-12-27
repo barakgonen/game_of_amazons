@@ -3,7 +3,7 @@ class Point:
 
     def __init__(self, x, y):
         """ Create a new point at the origin """
-        self.x = x
+        self.x = str(x).upper()
         self.y = y
 
     def get_x(self):

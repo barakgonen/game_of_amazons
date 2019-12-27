@@ -67,3 +67,10 @@ class BoardGame:
             print "<update_move()> move updated successfully!"
         else:
             print "<update_move()> something went wrong dude"
+        
+    # this is the final function called, after validations
+    def shoot_blocking_rock(self, rock_target_pos):
+        if (self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state == CellState.EMPTY):
+            self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state = CellState.BLOCKED
+        else:
+            raise IndexError("Trying to shoot to non-empty cell")

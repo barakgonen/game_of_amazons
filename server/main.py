@@ -10,7 +10,8 @@ from web_socket_adapter import WebSocketAdapter
 from board_game import BoardGame
 from blocking_rocks_manager import BlockingRocksManager
 from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE 
-from auto_tests_runner import turn_validation_job
+from auto_tests_runner import turn_validation_job, blocking_cell_validation_job
+
 def get_config():
   configurationFile = ""
   f = open('./config.json', "r")
@@ -43,6 +44,7 @@ def get_board_size():
 
 def main():
   turn_validation_job()
+  blocking_cell_validation_job()
 # def main():
 #   board_size = int(get_board_size())
 #   board_game = BoardGame(board_size)
