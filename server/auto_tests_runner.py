@@ -578,9 +578,42 @@ def blocking_cell_validation_job():
     number_of_passed_tests += 1
 
 
+# new test case
+    # testing turn starting with black amazon at A/4
+    # Assuming all amazons are on default locations on small board
+    static_start_pos = Point('A', 4)
+
+    # starting with blocked board, with 6 blockers
+    blockers_pos = [Point('A', 6), Point('A', 2), Point('B', 5), Point('b', 3),
+                    Point('B', 2), Point('D', 5), Point('D', 3)]
+
+    test_board = get_initialized_board(SMALL_BOARD_SIZE, blockers_pos)
+
+    valid_movements = [Point('A', 5), Point('A', 3), 
+                       Point('B', 4), 
+                       Point('C', 4), 
+                       Point('D', 4),
+                       Point('E', 4),
+                       Point('F', 4)]
+    invalid_movements = [Point('A', 6), Point('A', 4), Point('A', 2), Point('A', 1),
+                         Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
+                         Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
+                         Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
+                         Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
+                         Point('f', 6), Point('fE', 5), Point('f', 3), Point('f', 2), Point('f', 1)]
+    
+    # after getting board prepared, need to run the tests on it
+    is_test_fine = run_loop_of_simple_movement_tests(static_start_pos, invalid_movements, False, test_board)
+    if (not is_test_fine):
+        raise RuntimeError("Error With case 2")
+    number_of_passed_tests += 1
+    is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(static_start_pos, valid_movements, True, test_board)
+    if (not is_additional_available_moves_are_available):
+        raise RuntimeError("Error with case 4")
+    number_of_passed_tests += 1
+#end testcase
 
     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
-
 
 def run_simple_test(amazon_to_move, new_position, expected_result, board_size):
     board_game = BoardGame(board_size)
@@ -590,6 +623,12 @@ def run_simple_test(amazon_to_move, new_position, expected_result, board_size):
 def get_blocked_board(amazon_to_move, new_position, board_size, amazon_color, blocked_cells):
     board_game = BoardGame(board_size)
     board_game.update_move(amazon_to_move, new_position, amazon_color)
+    for target in blocked_cells:
+        board_game.shoot_blocking_rock(target)
+    return board_game
+
+def get_initialized_board(board_size, blocked_cells):
+    board_game = BoardGame(board_size)
     for target in blocked_cells:
         board_game.shoot_blocking_rock(target)
     return board_game
