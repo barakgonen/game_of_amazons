@@ -98,11 +98,11 @@ def turn_validation_job():
     number_of_passed_tests += 1
     test_case23 = run_simple_test(static_start_pos, Point('C', 6), True, SMALL_BOARD_SIZE)
     if (not test_case23):
-        raise RuntimeError("Error With case 3")
+        raise RuntimeError("Error With case 23")
     test_case24 = run_simple_test(static_start_pos, Point('B', 6), True, SMALL_BOARD_SIZE)
     number_of_passed_tests += 1
     if (not test_case24):
-        raise RuntimeError("Error With case 4")
+        raise RuntimeError("Error With case 24")
     test_case25 = run_simple_test(static_start_pos, Point('A', 6), True, SMALL_BOARD_SIZE)
     number_of_passed_tests += 1
     if (not test_case25):
@@ -429,15 +429,12 @@ def blocking_cell_validation_job():
     blocking_lst.extend(additional_blocking_lst)
 
     # after getting board prepared, need to run the tests on it
-    is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, False, test_board)
+    is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, True, test_board)
     if (not is_test_fine):
         raise RuntimeError("Error With case 1")
     number_of_passed_tests += 1
 
-
-
-    
-# new test case
+    # new test case
     # testing turn starting with white amazon at 'D'/6
     static_start_pos = Point('d', 6)
     

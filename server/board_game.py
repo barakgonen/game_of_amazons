@@ -50,7 +50,7 @@ class BoardGame:
         return self.size
 
     def is_free_cell(self, raw, col):
-        return self.board[raw][col].state == CellState.EMPTY
+        return self.board[get_raw_index(raw, self.size)][get_col_index(col, self.size)].state == CellState.EMPTY
     
     def is_black_amazon(self, raw, col):
         return self.board[get_raw_index(raw, self.size)][get_col_index(col, self.size)].state == CellState.BLACK_AMAZON
