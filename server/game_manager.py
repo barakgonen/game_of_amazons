@@ -61,4 +61,12 @@ class GameManager:
         while (is_game_still_run):
             is_game_still_run = self.run_round()
         print("<run_game()> game is over, according to board's state, need to define the winner")
+        number_of_possible_moves_for_white = self.board_game.get_white_available_mooves()
+        number_of_possible_moves_for_black = self.board_game.get_black_available_mooves()
+        if (number_of_possible_moves_for_white > number_of_possible_moves_for_black):
+            print ("<run_game()> White has won! Congrats")
+        elif (number_of_possible_moves_for_black > number_of_possible_moves_for_white):
+            print("<run_game()> Black has won! Congrats!")
+        else:
+            print("<run_game()> There is a tie.. it means it's a bug since there ")
         
