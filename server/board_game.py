@@ -91,11 +91,14 @@ class BoardGame:
                     raise IndexError("BARAK YOU GOT A BUG!")
         return players_pos
 
+    def get_free_cells_in_one_step_from_me(self, pos):
+        return []
+
+# im not sure it's the correct place to put it at.. shuold be in validator i think.. or pass validator to here?
     def get_number_of_available_mooves(self, player_color):
         players_position = self.get_players_positions(player_color)
-        # for amazona in players_position:
-        #     if self.is_amazona_has_valid_step(amazona):
-        #         return True
+        for amazona in players_position:
+            optional_cells_in_one_step = self.get_free_cells_in_one_step_from_me(amazona)
         return 4
 
     def get_black_available_mooves(self):

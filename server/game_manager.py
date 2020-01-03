@@ -1,5 +1,6 @@
 from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE
 
+
 class GameManager:
     def __init__(self, black_player, white_player, turn_validator, board_game, blocking_manager):
         self.black_player = black_player
@@ -10,39 +11,48 @@ class GameManager:
 
     def run_single_turn(self, player):
         # validate this is the correct amazona
-        amazon_to_move = player.get_amazon_to_move() # must have input validation!
+        amazon_to_move = player.get_amazon_to_move()  # must have input validation!
         if (player.color == "BLACK"):
-            is_amazon_valid = self.board_game.is_black_amazon(amazon_to_move.y, amazon_to_move.x)
+            is_amazon_valid = self.board_game.is_black_amazon(
+                amazon_to_move.y, amazon_to_move.x)
         else:
-            is_amazon_valid = self.board_game.is_white_amazon(amazon_to_move.y, amazon_to_move.x)
+            is_amazon_valid = self.board_game.is_white_amazon(
+                amazon_to_move.y, amazon_to_move.x)
         while (not is_amazon_valid):
-            amazon_to_move = player.get_amazon_to_move() # must have input validation!
+            amazon_to_move = player.get_amazon_to_move()  # must have input validation!
             if (player.color == "BLACK"):
-                is_amazon_valid = self.board_game.is_black_amazon(amazon_to_move.y, amazon_to_move.x)
+                is_amazon_valid = self.board_game.is_black_amazon(
+                    amazon_to_move.y, amazon_to_move.x)
             else:
-                is_amazon_valid = self.board_game.is_white_amazon(amazon_to_move.y, amazon_to_move.x)
-    
+                is_amazon_valid = self.board_game.is_white_amazon(
+                    amazon_to_move.y, amazon_to_move.x)
+
         current_player_move = player.make_move()
-        is_move_valid = self.turn_validator.is_step_valid(amazon_to_move, current_player_move)
+        is_move_valid = self.turn_validator.is_step_valid(
+            amazon_to_move, current_player_move)
         while (not is_move_valid):
             current_player_move = player.make_move()
-            is_move_valid = self.turn_validator.is_step_valid(amazon_to_move, current_player_move)
-        self.board_game.update_move(amazon_to_move, current_player_move, player.color)
+            is_move_valid = self.turn_validator.is_step_valid(
+                amazon_to_move, current_player_move)
+        self.board_game.update_move(
+            amazon_to_move, current_player_move, player.color)
         current_player_shoot = player.shoot_blocking_rock()
-        is_shooting_valid = self.turn_validator.is_shoot_valid(current_player_move, current_player_shoot)
+        is_shooting_valid = self.turn_validator.is_shoot_valid(
+            current_player_move, current_player_shoot)
         while (not is_shooting_valid):
             current_player_shoot = player.shoot_blocking_rock()
-            is_shooting_valid = self.turn_validator.is_shoot_valid(current_player_move, current_player_shoot)
+            is_shooting_valid = self.turn_validator.is_shoot_valid(
+                current_player_move, current_player_shoot)
         self.board_game.shoot_blocking_rock(current_player_shoot)
         self.blocking_manager.get_rock()
         self.board_game.print_board()
 
     def is_there_reason_to_play(self, player):
-        if (self.blocking_manager.are_blocks_available() and 
-            self.turn_validator.is_there_are_available_mooves_for_player(player)):
+        if (self.blocking_manager.are_blocks_available() and
+                self.turn_validator.is_there_are_available_mooves_for_player(player)):
             return True
         return False
-            
+
     def run_round(self):
         # if there are rocks , self.blocking_manager.get_rock() need to check it after every turn shoul
         if self.is_there_reason_to_play(self.white_player):
@@ -50,7 +60,8 @@ class GameManager:
             print (self.white_player.get_name() + " made successfull move!")
             if self.is_there_reason_to_play(self.black_player):
                 self.run_single_turn(self.black_player)
-                print (self.black_player.get_name() + " made successfull move!")
+                print (self.black_player.get_name() +
+                       " made successfull move!")
                 return True
         print "<run_round()> no more options to play!"
         return False
@@ -69,4 +80,3 @@ class GameManager:
             print("<run_game()> Black has won! Congrats!")
         else:
             print("<run_game()> There is a tie.. it means it's a bug since there ")
-        
