@@ -1,4 +1,4 @@
-from constants import CellState, SMALL_BOARD_SIZE, LARGE_BOARD_SIZE
+from constants import CellState, SMALL_BOARD_SIZE, LARGE_BOARD_SIZE, COLUMNS_ARRAY
 from common_funcs import get_col_index, get_raw_index
 from point import Point
 
@@ -75,3 +75,31 @@ class BoardGame:
             self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state = CellState.BLOCKED
         else:
             raise IndexError("Trying to shoot to non-empty cell")
+    
+    def get_players_positions(self, cell_state):
+        players_pos = []
+        # iterate as you get input A,1 or 1,A...
+        for i in range(1, self.size + 1):
+            for j in range(1, self.size + 1):
+                if cell_state == CellState.BLACK_AMAZON:
+                    if self.is_black_amazon(i, COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                elif cell_state == CellState.WHITE_AMAZON:    
+                    if self.is_white_amazon(i, COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                else:
+                    raise IndexError("BARAK YOU GOT A BUG!")
+        return players_pos
+
+    def get_number_of_available_mooves(self, player_color):
+        players_position = self.get_players_positions(player_color)
+        # for amazona in players_position:
+        #     if self.is_amazona_has_valid_step(amazona):
+        #         return True
+        return 4
+
+    def get_black_available_mooves(self):
+        return self.get_number_of_available_mooves(CellState.BLACK_AMAZON)
+
+    def get_white_available_mooves(self):
+        return self.get_number_of_available_mooves(CellState.WHITE_AMAZON)

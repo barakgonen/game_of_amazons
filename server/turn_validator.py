@@ -1,7 +1,7 @@
 
 from common_funcs import  get_col_index, get_raw_index
 from point import Point
-from constants import CellState, COLUMNS_ARRAY
+from constants import CellState
 
 class TurnValidator:
     def __init__(self, game_board):
@@ -230,21 +230,6 @@ class TurnValidator:
             print "<TurnValidator::is_shoot_valid()> shoot"
             return False
 
-    def get_players_positions(self, cell_state):
-        players_pos = []
-        # iterate as you get input A,1 or 1,A...
-        for i in range(1, self.game_board.get_size() + 1):
-            for j in range(1, self.game_board.get_size() + 1):
-                if cell_state == CellState.BLACK_AMAZON:
-                    if self.game_board.is_black_amazon(i, COLUMNS_ARRAY[j]):
-                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
-                elif cell_state == CellState.WHITE_AMAZON:    
-                    if self.game_board.is_white_amazon(i, COLUMNS_ARRAY[j]):
-                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
-                else:
-                    raise IndexError("BARAK YOU GOT A BUG!")
-        return players_pos
-
     def can_move_n_up(self, amazona, i):
         return self.is_step_valid(amazona,
                                   Point(amazona.x, amazona.y + i))
@@ -285,7 +270,7 @@ class TurnValidator:
         return False
 
     def is_there_are_available_mooves_for_player(self, player_color):
-        players_position = self.get_players_positions(player_color)
+        players_position = self.game_board.get_players_positions(player_color)
         for amazona in players_position:
             if self.is_amazona_has_valid_step(amazona):
                 return True

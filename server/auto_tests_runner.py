@@ -449,7 +449,6 @@ def blocking_cell_validation_job():
 
     #rest of the board, for extra verification
     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-    test_board.print_board()
 
     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
     unavailable_cells = [Point('A', 3)]
@@ -496,7 +495,6 @@ def blocking_cell_validation_job():
 
     #rest of the board, for extra verification
     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-    test_board.print_board()
 
     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
     unavailable_cells = [Point('C', 5), Point('C', 6)]
@@ -542,7 +540,6 @@ def blocking_cell_validation_job():
 
     #rest of the board, for extra verification
     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "BLACK", blocking_lst)
-    test_board.print_board()
 
     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
     unavailable_cells = [Point('F', 3), Point('G', 2)]
@@ -652,6 +649,10 @@ def set_full_blocked_board(board):
             if board.is_free_cell(i, COLUMNS_ARRAY[j]):
                 board.shoot_blocking_rock(Point(COLUMNS_ARRAY[j], i))
 
+def set_board_blocked_by_list(board, blocking_lst):
+    for point in blocking_lst:
+        board.shoot_blocking_rock(point)
+
 def turns_possible_job():
     # Test cases
     # 0 turns possible with full board
@@ -662,7 +663,6 @@ def turns_possible_job():
 
     if (not is_game_over):
         raise RuntimeError("Error with case 44")
-    current_board.print_board()
     
     # 0 turns possible with small board
     current_board = BoardGame(SMALL_BOARD_SIZE)
@@ -672,10 +672,8 @@ def turns_possible_job():
 
     if (not is_game_over):
         raise RuntimeError("Error with case 44")
-    current_board.print_board()
 
     # more than 0 possible whithout rocks
-
     current_board = BoardGame(SMALL_BOARD_SIZE)
     blocking_manager = BlockingRocksManager(current_board.get_size())
     for i in range(0, NUMBER_OF_ROCKS_IN_SMALL_BOARD + 1):
@@ -709,19 +707,149 @@ def turns_possible_job():
         raise RuntimeError("Error with test case 47")
 
     # small board tests
-    # 1 turn possible for black
+    # 0 turns possible for black - available only 1 cell horizontaly
     board_game = BoardGame(SMALL_BOARD_SIZE)
     turn_validator = TurnValidator(board_game)
-    board_game.print_board()
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), Point('B', 1),
+                    Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), 
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) or game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 48")
+
+    # 0 turns possible for white - available only 1 cell verticaly but in a distance, means its blocked
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), Point('B', 1),
+                    Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), 
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) or game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 48")
+    # 0 turns possible for black - available only 1 cell diagonaly but in a distance, means its blocked
+     
+    # 1 turn possible for black horizontly
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
+                    Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 3), Point('C', 2), 
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) or not game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 47")
     
-    # 1 turn possible for white
+    # 1 turn possible for white verticly (up)
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 4), Point('B', 2), Point('B', 1),
+                    Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 3),
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (not game_manager.is_there_reason_to_play(p1.get_color()) or game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 48")
+
     # 2 turns possible for black
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2),
+                    Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 3), Point('C', 2),
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) and (not game_manager.is_there_reason_to_play(p2.get_color()))):
+        raise RuntimeError("Error with test case 49")
+
     # 2 turns possible for white
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6), Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2),
+                    Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 3), Point('C', 2),
+                    Point('D', 5), Point('D', 4), Point('D', 3), Point('D', 2),
+                    Point('E', 6), Point('e', 5), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 2), Point('F', 1)]
+
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+
+    # in case there are no available mooves
+    if (not game_manager.is_there_reason_to_play(p1.get_color()) and game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 49")
+
     # 10 turns possible for black
-    # 10 turns possible for white
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    blocking_lst = [Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+                    Point('B', 6)               , Point('B', 3), Point('B', 2), Point('B', 1),
+                                   Point('C', 5), Point('C', 3), Point('C', 2),
+                                                  Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('e', 5),                Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 5),                               Point('F', 1)]
 
+    set_board_blocked_by_list(board_game, blocking_lst)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) and (not game_manager.is_there_reason_to_play(p2.get_color()))):
+        raise RuntimeError("Error with test case 50")
 
-    # large board tests
+    # large board tests TBD do i need it?
     # 1 turn possible for black
     # 1 turn possible for white
     # 2 turns possible for black
@@ -729,13 +857,4 @@ def turns_possible_job():
     # 10 turns possible for black
     # 10 turns possible for white
 
-    # set board, set positions, make move and calculate 
-    # set board, set turn for white and notice black couldn't play and stop game
-    # set board, set turn for black and notice white couldn't play and stop game
-    return True
-
-def winner_selector_job():
-    # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
-    # Black should win
-    # white should win
     return True

@@ -60,3 +60,5 @@ class GameManager:
         is_game_still_run = self.run_round()
         while (is_game_still_run):
             is_game_still_run = self.run_round()
+        print("<run_game()> game is over, according to board's state, need to define the winner")
+        
