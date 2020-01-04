@@ -7,228 +7,6 @@ from player import ComputerPlayer, HumanPlayer
 from game_manager import GameManager
 import unittest
 
-# def blocking_cell_validation_job():
-#     print "<blocking_cell_validation_job()> Verifier for movement in blocked cells area"
-#     number_of_passed_tests = 0
-#     static_start_pos = Point('C', 1)
-#     # blocked positions
-#     blocking_lst = [Point('B', 3), Point('B', 2), Point('B', 1), Point('C', 1), 
-#                     Point('D', 1), Point('D', 2), Point('D', 3), Point('C', 3)]
-#     test_board = get_blocked_board(static_start_pos, Point('C', 2), SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-
-#     #rest of the board, for extra verification
-#     additional_blocking_lst = [Point('A', 1), Point('A', 2), Point('A', 3), Point('A', 4), Point('A', 5), Point('A', 6),  
-#                                Point('B', 4), Point('B', 5), Point('B', 6),
-#                                Point('C', 4), Point('C', 5), Point('C', 6),
-#                                Point('D', 4), Point('D', 5), Point('D', 6),
-#                                Point('E', 1), Point('e', 2), Point('E', 3), Point('e', 4), Point('E', 5), Point('E', 6),
-#                                Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
-#     # Appending lists for test
-#     blocking_lst.extend(additional_blocking_lst)
-
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 1")
-#     number_of_passed_tests += 1
-
-#     static_start_pos = Point('C', 1)
-#     # blocked positions
-#     blocking_lst = [Point('B', 3), Point('B', 2), Point('B', 1), Point('C', 1), 
-#                     Point('D', 1), Point('D', 2), Point('D', 3), Point('C', 3)]
-#     test_board = get_blocked_board(static_start_pos, Point('C', 2), SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-
-#     #rest of the board, for extra verification
-#     additional_blocking_lst = [Point('A', 1), Point('A', 2), Point('A', 3), Point('A', 4), Point('A', 5), Point('A', 6),  
-#                                Point('B', 4), Point('B', 5), Point('B', 6),
-#                                Point('C', 4), Point('C', 5), Point('C', 6),
-#                                Point('D', 4), Point('D', 5), Point('D', 6),
-#                                Point('E', 1), Point('e', 2), Point('E', 3), Point('e', 4), Point('E', 5), Point('E', 6),
-#                                Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
-#     # Appending lists for test
-#     blocking_lst.extend(additional_blocking_lst)
-
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 1")
-#     number_of_passed_tests += 1
-
-#     # new test case
-#     # testing turn starting with white amazon at 'D'/6
-#     static_start_pos = Point('d', 6)
-    
-#     # moving the amazon verticly to 'D'/3
-#     new_position = Point('D', 3)
-
-#     # When the amazon will arive 'C'/3 it will shoot blocking rock to 'B'/3
-#     blocking_lst = [Point('B', 3)]
-
-#     #rest of the board, for extra verification
-#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-
-#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-#     unavailable_cells = [Point('A', 3)]
-#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-#     blocking_lst.extend(unavailable_cells)
-
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
-
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 1), Point('A', 2), Point('A', 3), Point('A', 4), Point('A', 5),
-#                                       Point('B', 2), Point('B', 3), Point('B', 4), Point('B', 6),
-#                                       Point('C', 1), Point('C', 5), Point('C', 6),
-#                                       Point('D', 3),
-#                                       Point('E', 1), Point('E', 2), Point('e', 5), Point('E', 6),
-#                                       Point('F', 6), Point('F', 4), Point('F', 3), Point('F', 2)]
-#     available_moves = [Point('A', 6),
-#                        Point('B', 1), Point('B', 5), 
-#                        Point('C', 4), Point('C', 3), Point('C', 2), 
-#                        Point('D', 1), Point('D', 2), Point('D', 4), Point('D', 5), Point('D', 6), 
-#                        Point('E', 3), Point('E', 4), 
-#                        Point('F', 1), Point('F', 5)]
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
-
-# # new test case
-#     # testing turn starting with white amazon at 'C'/1
-#     static_start_pos = Point('C', 1)
-    
-#     # moving the amazon verticly to 'C'/3
-#     new_position = Point('C', 3)
-
-#     # When the amazon will arive 'C'/3 it will shoot blocking rock to 'C'/4
-#     blocking_lst = [Point('C', 4)]
-
-#     #rest of the board, for extra verification
-#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-
-#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-#     unavailable_cells = [Point('C', 5), Point('C', 6)]
-#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-#     blocking_lst.extend(unavailable_cells)
-
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
-
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 2), Point('A', 4), Point('A', 6),  
-#                                       Point('B', 1), Point('B', 5), Point('B', 6),
-#                                       Point('C', 3), Point('C', 4), Point('C', 5), Point('C', 6),
-#                                       Point('D', 1), Point('D', 5), Point('D', 6),
-#                                       Point('E', 2), Point('e', 4), Point('E', 6),
-#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5)]
-#     available_moves = [Point('A', 5), Point('A', 3), Point('A', 1),
-#                        Point('B', 4), Point('B', 3), Point('B', 2), 
-#                        Point('C', 2), Point('C', 1), 
-#                        Point('D', 4), Point('D', 3), Point('D', 2), 
-#                        Point('e', 1), Point('E', 3), Point('E', 5), 
-#                        Point('F', 6)]
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
-
-#     # testing turn starting with black amazon at 'F'/3
-#     static_start_pos = Point('F', 3)
-    
-#     # moving the amazon diagonaly to 'D'/5
-#     new_position = Point('D', 5)
-
-#     # When the amazon will arive at 'D'/5 it will shoot blocking rock to 'F'/3
-#     blocking_lst = [Point('F', 3)]
-
-#     #rest of the board, for extra verification
-#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "BLACK", blocking_lst)
-
-#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-#     unavailable_cells = [Point('F', 3), Point('G', 2)]
-#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-#     blocking_lst.extend(unavailable_cells)
-
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
-
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 6), Point('A', 4), Point('A', 3), Point('A', 1),
-#                                       Point('B', 6), Point('B', 4), Point('B', 2), Point('B', 1),
-#                                       Point('C', 1), Point('C', 2), Point('C', 3), 
-#                                       Point('D', 5), Point('D', 6),
-#                                       Point('E', 3), Point('e', 2), Point('E', 1),
-#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
-#     available_moves = [Point('A', 5), Point('A', 2),
-#                        Point('B', 5), Point('B', 3),  
-#                        Point('C', 4), Point('C', 5), Point('C', 6),
-#                        Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
-#                        Point('e', 6), Point('E', 5), Point('E', 4)]
-
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
-
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-
-
-# # new test case
-#     # testing turn starting with black amazon at A/4
-#     # Assuming all amazons are on default locations on small board
-#     static_start_pos = Point('A', 4)
-
-#     # starting with blocked board, with 6 blockers
-#     blockers_pos = [Point('A', 6), Point('A', 2), Point('B', 5), Point('b', 3),
-#                     Point('B', 2), Point('D', 5), Point('D', 3)]
-
-#     test_board = get_initialized_board(SMALL_BOARD_SIZE, blockers_pos)
-
-#     valid_movements = [Point('A', 5), Point('A', 3), 
-#                        Point('B', 4), 
-#                        Point('C', 4), 
-#                        Point('D', 4),
-#                        Point('E', 4),
-#                        Point('F', 4)]
-#     invalid_movements = [Point('A', 6), Point('A', 4), Point('A', 2), Point('A', 1),
-#                          Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
-#                          Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
-#                          Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
-#                          Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
-#                          Point('f', 6), Point('fE', 5), Point('f', 3), Point('f', 2), Point('f', 1)]
-    
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(static_start_pos, invalid_movements, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(static_start_pos, valid_movements, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
-
-#     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
-
 def run_simple_test(amazon_to_move, new_position, expected_result, board_size):
     board_game = BoardGame(board_size)
     turn_validator = TurnValidator(board_game)
@@ -800,8 +578,6 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
             else:
                 break
         return result
-    
-    # def setUp(self):
 
     def test_blocked_white_amazon_couldnt_reach_blocked_cells(self):
         blocking_lst = [Point('B', 3), Point('B', 2), Point('B', 1), 
@@ -844,7 +620,7 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
         test_board = self.get_blocked_board(blocking_lst)
 
         # Moving amazon to the new pos
-        test_board.update_move(Point('d', 6), Point('d', 3), "WHITE")
+        test_board.update_move(Point('d', 6), Point('d', 3), "BLACK")
 
         additional_blocking_lst = [Point('A', 1), Point('A', 2), Point('A', 3), Point('A', 4), Point('A', 5), Point('A', 6),  
                                                                                 Point('B', 4), Point('B', 5), Point('B', 6),
@@ -854,55 +630,60 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
                                    Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
         # Appending lists for test
         blocking_lst.extend(additional_blocking_lst)
-
         self.assertFalse(self.run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, False, test_board))
-    # new test case
-    # testing turn starting with white amazon at 'D'/6
-    static_start_pos = 
+
+    def test_cant_reach_blocked_cells_after_movement(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('d', 6), Point('c', 5), "WHITE")
+
+        # shoot block rock after movment
+        test_board.shoot_blocking_rock(Point('e', 3))
+
+        # adding unavailable targets as well
+        unavailable_moves =   [
+                    Point('A', 6), Point('A', 4), Point('A', 2), Point('A', 1),
+                    Point('B', 3), Point('B', 2), Point('B', 1),
+                    Point('C', 1), Point('C', 5), 
+                    Point('D', 3), Point('D', 2), Point('D', 1),
+                    Point('E', 6), Point('E', 4), Point('E', 3), Point('E', 2), Point('E', 1),
+                    Point('F', 6), Point('F', 4), Point('F', 3), Point('F', 2), Point('F', 1)]
+                    
+        available_moves =  [
+                    Point('A', 5), Point('A', 3),
+                    Point('B', 6), Point('B', 5), Point('B', 4), 
+                    Point('C', 6), Point('c', 4), Point('C', 3), Point('C', 2), 
+                    Point('D', 6), Point('D', 5), Point('D', 4),
+                    Point('E', 5),
+                    Point('F', 5)]
+
+        test_board.print_board()
+
+        self.assertFalse(self.run_loop_of_simple_movement_tests(Point('c', 5), unavailable_moves, False, test_board))
+        self.assertTrue(self.run_loop_of_simple_movement_tests(Point('c', 5), available_moves, True, test_board))
+
+
+# unavailable_moves =   [
+#                     Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+#                     Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
+#                     Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
+#                     Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
+#                     Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
+#                     Point('F', 6), Point('F', 5), Point('F', 3), Point('F', 2), Point('F', 1),
+#                     Point('G', 6), Point('G', 5), Point('G', 3), Point('G', 2), Point('G', 1)]
+class TestShootingBlockerAtTheEndOfTheTurn(unittest.TestCase):
+    def run_simple_test(self, amazon_to_move, new_position):
+        board_game = BoardGame(LARGE_BOARD_SIZE)
+        turn_validator = TurnValidator(board_game)
+        return turn_validator.is_step_valid(amazon_to_move, new_position)
     
-    # moving the amazon verticly to 'D'/3
-    new_position = Point('D', 3)
-
-    # When the amazon will arive 'C'/3 it will shoot blocking rock to 'B'/3
-    blocking_lst = [Point('B', 3)]
-
-    #rest of the board, for extra verification
-    test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
-
-    # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-    unavailable_cells = [Point('A', 3)]
-    # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-    blocking_lst.extend(unavailable_cells)
-
-    # after getting board prepared, need to run the tests on it
-    is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-    if (not is_test_fine):
-        raise RuntimeError("Error With case 2")
-
-
-
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 1), Point('A', 2), Point('A', 3), Point('A', 4), Point('A', 5),
-#                                       Point('B', 2), Point('B', 3), Point('B', 4), Point('B', 6),
-#                                       Point('C', 1), Point('C', 5), Point('C', 6),
-#                                       Point('D', 3),
-#                                       Point('E', 1), Point('E', 2), Point('e', 5), Point('E', 6),
-#                                       Point('F', 6), Point('F', 4), Point('F', 3), Point('F', 2)]
-#     available_moves = [Point('A', 6),
-#                        Point('B', 1), Point('B', 5), 
-#                        Point('C', 4), Point('C', 3), Point('C', 2), 
-#                        Point('D', 1), Point('D', 2), Point('D', 4), Point('D', 5), Point('D', 6), 
-#                        Point('E', 3), Point('E', 4), 
-#                        Point('F', 1), Point('F', 5)]
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
+    def get_blocked_board(self, blocked_cells):
+        board_game = BoardGame(SMALL_BOARD_SIZE)
+        for target in blocked_cells:
+            board_game.shoot_blocking_rock(target)
+        return board_game
 
 # # new test case
 #     # testing turn starting with white amazon at 'C'/1
@@ -1030,7 +811,6 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
 #         raise RuntimeError("Error with case 4")
 #     number_of_passed_tests += 1
 # #end testcase
-
 #     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
 
 if __name__ == '__main__':
