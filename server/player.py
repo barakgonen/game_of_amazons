@@ -44,18 +44,40 @@ class HumanPlayer(Player):
         return human_move
 
     def calculate_next_move(self):
-        x = str(raw_input("Enter x (horizontal,  capital letter): ").upper)[0]
+        x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+        if x.islower():
+            x = x.upper()[0]
         while not x: 
-            x = str(raw_input("Enter x (horizontal,  capital letter): ").upper)[0]
+            x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+            if x.islower():
+                x = x.upper[0]
         y = input("Enter y (vertical,): number")
         while not y:
             y = input("Enter y (vertical,): number")
         return Point(x, y)
 
     def get_amazon_to_move(self):
-        x = str(raw_input("Enter x (horizontal,  capital letter): ").upper)[0]
+        x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+        if x.islower():
+            x = x.upper()[0]
         while not x: 
-            x = str(raw_input("Enter x (horizontal,  capital letter): ").upper)[0]
+            x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+            if x.islower():
+                x = x.upper[0]
+        y = input("Enter y (vertical,): number")
+        while not y:
+            y = input("Enter y (vertical,): number")
+        return Point(x, y)
+
+    def shoot_blocking_rock(self):
+        print "<Human_Player::shoot_blocking_rock()> Select position to throw blocking rock"
+        x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+        if x.islower():
+            x = x.upper()[0]
+        while not x: 
+            x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
+            if x.islower():
+                x = x.upper[0]
         y = input("Enter y (vertical,): number")
         while not y:
             y = input("Enter y (vertical,): number")

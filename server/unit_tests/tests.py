@@ -1,11 +1,140 @@
-from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE, CellState, COLUMNS_ARRAY, NUMBER_OF_ROCKS_IN_SMALL_BOARD, NUMBER_OF_ROCKS_IN_LARGE_BOARD
-from board_game import BoardGame
+import unittest
+
+from server.constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE, CellState, COLUMNS_ARRAY, NUMBER_OF_ROCKS_IN_SMALL_BOARD, NUMBER_OF_ROCKS_IN_LARGE_BOARD
+from server.board_game import BoardGame
 from turn_validator import TurnValidator
 from point import Point
 from blocking_rocks_manager import BlockingRocksManager
 from player import ComputerPlayer, HumanPlayer
 from game_manager import GameManager
-import unittest
+
+# # new test case
+#     # testing turn starting with white amazon at 'C'/1
+#     static_start_pos = Point('C', 1)
+    
+#     # moving the amazon verticly to 'C'/3
+#     new_position = Point('C', 3)
+
+#     # When the amazon will arive 'C'/3 it will shoot blocking rock to 'C'/4
+#     blocking_lst = [Point('C', 4)]
+
+#     #rest of the board, for extra verification
+#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
+
+#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
+#     unavailable_cells = [Point('C', 5), Point('C', 6)]
+#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
+#     blocking_lst.extend(unavailable_cells)
+
+#     # after getting board prepared, need to run the tests on it
+#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
+#     if (not is_test_fine):
+#         raise RuntimeError("Error With case 2")
+
+#     # adding unavailable targets as well
+#     additional_unavailable_targets = [Point('A', 2), Point('A', 4), Point('A', 6),  
+#                                       Point('B', 1), Point('B', 5), Point('B', 6),
+#                                       Point('C', 3), Point('C', 4), Point('C', 5), Point('C', 6),
+#                                       Point('D', 1), Point('D', 5), Point('D', 6),
+#                                       Point('E', 2), Point('e', 4), Point('E', 6),
+#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5)]
+#     available_moves = [Point('A', 5), Point('A', 3), Point('A', 1),
+#                        Point('B', 4), Point('B', 3), Point('B', 2), 
+#                        Point('C', 2), Point('C', 1), 
+#                        Point('D', 4), Point('D', 3), Point('D', 2), 
+#                        Point('e', 1), Point('E', 3), Point('E', 5), 
+#                        Point('F', 6)]
+#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
+#     if (not is_additional_unavailable_moves_are_unavailable):
+#         raise RuntimeError("Error with case 3")
+#     number_of_passed_tests += 1
+#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
+#     if (not is_additional_available_moves_are_available):
+#         raise RuntimeError("Error with case 4")
+#     number_of_passed_tests += 1
+# #end testcase
+
+#     # testing turn starting with black amazon at 'F'/3
+#     static_start_pos = Point('F', 3)
+    
+#     # moving the amazon diagonaly to 'D'/5
+#     new_position = Point('D', 5)
+
+#     # When the amazon will arive at 'D'/5 it will shoot blocking rock to 'F'/3
+#     blocking_lst = [Point('F', 3)]
+
+#     #rest of the board, for extra verification
+#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "BLACK", blocking_lst)
+
+#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
+#     unavailable_cells = [Point('F', 3), Point('G', 2)]
+#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
+#     blocking_lst.extend(unavailable_cells)
+
+#     # after getting board prepared, need to run the tests on it
+#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
+#     if (not is_test_fine):
+#         raise RuntimeError("Error With case 2")
+
+#     # adding unavailable targets as well
+#     additional_unavailable_targets = [Point('A', 6), Point('A', 4), Point('A', 3), Point('A', 1),
+#                                       Point('B', 6), Point('B', 4), Point('B', 2), Point('B', 1),
+#                                       Point('C', 1), Point('C', 2), Point('C', 3), 
+#                                       Point('D', 5), Point('D', 6),
+#                                       Point('E', 3), Point('e', 2), Point('E', 1),
+#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
+#     available_moves = [Point('A', 5), Point('A', 2),
+#                        Point('B', 5), Point('B', 3),  
+#                        Point('C', 4), Point('C', 5), Point('C', 6),
+#                        Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
+#                        Point('e', 6), Point('E', 5), Point('E', 4)]
+
+#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
+#     if (not is_additional_unavailable_moves_are_unavailable):
+#         raise RuntimeError("Error with case 3")
+#     number_of_passed_tests += 1
+
+#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
+#     if (not is_additional_available_moves_are_available):
+#         raise RuntimeError("Error with case 4")
+#     number_of_passed_tests += 1
+
+
+# # new test case
+#     # testing turn starting with black amazon at A/4
+#     # Assuming all amazons are on default locations on small board
+#     static_start_pos = Point('A', 4)
+
+#     # starting with blocked board, with 6 blockers
+#     blockers_pos = [Point('A', 6), Point('A', 2), Point('B', 5), Point('b', 3),
+#                     Point('B', 2), Point('D', 5), Point('D', 3)]
+
+#     test_board = get_initialized_board(SMALL_BOARD_SIZE, blockers_pos)
+
+#     valid_movements = [Point('A', 5), Point('A', 3), 
+#                        Point('B', 4), 
+#                        Point('C', 4), 
+#                        Point('D', 4),
+#                        Point('E', 4),
+#                        Point('F', 4)]
+#     invalid_movements = [Point('A', 6), Point('A', 4), Point('A', 2), Point('A', 1),
+#                          Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
+#                          Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
+#                          Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
+#                          Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
+#                          Point('f', 6), Point('fE', 5), Point('f', 3), Point('f', 2), Point('f', 1)]
+    
+#     # after getting board prepared, need to run the tests on it
+#     is_test_fine = run_loop_of_simple_movement_tests(static_start_pos, invalid_movements, False, test_board)
+#     if (not is_test_fine):
+#         raise RuntimeError("Error With case 2")
+#     number_of_passed_tests += 1
+#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(static_start_pos, valid_movements, True, test_board)
+#     if (not is_additional_available_moves_are_available):
+#         raise RuntimeError("Error with case 4")
+#     number_of_passed_tests += 1
+# #end testcase
+#     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
 
 def run_simple_test(amazon_to_move, new_position, expected_result, board_size):
     board_game = BoardGame(board_size)
@@ -685,133 +814,522 @@ class TestShootingBlockerAtTheEndOfTheTurn(unittest.TestCase):
             board_game.shoot_blocking_rock(target)
         return board_game
 
-# # new test case
-#     # testing turn starting with white amazon at 'C'/1
-#     static_start_pos = Point('C', 1)
+    def test_shooting_verticly_down_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('d', 4))
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 4)))
+
+    def test_shooting_verticly_down_at_end_of_the_turn_to_non_empty_cell_white_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('d', 6), Point('c', 5), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 5), Point('C', 1)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
+
+    def test_shooting_verticly_down_to_cell_where_black_amazona_exists(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 6), Point('a', 1)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
+
+    def test_shooting_verticly_down_block_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('d', 4))
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+
+    def test_shooting_verticly_down_in_the_way_there_is_white_amazon(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('c', 1), Point('d', 2), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+        self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
+
+    def test_shooting_verticly_down_in_the_way_there_is_black_amazon(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('d', 4), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+
+    def test_shooting_verticly_up_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('c', 3))
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('c', 3)))
+
+    def test_shooting_verticly_up_to_cell_where_white_amazona_exists(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 2), Point('d', 6)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
+
+    def test_shooting_verticly_up_to_cell_where_black_amazona_exists(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 5), Point('a', 2)))
+
+    def test_shooting_verticly_up_blocker_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('c', 3))
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('c', 6)))
+        self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
+
+    def test_shooting_verticly_up_white_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 1), Point('d', 6)))
+
+    def test_shooting_verticly_up_black_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 1), Point('f', 5)))
+
+    def test_shooting_horizontly_right_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('b', 4))
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 4), Point('c', 4)))
+        self.assertTrue(test_board.shoot_blocking_rock(Point('C', 4))) # In real game we should not suppose to get this situation
+
+    def test_shooting_horizontly_right_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('b', 3), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 3), Point('f', 3)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('f', 3)))
+
+    def test_shooting_horizontly_right_to_cell_where_there_is_white_amazon(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 6), Point('D', 6)))
+
+    def test_shooting_horizontly_right_blocker_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('B', 6))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 6), Point('D', 6)))
+
+    def test_shooting_horizontly_right_white_amazona_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 1), Point('D', 1)))
+
+    def test_shooting_horizontly_right_black_amazona_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+            
+            # Moving amazon to the new pos
+        test_board.update_move(Point('f', 3), Point('d', 3), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 3), Point('f', 3)))
+
+    def test_shooting_horizontly_left_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('D', 3))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 3), Point('C', 3)))
+        self.assertTrue(test_board.shoot_blocking_rock(Point('C', 3))) # In real game we should not suppose to get this situation
+
+    def test_shooting_horizontly_left_at_end_of_the_turn_to_non_empty_cell_white_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 6), Point('d', 6)))
     
-#     # moving the amazon verticly to 'C'/3
-#     new_position = Point('C', 3)
+    def test_shooting_horizontly_left_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
 
-#     # When the amazon will arive 'C'/3 it will shoot blocking rock to 'C'/4
-#     blocking_lst = [Point('C', 4)]
+        # Moving amazon to the new pos
+        test_board.update_move(Point('f', 3), Point('e', 4), "BLACK")
 
-#     #rest of the board, for extra verification
-#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "WHITE", blocking_lst)
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('e', 4), Point('a', 4)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
 
-#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-#     unavailable_cells = [Point('C', 5), Point('C', 6)]
-#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-#     blocking_lst.extend(unavailable_cells)
+    def test_shooting_horizontly_left_blocker_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
 
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('E', 3))
 
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 2), Point('A', 4), Point('A', 6),  
-#                                       Point('B', 1), Point('B', 5), Point('B', 6),
-#                                       Point('C', 3), Point('C', 4), Point('C', 5), Point('C', 6),
-#                                       Point('D', 1), Point('D', 5), Point('D', 6),
-#                                       Point('E', 2), Point('e', 4), Point('E', 6),
-#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5)]
-#     available_moves = [Point('A', 5), Point('A', 3), Point('A', 1),
-#                        Point('B', 4), Point('B', 3), Point('B', 2), 
-#                        Point('C', 2), Point('C', 1), 
-#                        Point('D', 4), Point('D', 3), Point('D', 2), 
-#                        Point('e', 1), Point('E', 3), Point('E', 5), 
-#                        Point('F', 6)]
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('d', 3)))
 
-#     # testing turn starting with black amazon at 'F'/3
-#     static_start_pos = Point('F', 3)
+    def test_shooting_horizontly_left_white_amazona_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 1), Point('b', 1)))
+
+    def test_shooting_horizontly_left_black_amazona_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+        
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 4), Point('a', 4)))
+
+    def test_shooting_diagonaly_north_east_at_end_of_the_turn_to_non_empty_cell_white_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('c', 1), Point('A', 3), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 3), Point('d', 6)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
+
+    def test_shooting_diagonaly_north_east_at_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('E', 3))
     
-#     # moving the amazon diagonaly to 'D'/5
-#     new_position = Point('D', 5)
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('C', 1), Point('F', 4)))
 
-#     # When the amazon will arive at 'D'/5 it will shoot blocking rock to 'F'/3
-#     blocking_lst = [Point('F', 3)]
+    def test_shooting_diagonaly_north_east_in_destination_there_is_black_amazon(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
 
-#     #rest of the board, for extra verification
-#     test_board = get_blocked_board(static_start_pos, new_position, SMALL_BOARD_SIZE, "BLACK", blocking_lst)
+        # shoot to black amazon cell
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('D', 1), Point('F', 3)))
 
-#     # i'd like to test invalid_movement mechanisem, that why i take 2 possible celss and tests that in the next move, the amazon couldn't reach them
-#     unavailable_cells = [Point('F', 3), Point('G', 2)]
-#     # Appending lists for test, amazon could not pass above blocked cell & the cells i mentioned above
-#     blocking_lst.extend(unavailable_cells)
+    def test_shooting_diagonaly_north_east_way_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
 
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(new_position, blocking_lst, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('b', 5))
 
-#     # adding unavailable targets as well
-#     additional_unavailable_targets = [Point('A', 6), Point('A', 4), Point('A', 3), Point('A', 1),
-#                                       Point('B', 6), Point('B', 4), Point('B', 2), Point('B', 1),
-#                                       Point('C', 1), Point('C', 2), Point('C', 3), 
-#                                       Point('D', 5), Point('D', 6),
-#                                       Point('E', 3), Point('e', 2), Point('E', 1),
-#                                       Point('F', 1), Point('F', 2), Point('F', 3), Point('F', 4), Point('F', 5), Point('F', 6)]
-#     available_moves = [Point('A', 5), Point('A', 2),
-#                        Point('B', 5), Point('B', 3),  
-#                        Point('C', 4), Point('C', 5), Point('C', 6),
-#                        Point('D', 4), Point('D', 3), Point('D', 2), Point('D', 1),
-#                        Point('e', 6), Point('E', 5), Point('E', 4)]
+        # shoot to black amazon cell
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 4), Point('C', 6)))
 
-#     is_additional_unavailable_moves_are_unavailable = run_loop_of_simple_movement_tests(new_position, additional_unavailable_targets, False, test_board)
-#     if (not is_additional_unavailable_moves_are_unavailable):
-#         raise RuntimeError("Error with case 3")
-#     number_of_passed_tests += 1
+    def test_shooting_diagonaly_north_east_white_amazona_in_route(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
 
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(new_position, available_moves, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
+        # Moving amazon to the new pos
+        test_board.update_move(Point('c', 1), Point('c', 5), "WHITE")
 
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
-# # new test case
-#     # testing turn starting with black amazon at A/4
-#     # Assuming all amazons are on default locations on small board
-#     static_start_pos = Point('A', 4)
-
-#     # starting with blocked board, with 6 blockers
-#     blockers_pos = [Point('A', 6), Point('A', 2), Point('B', 5), Point('b', 3),
-#                     Point('B', 2), Point('D', 5), Point('D', 3)]
-
-#     test_board = get_initialized_board(SMALL_BOARD_SIZE, blockers_pos)
-
-#     valid_movements = [Point('A', 5), Point('A', 3), 
-#                        Point('B', 4), 
-#                        Point('C', 4), 
-#                        Point('D', 4),
-#                        Point('E', 4),
-#                        Point('F', 4)]
-#     invalid_movements = [Point('A', 6), Point('A', 4), Point('A', 2), Point('A', 1),
-#                          Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
-#                          Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
-#                          Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
-#                          Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
-#                          Point('f', 6), Point('fE', 5), Point('f', 3), Point('f', 2), Point('f', 1)]
+        # shoot to black amazon cell
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 4), Point('D', 6)))
     
-#     # after getting board prepared, need to run the tests on it
-#     is_test_fine = run_loop_of_simple_movement_tests(static_start_pos, invalid_movements, False, test_board)
-#     if (not is_test_fine):
-#         raise RuntimeError("Error With case 2")
-#     number_of_passed_tests += 1
-#     is_additional_available_moves_are_available = run_loop_of_simple_movement_tests(static_start_pos, valid_movements, True, test_board)
-#     if (not is_additional_available_moves_are_available):
-#         raise RuntimeError("Error with case 4")
-#     number_of_passed_tests += 1
-# #end testcase
-#     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
+    def test_shooting_diagonaly_north_east_black_amazona_in_route(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('F', 3), Point('e', 3), "BLACK")
+
+        # shoot to black amazon cell
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('f', 4)))
+
+    def test_shooting_diagonaly_south_west_to_blocked_cell(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('d', 1))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 3), Point('d', 1)))
+    
+    def test_shooting_diagonaly_south_west_to_cell_where_white_amazona_exists(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 4), Point('c', 1)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
+
+    def test_shooting_diagonaly_south_west_to_cell_where_black_amazona_exists(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 6), Point('a', 4)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
+
+    def test_shooting_diagonaly_south_west_block_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # preparing test case
+        test_board.shoot_blocking_rock(Point('c', 5))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+
+    def test_shooting_diagonaly_south_west_white_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('c', 1), Point('c', 5), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+
+    def test_shooting_diagonaly_south_west_black_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+
+    def test_shooting_diagonaly_south_east_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('A', 4), Point('C', 6), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('C', 6), Point('F', 3)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('F', 3)))
+
+    def test_shooting_diagonaly_south_east_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        test_board.shoot_blocking_rock(Point('b', 3))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 4), Point('b', 3)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('b', 3)))
+
+    def test_shooting_diagonaly_south_east_in_destination_there_is_white_amazon(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 3), Point('c', 1)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
+
+    def test_shooting_diagonaly_south_east_way_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        test_board.shoot_blocking_rock(Point('e', 5))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('f', 2)))
+
+    def test_shooting_diagonaly_south_east_white_amazona_blocks_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('D', 6), Point('d', 2), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 4), Point('e', 1)))
+
+    def test_shooting_diagonaly_south_east_black_amazona_blocks_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('F', 3), Point('b', 3), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 4), Point('d', 1)))
+
+    def test_shooting_diagonaly_north_west_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('f', 3), Point('D', 1), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('D', 1), Point('A', 4)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('A', 4)))
+
+    def test_shooting_diagonaly_north_west_destination_is_blocked(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.shoot_blocking_rock(Point('a', 3))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('A', 3)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('A', 3)))
+
+    def test_shooting_diagonaly_north_west_white_amazona_in_destination(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('c', 1), Point('f', 4), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 4), Point('d', 6)))
+        self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
+
+    def test_shooting_diagonaly_north_west_block_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.shoot_blocking_rock(Point('d', 5))
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+
+    def test_shooting_diagonaly_north_west_white_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+
+    def test_shooting_diagonaly_north_west_black_amazona_is_in_the_way(self):
+        # Getting blocked board
+        test_board = BoardGame(SMALL_BOARD_SIZE)
+        turn_validator = TurnValidator(test_board)
+
+        # Moving amazon to the new pos
+        test_board.update_move(Point('a', 4), Point('e', 4), "BLACK")
+
+        # shoot block rock after movment
+        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+
+class TestIntegrationForFullTurn(unittest.TestCase):
+    def run_simple_test(self, amazon_to_move, new_position):
+        board_game = BoardGame(LARGE_BOARD_SIZE)
+        turn_validator = TurnValidator(board_game)
+        return turn_validator.is_step_valid(amazon_to_move, new_position)
+    
+    def get_blocked_board(self, blocked_cells):
+        board_game = BoardGame(SMALL_BOARD_SIZE)
+        for target in blocked_cells:
+            board_game.shoot_blocking_rock(target)
+        return board_game
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(failfast=True)

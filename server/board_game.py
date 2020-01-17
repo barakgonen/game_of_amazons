@@ -73,10 +73,13 @@ class BoardGame:
     def shoot_blocking_rock(self, rock_target_pos):
         if (self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state == CellState.EMPTY):
             self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state = CellState.BLOCKED
+            return True
         else:
-            raise IndexError("Trying to shoot to non-empty cell")
+            print "<shoot_blocking_rock()> Error, you tried to shoot to non-empty cell"
+            return False
     
-    def get_players_positions(self, cell_state):
+    def get_players_positions(self, player_color):
+        cell_state = CellState.WHITE_AMAZON if player_color == "WHITE" else CellState.BLACK_AMAZON
         players_pos = []
         # iterate as you get input A,1 or 1,A...
         for i in range(1, self.size + 1):

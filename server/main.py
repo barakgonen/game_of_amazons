@@ -44,7 +44,6 @@ def get_board_size():
 def main():
   board_size = int(get_board_size())
   board_game = BoardGame(board_size)
-  board_game.print_board()
   blocking_rocks_manager = BlockingRocksManager(board_size)
 
   p1 = HumanPlayer("BARAK", "WHITE")
