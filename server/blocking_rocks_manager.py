@@ -15,7 +15,7 @@ class BlockingRocksManager:
             print ("There are not enough rocks... Game must over")
             return False
 
-    def is_blocks_available(self):
+    def are_blocks_available(self):
         if (self.available_rocks > 0):
             return True
         else:

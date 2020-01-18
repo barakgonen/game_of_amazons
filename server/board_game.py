@@ -1,5 +1,6 @@
 from constants import CellState, SMALL_BOARD_SIZE, LARGE_BOARD_SIZE
 from common_funcs import get_col_index, get_raw_index
+from point import Point
 
 class BoardCell:
     def __init__(self, color, state):

@@ -1,5 +1,7 @@
 
 from common_funcs import  get_col_index, get_raw_index
+from point import Point
+from constants import CellState, COLUMNS_ARRAY
 
 class TurnValidator:
     def __init__(self, game_board):
@@ -227,3 +229,64 @@ class TurnValidator:
         else:
             print "<TurnValidator::is_shoot_valid()> shoot"
             return False
+
+    def get_players_positions(self, cell_state):
+        players_pos = []
+        # iterate as you get input A,1 or 1,A...
+        for i in range(1, self.game_board.get_size() + 1):
+            for j in range(1, self.game_board.get_size() + 1):
+                if cell_state == CellState.BLACK_AMAZON:
+                    if self.game_board.is_black_amazon(i, COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                elif cell_state == CellState.WHITE_AMAZON:    
+                    if self.game_board.is_white_amazon(i, COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                else:
+                    raise IndexError("BARAK YOU GOT A BUG!")
+        return players_pos
+
+    def can_move_n_up(self, amazona, i):
+        return self.is_step_valid(amazona,
+                                  Point(amazona.x, amazona.y + i))
+
+    def can_move_n_down(self, amazona, i):
+        return self.is_step_valid(amazona,
+                                  Point(amazona.x, amazona.y - i))
+
+    def can_move_n_right(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) + i), amazona.y))
+
+    def can_move_n_left(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) - i), amazona.y))
+
+    def can_move_n_horizontaly_up_right(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) + i), amazona.y + i))
+
+    def can_move_n_horizontaly_up_left(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) - i), amazona.y + i))
+
+    def can_move_n_horizontaly_down_right(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) + i), amazona.y - i))
+
+    def can_move_n_horizontaly_down_left(self, amazona, i):
+        return self.is_step_valid(amazona, Point(chr(ord(amazona.get_x()) - i), amazona.y - i))
+
+    def is_amazona_has_valid_step(self, amazona):
+        for i in range(1, self.game_board.get_size()):
+            if (self.can_move_n_up(amazona, i) or
+                self.can_move_n_down(amazona, i) or
+                self.can_move_n_right(amazona, i) or
+                self.can_move_n_left(amazona, i) or
+                self.can_move_n_horizontaly_up_right(amazona, i) or
+                self.can_move_n_horizontaly_up_left(amazona, i) or
+                self.can_move_n_horizontaly_down_right(amazona, i) or
+                self.can_move_n_horizontaly_down_left(amazona, i)):
+                return True
+        return False
+
+    def is_there_are_available_mooves_for_player(self, player_color):
+        players_position = self.get_players_positions(player_color)
+        for amazona in players_position:
+            if self.is_amazona_has_valid_step(amazona):
+                return True
+        return False

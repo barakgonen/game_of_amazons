@@ -1,7 +1,10 @@
-from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE
+from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE, CellState, COLUMNS_ARRAY, NUMBER_OF_ROCKS_IN_SMALL_BOARD, NUMBER_OF_ROCKS_IN_LARGE_BOARD
 from board_game import BoardGame
 from turn_validator import TurnValidator
 from point import Point
+from blocking_rocks_manager import BlockingRocksManager
+from player import ComputerPlayer, HumanPlayer
+from game_manager import GameManager
 
 def turn_validation_job():
     print "<turn_validation_job()> Running small board run from an empty board each time. just verifier for movement logic"
@@ -429,7 +432,7 @@ def blocking_cell_validation_job():
     blocking_lst.extend(additional_blocking_lst)
 
     # after getting board prepared, need to run the tests on it
-    is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, True, test_board)
+    is_test_fine = run_loop_of_simple_movement_tests(Point('C', 2), blocking_lst, False, test_board)
     if (not is_test_fine):
         raise RuntimeError("Error With case 1")
     number_of_passed_tests += 1
@@ -642,3 +645,97 @@ def run_loop_of_simple_movement_tests(amazon_to_move, position_lst, expected_res
         else:
             break
     return result
+
+def set_full_blocked_board(board):
+    for i in range(1, board.get_size() + 1):
+        for j in range(1, board.get_size() + 1):
+            if board.is_free_cell(i, COLUMNS_ARRAY[j]):
+                board.shoot_blocking_rock(Point(COLUMNS_ARRAY[j], i))
+
+def turns_possible_job():
+    # Test cases
+    # 0 turns possible with full board
+    current_board = BoardGame(LARGE_BOARD_SIZE)
+    set_full_blocked_board(current_board)
+    turn_validator = TurnValidator(current_board)
+    is_game_over = not(turn_validator.is_there_are_available_mooves_for_player(CellState.WHITE_AMAZON) and turn_validator.is_there_are_available_mooves_for_player(CellState.BLACK_AMAZON))
+
+    if (not is_game_over):
+        raise RuntimeError("Error with case 44")
+    current_board.print_board()
+    
+    # 0 turns possible with small board
+    current_board = BoardGame(SMALL_BOARD_SIZE)
+    set_full_blocked_board(current_board)
+    turn_validator = TurnValidator(current_board)
+    is_game_over = not(turn_validator.is_there_are_available_mooves_for_player(CellState.WHITE_AMAZON) and turn_validator.is_there_are_available_mooves_for_player(CellState.BLACK_AMAZON))
+
+    if (not is_game_over):
+        raise RuntimeError("Error with case 44")
+    current_board.print_board()
+
+    # more than 0 possible whithout rocks
+
+    current_board = BoardGame(SMALL_BOARD_SIZE)
+    blocking_manager = BlockingRocksManager(current_board.get_size())
+    for i in range(0, NUMBER_OF_ROCKS_IN_SMALL_BOARD + 1):
+        blocking_manager.get_rock()
+    if (blocking_manager.are_blocks_available()):
+        raise RuntimeError("Error with case 45")
+
+    current_board = BoardGame(LARGE_BOARD_SIZE)
+    blocking_manager = BlockingRocksManager(current_board.get_size())
+    for i in range(0, NUMBER_OF_ROCKS_IN_LARGE_BOARD + 1):
+        blocking_manager.get_rock()
+    if (blocking_manager.are_blocks_available()):
+        raise RuntimeError("Error with case 45")
+
+    # new case. using game manager to see that it knows to decide wethere game can run: available mooves or rocks
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
+    set_full_blocked_board(board_game)
+    p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
+    p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
+    turn_validator = TurnValidator(board_game)
+    game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
+    # in case there are no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) or game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 46")
+    
+    for i in range(0, NUMBER_OF_ROCKS_IN_SMALL_BOARD + 1):
+        blocking_rocks_manager.get_rock()
+    # in case there are no rocks and no available mooves
+    if (game_manager.is_there_reason_to_play(p1.get_color()) or game_manager.is_there_reason_to_play(p2.get_color())):
+        raise RuntimeError("Error with test case 47")
+
+    # small board tests
+    # 1 turn possible for black
+    board_game = BoardGame(SMALL_BOARD_SIZE)
+    turn_validator = TurnValidator(board_game)
+    board_game.print_board()
+    
+    # 1 turn possible for white
+    # 2 turns possible for black
+    # 2 turns possible for white
+    # 10 turns possible for black
+    # 10 turns possible for white
+
+
+    # large board tests
+    # 1 turn possible for black
+    # 1 turn possible for white
+    # 2 turns possible for black
+    # 2 turns possible for white
+    # 10 turns possible for black
+    # 10 turns possible for white
+
+    # set board, set positions, make move and calculate 
+    # set board, set turn for white and notice black couldn't play and stop game
+    # set board, set turn for black and notice white couldn't play and stop game
+    return True
+
+def winner_selector_job():
+    # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
+    # Black should win
+    # white should win
+    return True

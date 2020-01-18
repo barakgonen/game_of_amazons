@@ -36,19 +36,24 @@ class GameManager:
         self.board_game.shoot_blocking_rock(current_player_shoot)
         self.blocking_manager.get_rock()
         self.board_game.print_board()
+
+    def is_there_reason_to_play(self, player):
+        if (self.blocking_manager.are_blocks_available() and 
+            self.turn_validator.is_there_are_available_mooves_for_player(player)):
+            return True
+        return False
             
     def run_round(self):
         # if there are rocks , self.blocking_manager.get_rock() need to check it after every turn shoul
-        if self.blocking_manager.is_blocks_available():
+        if self.is_there_reason_to_play(self.white_player):
             self.run_single_turn(self.white_player)
             print (self.white_player.get_name() + " made successfull move!")
-            if self.blocking_manager.is_blocks_available():
+            if self.is_there_reason_to_play(self.black_player):
                 self.run_single_turn(self.black_player)
                 print (self.black_player.get_name() + " made successfull move!")
                 return True
-        else:
-            print "<run_round()> blocks ended"
-            return False
+        print "<run_round()> no more options to play!"
+        return False
 
     def run_game(self):
         # first step, initialize queens on the board
