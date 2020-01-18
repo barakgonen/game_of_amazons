@@ -1,5 +1,3 @@
-from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE
-
 
 class GameManager:
     def __init__(self, black_player, white_player, turn_validator, board_game, blocking_manager):

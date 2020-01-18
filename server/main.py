@@ -1,15 +1,16 @@
-import json
 import os
-import SimpleHTTPServer
-import SocketServer
-from player import ComputerPlayer, HumanPlayer
-from game_manager import GameManager
-from turn_validator import TurnValidator
+import json
 import requests
-from web_socket_adapter import WebSocketAdapter
-from board_game import BoardGame
-from blocking_rocks_manager import BlockingRocksManager
-from constants import LARGE_BOARD_SIZE, SMALL_BOARD_SIZE 
+import SocketServer
+import SimpleHTTPServer
+
+from src.constants import Constants
+from src.board_game import BoardGame
+from src.game_manager import GameManager
+from src.turn_validator import TurnValidator
+from src.player import ComputerPlayer, HumanPlayer
+from src.web_socket_adapter import WebSocketAdapter
+from src.blocking_rocks_manager import BlockingRocksManager
 
 def get_config():
   configurationFile = ""
@@ -31,11 +32,11 @@ def get_board_size():
   is_input_valid = False
   while (is_input_valid == False):
     try:
-      board_size = int(input("Enter prefered board size: " + str(LARGE_BOARD_SIZE) + "^2 or: " + str(SMALL_BOARD_SIZE) + "^2"))
+      board_size = int(input("Enter prefered board size: " + str(Constants.LARGE_BOARD_SIZE) + "^2 or: " + str(Constants.SMALL_BOARD_SIZE) + "^2"))
     except Exception:
         print "Your input is invalid.. please try again."
         continue
-    if (board_size != LARGE_BOARD_SIZE and board_size != SMALL_BOARD_SIZE):
+    if (board_size != Constants.LARGE_BOARD_SIZE and board_size != Constants.SMALL_BOARD_SIZE):
       print "Your input is invalid.. please try again."
     else:
       is_input_valid = True

@@ -1,4 +1,4 @@
-from constants import CellState, SMALL_BOARD_SIZE, LARGE_BOARD_SIZE, COLUMNS_ARRAY
+from constants import Constants, CellState
 from common_funcs import get_col_index, get_raw_index
 from point import Point
 
@@ -19,7 +19,7 @@ class BoardGame:
         self.board = [[BoardCell("BW"[(i+j+size%2+1) % 2], CellState.EMPTY) for i in range(size)] for j in range(size)]
         print ("<BoardGame::BoardGame()> Placing amazons in the board")
         try:
-            if (self.size == LARGE_BOARD_SIZE):
+            if (self.size == Constants.LARGE_BOARD_SIZE):
                 self.board[get_raw_index(7, self.size)][get_col_index('A', self.size)].state = CellState.BLACK_AMAZON
                 self.board[get_raw_index(10, self.size)][get_col_index('D', self.size)].state = CellState.BLACK_AMAZON
                 self.board[get_raw_index(10, self.size)][get_col_index('G', self.size)].state = CellState.BLACK_AMAZON
@@ -29,7 +29,7 @@ class BoardGame:
                 self.board[get_raw_index(1, self.size)][get_col_index('G', self.size)].state = CellState.WHITE_AMAZON
                 self.board[get_raw_index(4, self.size)][get_col_index('J', self.size)].state = CellState.WHITE_AMAZON
   
-            elif(self.size == SMALL_BOARD_SIZE):
+            elif(self.size == Constants.SMALL_BOARD_SIZE):
                 self.board[get_raw_index(4, self.size)][get_col_index('A', self.size)].state = CellState.BLACK_AMAZON
                 self.board[get_raw_index(3, self.size)][get_col_index('F', self.size)].state = CellState.BLACK_AMAZON
                 self.board[get_raw_index(1, self.size)][get_col_index('C', self.size)].state = CellState.WHITE_AMAZON
@@ -85,11 +85,11 @@ class BoardGame:
         for i in range(1, self.size + 1):
             for j in range(1, self.size + 1):
                 if cell_state == CellState.BLACK_AMAZON:
-                    if self.is_black_amazon(i, COLUMNS_ARRAY[j]):
-                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                    if self.is_black_amazon(i, Constants.COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(Constants.COLUMNS_ARRAY[j], i))
                 elif cell_state == CellState.WHITE_AMAZON:    
-                    if self.is_white_amazon(i, COLUMNS_ARRAY[j]):
-                        players_pos.append(Point(COLUMNS_ARRAY[j], i))
+                    if self.is_white_amazon(i, Constants.COLUMNS_ARRAY[j]):
+                        players_pos.append(Point(Constants.COLUMNS_ARRAY[j], i))
                 else:
                     raise IndexError("BARAK YOU GOT A BUG!")
         return players_pos

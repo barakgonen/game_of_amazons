@@ -1,7 +1,7 @@
 
 from common_funcs import  get_col_index, get_raw_index
 from point import Point
-from constants import CellState
+from constant import CellState
 import logging
 
 class TurnValidator:

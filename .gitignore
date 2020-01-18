@@ -1,2 +1,2 @@
 # ignore all compiled python code
-*.pyc
+\\server\\*\*.pyc
