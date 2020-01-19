@@ -919,7 +919,7 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
 
     def test_zero_available_steps_to_white_amazon(self):
-        # starting in initial state, blocking all black amazons
+        # starting in initial state, blocking all white amazons
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
         self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
     
@@ -1009,7 +1009,7 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         # starting in initial state, blocking all white
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
 
-        # removing first blocker from black, and updating it in order to set black player just 1 available move
+        # removing first blocker from white, and updating it in order to set black player just 1 available move
         removed_blocked_cell = self.white_amazon_init_blk_lst.pop(4)
         self.game_board.shoot_blocking_rock(Point(chr(ord(removed_blocked_cell.get_x()) + 1), removed_blocked_cell.get_y()))
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
@@ -1071,6 +1071,246 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
 
         self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
         self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+    def test_board_snepshot_with_many_blocked_cells(self):
+        blocked_cells_lst = [Point('c', 6),
+                            Point('a', 5), Point('e', 5),
+                            Point('c', 4), Point('d', 4), Point('f', 4),
+                            Point('a', 3), Point('c', 3), Point('d', 3), Point('e', 3),
+                            Point('b', 2), Point('e', 2), Point('f', 2),
+                            Point('d', 1),]
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(blocked_cells_lst)
+
+        self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+
+class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
+    def setUp(self):
+        self.game_board = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.movement_validator = TurnValidator(self.game_board)
+        self.available_steps_manager = AvailableStepsManger(self.game_board, self.movement_validator)
+        self.black_amazon_init_blk_lst = [Point('c', 10), Point('e', 10), Point('f', 10), Point('h', 10), 
+                                          Point('c', 9), Point('d', 9), Point('e', 9), Point('f', 9), Point('g', 9), Point('h', 9),
+                                          Point('A', 8), Point('B', 8), Point('i', 8), Point('j', 8), 
+                                          Point('b', 7), Point('i', 7), 
+                                          Point('A', 6), Point('B', 6), Point('i', 6), Point('j', 6)]
+
+        self.white_amazon_init_blk_lst = [Point('A', 5), Point('B', 5), Point('i', 5), Point('j', 5),
+                                          Point('b', 4), Point('i', 4), 
+                                          Point('A', 3), Point('B', 3), Point('i', 3), Point('j', 3), 
+                                          Point('c', 2), Point('d', 2), Point('e', 2), Point('f', 2), Point('g', 2), Point('h', 2),
+                                          Point('c', 1), Point('e', 1), Point('f', 1), Point('h', 1)]
+
+    def set_full_blocked_board(self):
+        for i in range(1, self.game_board.get_size() + 1):
+            for j in range(1, self.game_board.get_size() + 1):
+                if self.game_board.is_free_cell(i, Constants.COLUMNS_ARRAY[j]):
+                    self.game_board.shoot_blocking_rock(Point(Constants.COLUMNS_ARRAY[j], i))
+
+    def set_board_blocked_by_list(self, blocking_lst):
+        for point in blocking_lst:
+            self.game_board.shoot_blocking_rock(point)
+
+    def test_zero_available_steps_on_fully_blocked_board(self):
+        self.set_full_blocked_board()
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves())
+
+    def test_zero_available_steps_to_black_amazon(self):
+        # starting in initial state, blocking all black amazons
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+
+    def test_zero_available_steps_to_white_amazon(self):
+        # starting in initial state, blocking all white amazons
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+    
+    def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('A', 7)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('d', 10)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('g', 10)))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('j', 7)))
+
+    def test_number_of_available_steps_south_in_initial_state_for_black_amazon(self):
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('A', 7)))
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('d', 10)))
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('g', 10)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('j', 7)))
+
+    def test_number_of_available_steps_east_in_initial_state_for_black_amazon(self):
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('A', 7)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('d', 10)))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('g', 10)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('j', 7)))
+    
+    def test_number_of_available_steps_west_in_initial_state_for_black_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('A', 7)))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('d', 10)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('g', 10)))
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('j', 7)))
+    
+    def test_number_of_available_steps_NE_in_initial_state_for_black_amazon(self):
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('A', 7)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('d', 10)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('g', 10)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('j', 7)))
+
+    def test_number_of_available_steps_SE_in_initial_state_for_black_amazon(self):
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('A', 7))) 
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('d', 10)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('g', 10))) 
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('j', 7)))
+
+    def test_number_of_available_steps_NW_in_initial_state_for_black_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('A', 7))) 
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('d', 10)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('g', 10))) 
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('j', 7))) 
+
+    def test_number_of_available_steps_SW_in_initial_state_for_black_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('A', 7)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('d', 10)))
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('g', 10))) 
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('j', 7)))
+
+    def test_number_of_available_steps_north_in_initial_state_for_white_amazon(self):
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('A', 4)))
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('D', 1)))
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('g', 1))) 
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('j', 4)))
+
+    def test_number_of_available_steps_south_in_initial_state_for_white_amazon(self):
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('A', 4)))  
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('D', 1)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('g', 1))) 
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('j', 4)))
+
+    def test_number_of_available_steps_east_in_initial_state_for_white_amazon(self):
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('A', 4)))  
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('D', 1)))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('g', 1))) 
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('j', 4)))
+    
+    def test_number_of_available_steps_west_in_initial_state_for_white_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('A', 4)))  
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('D', 1)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('g', 1))) 
+        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('j', 4)))  
+
+    def test_number_of_available_steps_NE_in_initial_state_for_white_amazon(self):
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('A', 4)))  
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('D', 1)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('g', 1))) 
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('j', 4)))
+
+    def test_number_of_available_steps_SE_in_initial_state_for_white_amazon(self):
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('A', 4)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('D', 1)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('g', 1))) 
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('j', 4)))
+
+    def test_number_of_available_steps_NW_in_initial_state_for_white_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('A', 4)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('D', 1)))
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('g', 1)))
+        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('j', 4)))
+
+    def test_number_of_available_steps_SW_in_initial_state_for_white_amazon(self):
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('A', 4)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('D', 1)))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('g', 1)))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('j', 4)))
+    
+    def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
+        self.assertEquals(80, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+
+    def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
+        self.assertEquals(80, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+    
+    def test_one_available_step_to_black_amazon(self):
+        # starting in initial state, blocking all white
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+
+        # removing first blocker from black, and updating it in order to set black player just 1 available move
+        self.black_amazon_init_blk_lst.pop(1)
+
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+    def test_one_available_step_to_white_amazon(self):
+        # starting in initial state, blocking all white
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+
+        # removing first blocker from white, and updating it in order to set black player just 1 available move
+        self.white_amazon_init_blk_lst.pop(15)
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+    
+    def test_two_available_steps_to_black_amazon_and_one_for_the_white(self):
+        # removing first blocker from black, and updating it in order to set black player just 1 available move
+        self.black_amazon_init_blk_lst.pop(16)
+        self.black_amazon_init_blk_lst.pop(len(self.black_amazon_init_blk_lst) - 1)
+        
+        # removing blocker from white, and updating it in order to set black player just 1 available move
+        self.white_amazon_init_blk_lst.pop(8)
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+    def test_two_available_steps_to_white_amazon_and_one_for_the_black(self):
+        # removing first blocker from black, and updating it in order to set black player just 1 available move
+        self.black_amazon_init_blk_lst.pop(4)
+        
+        # removing blocker from white, and updating it in order to set black player just 1 available move
+        self.white_amazon_init_blk_lst.pop(7)
+        self.white_amazon_init_blk_lst.pop(14)
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+    def test_three_available_steps_to_black_amazon_and_two_for_the_white(self):
+        # removing first blocker from black, and updating it in order to set black player just 1 available move
+        self.black_amazon_init_blk_lst.pop(13) 
+
+        # removing blocker from white, and updating it in order to set black player just 1 available move
+        self.white_amazon_init_blk_lst.pop(18)
+        self.white_amazon_init_blk_lst.pop(10)
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
+        self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
+
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+    # def test_board_snepshot_with_many_blocked_cells(self):
+    #     blocked_cells_lst = [Point('c', 6),
+    #                         Point('a', 5), Point('e', 5),
+    #                         Point('c', 4), Point('d', 4), Point('f', 4),
+    #                         Point('a', 3), Point('c', 3), Point('d', 3), Point('e', 3),
+    #                         Point('b', 2), Point('e', 2), Point('f', 2),
+    #                         Point('d', 1),]
+
+    #     # blocking states with an updated blocking lists
+    #     self.set_board_blocked_by_list(blocked_cells_lst)
+
+    #     self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+    #     self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
     # def turns_possible_job():
     #     # Test cases
