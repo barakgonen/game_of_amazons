@@ -1,6 +1,7 @@
 from constants import Constants, CellState
 from common_funcs import get_col_index, get_raw_index
 from point import Point
+import logging
 
 class BoardCell:
     def __init__(self, color, state):
@@ -17,7 +18,7 @@ class BoardGame:
     def __init__(self, size):
         self.size = size
         self.board = [[BoardCell("BW"[(i+j+size%2+1) % 2], CellState.EMPTY) for i in range(size)] for j in range(size)]
-        print ("<BoardGame::BoardGame()> Placing amazons in the board")
+        logging.info("<BoardGame::BoardGame()> Placing amazons in the board. Board size is: " + str(size))
         try:
             if (self.size == Constants.LARGE_BOARD_SIZE):
                 self.board[get_raw_index(7, self.size)][get_col_index('A', self.size)].state = CellState.BLACK_AMAZON
@@ -47,7 +48,7 @@ class BoardGame:
             print "\n________________________________________________"
     
     def get_size(self):
-        print ("<BoardGame::get_size()> Returning size of the board. size is: " + str(self.size))
+        logging.debug("<get_size()> Returning size of the board. size is: " + str(self.size))
         return self.size
 
     def is_free_cell(self, raw, col):
@@ -65,17 +66,18 @@ class BoardGame:
             or (amazon_color == "WHITE") and self.is_white_amazon(amazon_to_update.y, amazon_to_update.x)):
             self.board[get_raw_index(new_position.y, self.size)][get_col_index(new_position.x, self.size)].state = self.board[get_raw_index(amazon_to_update.y, self.size)][get_col_index(amazon_to_update.x, self.size)].state
             self.board[get_raw_index(amazon_to_update.y, self.size)][get_col_index(amazon_to_update.x, self.size)].state = CellState.EMPTY
-            print "<update_move()> move updated successfully!"
+            logging.debug("<update_move()> move updated successfully!")
         else:
-            print "<update_move()> something went wrong dude"
+            logging.error("<update_move()> something went wrong dude")
         
     # this is the final function called, after validations
     def shoot_blocking_rock(self, rock_target_pos):
         if (self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state == CellState.EMPTY):
             self.board[get_raw_index(rock_target_pos.y, self.size)][get_col_index(rock_target_pos.x, self.size)].state = CellState.BLOCKED
+            logging.debug("<shoot_blocking_rock()>, shooting is valid")
             return True
         else:
-            print "<shoot_blocking_rock()> Error, you tried to shoot to non-empty cell"
+            logging.error("<shoot_blocking_rock()> Error, you tried to shoot to non-empty cell")
             return False
     
     def get_players_positions(self, player_color):
@@ -93,19 +95,3 @@ class BoardGame:
                 else:
                     raise IndexError("BARAK YOU GOT A BUG!")
         return players_pos
-
-    def get_free_cells_in_one_step_from_me(self, pos):
-        return []
-
-# im not sure it's the correct place to put it at.. shuold be in validator i think.. or pass validator to here?
-    def get_number_of_available_mooves(self, player_color):
-        players_position = self.get_players_positions(player_color)
-        for amazona in players_position:
-            optional_cells_in_one_step = self.get_free_cells_in_one_step_from_me(amazona)
-        return 4
-
-    def get_black_available_mooves(self):
-        return self.get_number_of_available_mooves(CellState.BLACK_AMAZON)
-
-    def get_white_available_mooves(self):
-        return self.get_number_of_available_mooves(CellState.WHITE_AMAZON)

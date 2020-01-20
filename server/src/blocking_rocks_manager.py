@@ -1,4 +1,5 @@
 from constants import Constants
+import logging
 
 class BlockingRocksManager:
     def __init__(self, board_size):
@@ -10,14 +11,16 @@ class BlockingRocksManager:
     def get_rock(self):
         if (self.available_rocks > 0):
             self.available_rocks -= 1
+            logging.debug("<get_rock()> Returning available rock")
             return True
         else:
-            print ("There are not enough rocks... Game must over")
+            logging.info("<get_rock()> There are not enough rocks... Game must over")
             return False
 
     def are_blocks_available(self):
         if (self.available_rocks > 0):
+            logging.debug("<are_blocks_available()> blocks are available")
             return True
         else:
-            print ("There are not enough rocks... Game must over")
+            logging.info("<are_blocks_available()> There are not enough rocks... Game must over")
             return False

@@ -1,5 +1,6 @@
 import unittest
 import random
+import logging
 
 from ..src.constants import Constants, CellState
 from ..src.board_game import BoardGame
@@ -851,8 +852,6 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
                     Point('E', 5),
                     Point('F', 5)]
 
-        test_board.print_board()
-
         self.assertFalse(self.run_loop_of_simple_movement_tests(Point('c', 5), unavailable_moves, False, test_board))
         self.assertTrue(self.run_loop_of_simple_movement_tests(Point('c', 5), available_moves, True, test_board))
 
@@ -1576,6 +1575,7 @@ class WinnerDitermination(unittest.TestCase):
         #                 Point('I', 10), Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), Point('I', 5), Point('I', 3), Point('I', 2), Point('I', 1),
         #                 Point('J', 10), Point('J', 9), Point('J', 8), Point('J', 7), Point('J', 6), Point('J', 5), Point('J', 4), Point('J', 3), Point('J', 2), Point('J', 1)]
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.ERROR)
     unittest.main()
 
 
@@ -1705,7 +1705,7 @@ if __name__ == '__main__':
 #         raise RuntimeError("Error with case 4")
 #     number_of_passed_tests += 1
 # #end testcase
-#     print ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
+#      ("<blocking_cell_validation_job()> Job ended successfully! run: " + str(number_of_passed_tests) + " tests")
 
 # def run_simple_test(amazon_to_move, new_position, expected_result, board_size):
 #     board_game = BoardGame(board_size)

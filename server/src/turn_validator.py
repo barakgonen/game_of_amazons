@@ -113,10 +113,10 @@ class TurnValidator:
             
     def is_step_valid(self, current_pos, desired_pos):
         if (self.is_movement_leagal(current_pos, desired_pos)):
-            print ("<TurnValidator::is_step_valid()> Player wants to move to: {" + str(desired_pos.get_x()) + ", " + str(desired_pos.get_y()) + "}")
+            logging.debug("<TurnValidator::is_step_valid()> Player wants to move to: {" + str(desired_pos.get_x()) + ", " + str(desired_pos.get_y()) + "}")
             return True
         else:
-            print "<TurnValidator::is_step_valid()> step_is_invalid"
+            logging.error("<TurnValidator::is_step_valid()> step_is_invalid")
             return False
 
     def is_horizontal_valid_shooting(self, orig_x, orig_y, dest_x, dest_y):
@@ -227,8 +227,8 @@ class TurnValidator:
     
     def is_shoot_valid(self, amazona_pos, target_pos):
         if (self.is_shooting_leagal(amazona_pos, target_pos)):
-            print ("<TurnValidator::is_shoot_valid()> Player wants to shoot to: {" + str(target_pos.get_x()) + ", " + str(target_pos.get_y()) + "}")
+            logging.debug("<TurnValidator::is_shoot_valid()> Player wants to shoot to: {" + str(target_pos.get_x()) + ", " + str(target_pos.get_y()) + "}")
             return True
         else:
-            print "<TurnValidator::is_shoot_valid()> shoot"
+            logging.error("<TurnValidator::is_shoot_valid()> step_is_invalid")
             return False

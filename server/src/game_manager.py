@@ -1,3 +1,4 @@
+import logging
 
 class GameManager:
     def __init__(self, black_player, white_player, turn_validator, board_game, blocking_manager):
@@ -47,9 +48,8 @@ class GameManager:
                 current_player_move, current_player_shoot)
         if (self.board_game.shoot_blocking_rock(current_player_shoot)):
             self.blocking_manager.get_rock()
-            self.board_game.print_board()
         else:
-            print "<run_single_turn()> Error. we decieded we can shoot blocking rock, but update failed"
+            logging.error("<run_single_turn()> Error. we decieded we can shoot blocking rock, but update failed")
 
     def is_there_reason_to_play(self, player):
         if (self.blocking_manager.are_blocks_available() and
@@ -61,13 +61,12 @@ class GameManager:
         # if there are rocks , self.blocking_manager.get_rock() need to check it after every turn shoul
         if self.is_there_reason_to_play(self.white_player):
             self.run_single_turn(self.white_player)
-            print (self.white_player.get_name() + " made successfull move!")
+            logging.info("<run_round()> " + self.white_player.get_name() + " made successfull move!")
             if self.is_there_reason_to_play(self.black_player):
                 self.run_single_turn(self.black_player)
-                print (self.black_player.get_name() +
-                       " made successfull move!")
+                logging.info("<run_round()> " + self.white_player.get_name() + " made successfull move!")
                 return True
-        print "<run_round()> no more options to play!"
+        logging.warn("<run_round()> No more options available, stopping the game")
         return False
 
     def run_game(self):
@@ -75,12 +74,12 @@ class GameManager:
         is_game_still_run = self.run_round()
         while (is_game_still_run):
             is_game_still_run = self.run_round()
-        print("<run_game()> game is over, according to board's state, need to define the winner")
+        logging.info("<run_game()> game is over, according to board's state, need to define the winner")
         number_of_possible_moves_for_white = self.board_game.get_white_available_mooves()
         number_of_possible_moves_for_black = self.board_game.get_black_available_mooves()
         if (number_of_possible_moves_for_white > number_of_possible_moves_for_black):
-            print ("<run_game()> White has won! Congrats")
+            logging.info("<run_game()> White has won! Congrats")
         elif (number_of_possible_moves_for_black > number_of_possible_moves_for_white):
-            print("<run_game()> Black has won! Congrats!")
+            logging.info("<run_game()> Black has won! Congrats")
         else:
-            print("<run_game()> There is a tie.. it means it's a bug since there ")
+            logging.error("<run_game()> There is a tie.. it means it's a bug since there ")
