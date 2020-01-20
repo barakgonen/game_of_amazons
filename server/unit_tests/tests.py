@@ -1,7 +1,7 @@
 import unittest
 import random
 
-from ..src.constants import Constants
+from ..src.constants import Constants, CellState
 from ..src.board_game import BoardGame
 from ..src.turn_validator import TurnValidator
 from ..src.point import Point
@@ -924,74 +924,74 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
     
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('A', 4)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('F', 3)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 4))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('F', 3))))
 
     def test_number_of_available_steps_south_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('A', 4)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('F', 3)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('F', 3))))
 
     def test_number_of_available_steps_east_in_initial_state_for_black_amazon(self):
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('A', 4)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('F', 3)))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('F', 3))))
     
     def test_number_of_available_steps_west_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('A', 4)))
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('F', 3)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 4))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_west(Point('F', 3))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('A', 4)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('F', 3)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('F', 3))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('A', 4)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('F', 3)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('F', 3))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('A', 4)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('F', 3)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 4))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NW(Point('F', 3))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('A', 4)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('F', 3)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('F', 3))))
 
     def test_number_of_available_steps_north_in_initial_state_for_white_amazon(self):
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('c', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('d', 6)))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_north(Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('d', 6))))
 
     def test_number_of_available_steps_south_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('c', 1)))
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('d', 6)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('c', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_south(Point('d', 6))))
 
     def test_number_of_available_steps_east_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('c', 1)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('d', 6)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('c', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('d', 6))))
     
     def test_number_of_available_steps_west_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('c', 1)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('d', 6)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('c', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('d', 6))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('c', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('d', 6)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NE(Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('d', 6))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('c', 1)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('d', 6)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('c', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('d', 6))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('c', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('d', 6)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('d', 6))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('c', 1)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('d', 6)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('c', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SW(Point('d', 6))))
     
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEquals(30, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEquals(30, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
     
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1129,106 +1129,106 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
     
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('A', 7)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('d', 10)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('g', 10)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('j', 7)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('g', 10))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('j', 7))))
 
     def test_number_of_available_steps_south_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('A', 7)))
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('d', 10)))
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('g', 10)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('j', 7)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 7))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(Point('d', 10))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(Point('g', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('j', 7))))
 
     def test_number_of_available_steps_east_in_initial_state_for_black_amazon(self):
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('A', 7)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('d', 10)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('g', 10)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('j', 7)))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('d', 10))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('g', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('j', 7))))
     
     def test_number_of_available_steps_west_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('A', 7)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('d', 10)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('g', 10)))
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('j', 7)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 7))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('d', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('g', 10))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(Point('j', 7))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('A', 7)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('d', 10)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('g', 10)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('j', 7)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('g', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('j', 7))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('A', 7))) 
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('d', 10)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('g', 10))) 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('j', 7)))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 7))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(Point('d', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('g', 10)))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('j', 7))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('A', 7))) 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('d', 10)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('g', 10))) 
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('j', 7))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('g', 10)))) 
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('j', 7))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('A', 7)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('d', 10)))
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('g', 10))) 
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('j', 7)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('d', 10))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(Point('g', 10))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(Point('j', 7))))
 
     def test_number_of_available_steps_north_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('A', 4)))
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('D', 1)))
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('g', 1))) 
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_north(Point('j', 4)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 4))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(Point('D', 1))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(Point('g', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('j', 4))))
 
     def test_number_of_available_steps_south_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('A', 4)))  
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('D', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('g', 1))) 
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_south(Point('j', 4)))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 4)))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('g', 1)))) 
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('j', 4))))
 
     def test_number_of_available_steps_east_in_initial_state_for_white_amazon(self):
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('A', 4)))  
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('D', 1)))
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('g', 1))) 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_east(Point('j', 4)))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('D', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('j', 4))))
     
     def test_number_of_available_steps_west_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('A', 4)))  
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('D', 1)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('g', 1))) 
-        self.assertEquals(8, self.available_steps_manager.get_number_of_available_moves_to_the_west(Point('j', 4)))  
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 4)))) 
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('D', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('g', 1))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(Point('j', 4)))) 
 
     def test_number_of_available_steps_NE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('A', 4)))  
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('D', 1)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('g', 1))) 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NE(Point('j', 4)))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 4))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(Point('D', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('j', 4))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('A', 4)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('D', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('g', 1))) 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SE(Point('j', 4)))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('j', 4))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('A', 4)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('D', 1)))
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('g', 1)))
-        self.assertEquals(5, self.available_steps_manager.get_number_of_available_moves_to_NW(Point('j', 4)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('D', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(Point('g', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(Point('j', 4))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('A', 4)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('D', 1)))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('g', 1)))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_moves_to_SW(Point('j', 4)))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('g', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('j', 4))))
     
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEquals(80, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEquals(80, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
     
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1298,19 +1298,21 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
         self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
-    # def test_board_snepshot_with_many_blocked_cells(self):
-    #     blocked_cells_lst = [Point('c', 6),
-    #                         Point('a', 5), Point('e', 5),
-    #                         Point('c', 4), Point('d', 4), Point('f', 4),
-    #                         Point('a', 3), Point('c', 3), Point('d', 3), Point('e', 3),
-    #                         Point('b', 2), Point('e', 2), Point('f', 2),
-    #                         Point('d', 1),]
+    def test_board_snepshot_with_many_blocked_cells(self):
+        blocked_cells_lst = [Point('c', 9),
+                            Point('f', 8), Point('i', 8),
+                            Point('c', 6), Point('h', 6),
+                            Point('a', 5), Point('e', 5),
+                            Point('c', 4), Point('d', 4), Point('f', 4),
+                            Point('a', 3), Point('c', 3), Point('d', 3), Point('e', 3),
+                            Point('b', 2), Point('e', 2), Point('f', 2),
+                            Point('e', 1)]
 
-    #     # blocking states with an updated blocking lists
-    #     self.set_board_blocked_by_list(blocked_cells_lst)
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(blocked_cells_lst)
 
-    #     self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-    #     self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(44, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(29, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
     # def turns_possible_job():
     #     # Test cases
@@ -1503,71 +1505,65 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
 
     #     return True
 
-# class WinnerDitermination(unittest.TestCase):
-    # def test_winner_determination(self):
-    #     # once the game is over: no more rocks OR no more possible moves for player, need to decide who is the winner
-    #     # by counting number of possible moves
-    #     # set board, set positions, make move and calculate 
-    #     # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
-    #     # Black should win
-    #     # white should win
-    #     # need to pay attention there are no doubling, think about case you can go 3 right. it means you have 3 options: 1 right, 2 right, 3 right NOT ONLY 1
+class WinnerDitermination(unittest.TestCase):
+    # once the game is over: no more rocks OR no more possible moves for player, need to decide who is the winner
+    # by counting number of possible moves
+    # set board, set positions, make move and calculate 
+    # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
+    # Black should win
+    # white should win
+    # need to pay attention there are no doubling, think about case you can go 3 right. it means you have 3 options: 1 right, 2 right, 3 right NOT ONLY 1
+    def setUp(self):
+        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.turn_validator = TurnValidator(self.board_game)
+        self.available_steps_manager = AvailableStepsManger(self.board_game, self.turn_validator)
 
-    #     # running test case according to wikipedia
-    #     board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-    #     turn_validator = TurnValidator(board_game)
-    #     blocking_lst = [Point('A', 10),                Point('A', 8),                                                             Point('A', 3), Point('A', 2),
-    #                                     Point('B', 9), Point('B', 8),                               Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), 
-    #                                     Point('C', 9),                Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4),                               Point('C', 1),
-    #                                     Point('D', 9), Point('D', 8), Point('D', 7),                Point('D', 5),                Point('D', 3), Point('D', 2),
-    #                     Point('E', 10),                Point('E', 8), Point('E', 7), Point('E', 6),                               Point('E', 3),                Point('E', 1),
-    #                                     Point('F', 9), Point('F', 8),                Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3), Point('F', 2), Point('F', 1),
-    #                                                 Point('G', 8),                Point('G', 6),                Point('G', 4), Point('G', 3), Point('G', 2), 
-    #                     Point('H', 10),                Point('H', 8),                Point('H', 6), Point('H', 5),                Point('H', 3), 
-    #                                     Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), 
-    #                                                 Point('J', 8),                Point('J', 6),                                                             Point('J', 1)]
-    #     # need to move white from D/1 to D/7
-    #     board_game.update_move(Point('D', 1), Point('D', 7), "WHITE")
-    #     # need to move black from J/7 to D/1
-    #     board_game.update_move(Point('J', 7), Point('D', 1), "BLACK")
-    #     # need to move white from J/6 to J/7
-    #     board_game.update_move(Point('J', 4), Point('J', 7), "WHITE")
-    #     # need to move black from A/7 to D/4
-    #     board_game.update_move(Point('A', 7), Point('D', 4), "BLACK")
-    #     # need to move white from G/1 to G/2
-    #     board_game.update_move(Point('G', 1), Point('G', 2), "WHITE")
-    #     # need to move black from G/10 to G/1
-    #     board_game.update_move(Point('G', 10), Point('G', 1), "BLACK")
-    #     # need to move white from G/2to E/2
-    #     board_game.update_move(Point('G', 2), Point('E', 2), "WHITE")
-    #     # need to move black from D/4 to E/5
-    #     board_game.update_move(Point('D', 4), Point('E', 5), "BLACK")
-    #     # need to move white from A/4 to A/6
-    #     board_game.update_move(Point('A', 4), Point('A', 6), "WHITE")
-    #     # need to move white from A/6 to C/8
-    #     board_game.update_move(Point('A', 6), Point('C', 8), "WHITE")
-    #     # need to move white from D/7 to F/7
-    #     board_game.update_move(Point('D', 7), Point('F', 7), "WHITE")
+    def set_board_blocked_by_list(self, blocking_lst):
+        for point in blocking_lst:
+            self.board_game.shoot_blocking_rock(point)
 
-    #     set_board_blocked_by_list(board_game, blocking_lst)
-    #     p1 = HumanPlayer("BARAK", CellState.WHITE_AMAZON)
-    #     p2 = ComputerPlayer("ALGORITHM", CellState.BLACK_AMAZON)
-    #     turn_validator = TurnValidator(board_game)
-    #     blocking_rocks_manager = BlockingRocksManager(board_game.get_size())
-    #     game_manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager)
-    #     # in case there are no available mooves
-    #     if (game_manager.is_there_reason_to_play(p1.get_color()) and (not game_manager.is_there_reason_to_play(p2.get_color()))):
-    #         raise RuntimeError("Error with test case 50")
+    def test_winner_determination(self):
+        # running test case according to wikipedia
+        blocking_lst = [Point('A', 10),                Point('A', 8),                                                             Point('A', 3), Point('A', 2),
+                                        Point('B', 9), Point('B', 8),                               Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), 
+                                        Point('C', 9),                Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4),                               Point('C', 1),
+                                        Point('D', 9), Point('D', 8), Point('D', 7),                Point('D', 5),                Point('D', 3), Point('D', 2),
+                        Point('E', 10),                Point('E', 8), Point('E', 7), Point('E', 6),                               Point('E', 3),                Point('E', 1),
+                                        Point('F', 9), Point('F', 8),                Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3), Point('F', 2), Point('F', 1),
+                                                       Point('G', 8),                   Point('G', 6),             Point('G', 4), Point('G', 3), Point('G', 2), 
+                        Point('H', 10),                Point('H', 8),                Point('H', 6), Point('H', 5),                Point('H', 3), 
+                                        Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), 
+                                                       Point('J', 8),                Point('J', 6),                                                             Point('J', 1)]
+        # need to move white from D/1 to D/7
+        self.board_game.update_move(Point('D', 1), Point('D', 7), "WHITE")
+        # need to move black from J/7 to D/1
+        self.board_game.update_move(Point('J', 7), Point('D', 1), "BLACK")
+        # need to move white from J/6 to J/7
+        self.board_game.update_move(Point('J', 4), Point('J', 7), "WHITE")
+        # need to move black from A/7 to D/4
+        self.board_game.update_move(Point('A', 7), Point('D', 4), "BLACK")
+        # need to move white from G/1 to G/2
+        self.board_game.update_move(Point('G', 1), Point('G', 2), "WHITE")
+        # need to move black from G/10 to G/1
+        self.board_game.update_move(Point('G', 10), Point('G', 1), "BLACK")
+        # need to move white from G/2to E/2
+        self.board_game.update_move(Point('G', 2), Point('E', 2), "WHITE")
+        # need to move black from D/4 to E/5
+        self.board_game.update_move(Point('D', 4), Point('E', 5), "BLACK")
+        # need to move white from A/4 to A/6
+        self.board_game.update_move(Point('A', 4), Point('A', 6), "WHITE")
+        # need to move white from A/6 to C/8
+        self.board_game.update_move(Point('A', 6), Point('C', 8), "WHITE")
+        # need to move white from D/7 to F/7
+        self.board_game.update_move(Point('D', 7), Point('F', 7), "WHITE")
 
-    #     expected_possible_moves_for_white = board_game.get_white_available_mooves()
-    #     expected_possible_moves_for_black = board_game.get_black_available_mooves()
-    #     if (not expected_possible_moves_for_white == 8):
-    #         raise RuntimeError("Error with test case 51")
+        self.set_board_blocked_by_list(blocking_lst)
+        
+        # it should be 31 in this case, AI should iterate and calculate future potential moves
+        self.assertEquals(13, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
 
-    #     if (not expected_possible_moves_for_black == 31):
-    #         raise RuntimeError("Error with test case 52")
-               
-    #     return True
+        # it should be 8  in this case, AI should iterate and calculate future potential moves
+        self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
         # blocking_lst = [Point('A', 10), Point('A', 9), Point('A', 8), Point('A', 7), Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
         #                 Point('B', 10), Point('B', 9), Point('B', 8), Point('B', 7), Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
