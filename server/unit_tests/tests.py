@@ -253,7 +253,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.shoot_blocking_rock(Point('d', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 4)))
 
     def test_shooting_verticly_down_to_non_empty_cell_white_amazon_there(self):
         # Getting blocked board
@@ -264,7 +264,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('d', 6), Point('c', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 5), Point('C', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 5), Point('C', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_verticly_down_to_cell_where_black_amazona_exists(self):
@@ -273,7 +273,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 6), Point('a', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 6), Point('a', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
 
     def test_shooting_verticly_down_block_is_in_the_way(self):
@@ -284,7 +284,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.shoot_blocking_rock(Point('d', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
 
     def test_shooting_verticly_down_in_the_way_there_is_white_amazon(self):
         # Getting blocked board
@@ -295,7 +295,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('c', 1), Point('d', 2), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
 
     def test_shooting_verticly_down_in_the_way_there_is_black_amazon(self):
@@ -307,7 +307,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('d', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
 
     def test_shooting_verticly_up_destination_is_blocked(self):
         # Getting blocked board
@@ -317,7 +317,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.shoot_blocking_rock(Point('c', 3))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('c', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('c', 3)))
 
     def test_shooting_verticly_up_to_cell_where_white_amazona_exists(self):
         # Getting blocked board
@@ -325,7 +325,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 2), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 2), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_verticly_up_to_cell_where_black_amazona_exists(self):
@@ -334,7 +334,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 5), Point('a', 2)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 5), Point('a', 2)))
 
     def test_shooting_verticly_up_blocker_is_in_the_way(self):
         # Getting blocked board
@@ -344,7 +344,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.shoot_blocking_rock(Point('c', 3))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('c', 6)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
 
     def test_shooting_verticly_up_white_amazona_is_in_the_way(self):
@@ -355,7 +355,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 1), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 1), Point('d', 6)))
 
     def test_shooting_verticly_up_black_amazona_is_in_the_way(self):
         # Getting blocked board
@@ -363,7 +363,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 1), Point('f', 5)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 1), Point('f', 5)))
 
     def test_shooting_horizontly_right_destination_is_blocked(self):
         # Getting blocked board
@@ -373,7 +373,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         # preparing test case
         test_board.shoot_blocking_rock(Point('b', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 4), Point('c', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 4), Point('c', 4)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('C', 4))) # In real game we should not suppose to get this situation
 
     def test_shooting_horizontly_right_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
@@ -385,7 +385,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('b', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 3), Point('f', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 3), Point('f', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('f', 3)))
 
     def test_shooting_horizontly_right_to_cell_where_there_is_white_amazon(self):
@@ -394,7 +394,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 6), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 6), Point('D', 6)))
 
     def test_shooting_horizontly_right_blocker_in_the_way(self):
         # Getting blocked board
@@ -405,7 +405,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('B', 6))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 6), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 6), Point('D', 6)))
 
     def test_shooting_horizontly_right_white_amazona_in_the_way(self):
         # Getting blocked board
@@ -413,7 +413,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 1), Point('D', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 1), Point('D', 1)))
 
     def test_shooting_horizontly_right_black_amazona_in_the_way(self):
         # Getting blocked board
@@ -424,7 +424,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('f', 3), Point('d', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 3), Point('f', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 3), Point('f', 3)))
 
     def test_shooting_horizontly_left_destination_is_blocked(self):
         # Getting blocked board
@@ -435,7 +435,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('D', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 3), Point('C', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 3), Point('C', 3)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('C', 3))) # In real game we should not suppose to get this situation
 
     def test_shooting_horizontly_left_to_non_empty_cell_white_amazon_there(self):
@@ -444,7 +444,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 6), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 6), Point('d', 6)))
     
     def test_shooting_horizontly_left_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
@@ -455,7 +455,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('f', 3), Point('e', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('e', 4), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('e', 4), Point('a', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
 
     def test_shooting_horizontly_left_blocker_in_the_way(self):
@@ -467,7 +467,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('E', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('d', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('d', 3)))
 
     def test_shooting_horizontly_left_white_amazona_in_the_way(self):
         # Getting blocked board
@@ -475,7 +475,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 1), Point('b', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 1), Point('b', 1)))
 
     def test_shooting_horizontly_left_black_amazona_in_the_way(self):
         # Getting blocked board
@@ -486,7 +486,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 4), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 4), Point('a', 4)))
 
     def test_shooting_diagonaly_north_east_to_non_empty_cell_white_amazon_there(self):
         # Getting blocked board
@@ -497,7 +497,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('c', 1), Point('A', 3), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 3), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 3), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_diagonaly_north_east_at_destination_is_blocked(self):
@@ -509,7 +509,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('E', 3))
     
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('C', 1), Point('F', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('C', 1), Point('F', 4)))
 
     def test_shooting_diagonaly_north_east_in_destination_there_is_black_amazon(self):
         # Getting blocked board
@@ -517,7 +517,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('D', 1), Point('F', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('D', 1), Point('F', 3)))
 
     def test_shooting_diagonaly_north_east_way_is_blocked(self):
         # Getting blocked board
@@ -528,7 +528,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('b', 5))
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('A', 4), Point('C', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 4), Point('C', 6)))
 
     def test_shooting_diagonaly_north_east_white_amazona_in_route(self):
         # Getting blocked board
@@ -542,7 +542,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 4), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 4), Point('D', 6)))
     
     def test_shooting_diagonaly_north_east_black_amazona_in_route(self):
         # Getting blocked board
@@ -553,7 +553,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('F', 3), Point('e', 3), "BLACK")
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('f', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('f', 4)))
 
     def test_shooting_diagonaly_south_west_to_blocked_cell(self):
         # Getting blocked board
@@ -564,7 +564,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('d', 1))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 3), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 3), Point('d', 1)))
     
     def test_shooting_diagonaly_south_west_to_cell_where_white_amazona_exists(self):
         # Getting blocked board
@@ -572,7 +572,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('F', 4), Point('c', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 4), Point('c', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_west_to_cell_where_black_amazona_exists(self):
@@ -581,7 +581,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 6), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 6), Point('a', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_west_block_is_in_the_way(self):
@@ -593,7 +593,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('c', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_west_white_amazona_is_in_the_way(self):
         # Getting blocked board
@@ -604,7 +604,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('c', 1), Point('c', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_west_black_amazona_is_in_the_way(self):
         # Getting blocked board
@@ -615,7 +615,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_east_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
@@ -626,7 +626,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('A', 4), Point('C', 6), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('C', 6), Point('F', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('C', 6), Point('F', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('F', 3)))
 
     def test_shooting_diagonaly_south_east_destination_is_blocked(self):
@@ -637,7 +637,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('b', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 4), Point('b', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 4), Point('b', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('b', 3)))
 
     def test_shooting_diagonaly_south_east_in_destination_there_is_white_amazon(self):
@@ -646,7 +646,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         turn_validator = TurnValidator(test_board)
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 3), Point('c', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 3), Point('c', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_east_way_is_blocked(self):
@@ -657,7 +657,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('e', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('d', 6), Point('f', 2)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('f', 2)))
 
     def test_shooting_diagonaly_south_east_white_amazona_blocks_the_way(self):
         # Getting blocked board
@@ -668,7 +668,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('D', 6), Point('d', 2), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('b', 4), Point('e', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 4), Point('e', 1)))
 
     def test_shooting_diagonaly_south_east_black_amazona_blocks_the_way(self):
         # Getting blocked board
@@ -679,7 +679,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('F', 3), Point('b', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('a', 4), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 4), Point('d', 1)))
 
     def test_shooting_diagonaly_north_west_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
@@ -690,7 +690,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('f', 3), Point('D', 1), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('D', 1), Point('A', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('D', 1), Point('A', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('A', 4)))
 
     def test_shooting_diagonaly_north_west_destination_is_blocked(self):
@@ -702,7 +702,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('a', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('c', 1), Point('A', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('A', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('A', 3)))
 
     def test_shooting_diagonaly_north_west_white_amazona_in_destination(self):
@@ -714,7 +714,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('c', 1), Point('f', 4), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 4), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 4), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_diagonaly_north_west_block_is_in_the_way(self):
@@ -726,7 +726,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.shoot_blocking_rock(Point('d', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
 
     def test_shooting_diagonaly_north_west_white_amazona_is_in_the_way(self):
         # Getting blocked board
@@ -737,7 +737,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
 
     def test_shooting_diagonaly_north_west_black_amazona_is_in_the_way(self):
         # Getting blocked board
@@ -748,7 +748,7 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('e', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shooting_leagal(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
 
 class TestBlockingCellsValidationProcess(unittest.TestCase):
     def run_simple_test(self, amazon_to_move, new_position):
