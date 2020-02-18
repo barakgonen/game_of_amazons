@@ -1085,6 +1085,12 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
         self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
+    def test_calculate_number_of_available_steps_for_black_player_in_initial_game_position(self):
+        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_depth("BLACK", 1)))
+
+    def test_calculate_number_of_available_steps_for_white_player_in_initial_game_position(self):
+        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 1)))
+
 
 class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
     def setUp(self):
@@ -1313,6 +1319,128 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.assertEquals(44, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
         self.assertEquals(29, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
 
+    def test_calculate_number_of_available_stepst_for_black_player_in_hypothtical_state_in_depth_one(self):
+        blocked_cells_lst = [
+                            Point('G', 7), Point('i', 7),
+                            Point('b', 5), Point('e', 5),
+                            Point('b', 4), Point('c', 4),
+                            Point('d', 2)]
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(blocked_cells_lst)
+
+        # updating positions for amazons
+        self.game_board.update_move(Point('a', 7), Point('c', 5), "BLACK")
+        self.game_board.update_move(Point('d', 10), Point('d', 5), "BLACK")
+        self.game_board.update_move(Point('g', 10), Point('g', 4), "BLACK")
+    
+        self.game_board.update_move(Point('d', 10), Point('e', 8), "WHITE")
+        self.game_board.update_move(Point('j', 4), Point('h', 6), "WHITE")
+        self.game_board.update_move(Point('g', 10), Point('b', 3), "WHITE")
+        self.game_board.update_move(Point('a', 4), Point('b', 3), "WHITE")
+
+        self.assertEquals(18, len(self.available_steps_manager.get_available_mooves_in_depth("BLACK", 1)))
+
+
+    def test_calculate_number_of_available_stepst_for_white_player_in_hypothtical_state_in_depth_two(self):
+        blocked_cells_lst = [
+                            Point('G', 7), Point('i', 7),
+                            Point('b', 5), Point('e', 5),
+                            Point('b', 4), Point('c', 4),
+                            Point('d', 2)]
+
+        # blocking states with an updated blocking lists
+        self.set_board_blocked_by_list(blocked_cells_lst)
+
+        self.game_board.update_move(Point('a', 7), Point('c', 5), "BLACK")
+        self.game_board.update_move(Point('d', 10), Point('d', 5), "BLACK")
+        self.game_board.update_move(Point('g', 10), Point('g', 4), "BLACK")
+    
+        self.game_board.update_move(Point('d', 1), Point('e', 8), "WHITE")
+        self.game_board.update_move(Point('j', 4), Point('h', 6), "WHITE")
+        self.game_board.update_move(Point('g', 1), Point('b', 3), "WHITE")
+        self.game_board.update_move(Point('a', 4), Point('a', 8), "WHITE")
+
+        self.assertEquals(43, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 2)))
+
+class WinnerDitermination(unittest.TestCase):
+    # once the game is over: no more rocks OR no more possible moves for player, need to decide who is the winner
+    # by counting number of possible moves
+    # set board, set positions, make move and calculate 
+    # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
+    # Black should win
+    # white should win
+    # need to pay attention there are no doubling, think about case you can go 3 right. it means you have 3 options: 1 right, 2 right, 3 right NOT ONLY 1
+    def setUp(self):
+        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.turn_validator = TurnValidator(self.board_game)
+        self.available_steps_manager = AvailableStepsManger(self.board_game, self.turn_validator)
+
+    def set_board_blocked_by_list(self, blocking_lst):
+        for point in blocking_lst:
+            self.board_game.shoot_blocking_rock(point)
+
+    def test_winner_determination(self):
+        # running test case according to wikipedia
+        blocking_lst = [Point('A', 10),                Point('A', 8),                                                             Point('A', 3), Point('A', 2),
+                                        Point('B', 9), Point('B', 8),                               Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), 
+                                        Point('C', 9),                Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4),                               Point('C', 1),
+                                        Point('D', 9), Point('D', 8), Point('D', 7),                Point('D', 5),                Point('D', 3), Point('D', 2),
+                        Point('E', 10),                Point('E', 8), Point('E', 7), Point('E', 6),                               Point('E', 3),                Point('E', 1),
+                                        Point('F', 9), Point('F', 8),                Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3), Point('F', 2), Point('F', 1),
+                                                       Point('G', 8),                   Point('G', 6),             Point('G', 4), Point('G', 3), Point('G', 2), 
+                        Point('H', 10),                Point('H', 8),                Point('H', 6), Point('H', 5),                Point('H', 3), 
+                                        Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), 
+                                                       Point('J', 8),                Point('J', 6),                                                             Point('J', 1)]
+        # need to move white from D/1 to D/7
+        self.board_game.update_move(Point('D', 1), Point('D', 7), "WHITE")
+        # need to move black from J/7 to D/1
+        self.board_game.update_move(Point('J', 7), Point('D', 1), "BLACK")
+        # need to move white from J/6 to J/7
+        self.board_game.update_move(Point('J', 4), Point('J', 7), "WHITE")
+        # need to move black from A/7 to D/4
+        self.board_game.update_move(Point('A', 7), Point('D', 4), "BLACK")
+        # need to move white from G/1 to G/2
+        self.board_game.update_move(Point('G', 1), Point('G', 2), "WHITE")
+        # need to move black from G/10 to G/1
+        self.board_game.update_move(Point('G', 10), Point('G', 1), "BLACK")
+        # need to move white from G/2to E/2
+        self.board_game.update_move(Point('G', 2), Point('E', 2), "WHITE")
+        # need to move black from D/4 to E/5
+        self.board_game.update_move(Point('D', 4), Point('E', 5), "BLACK")
+        # need to move white from A/4 to A/6
+        self.board_game.update_move(Point('A', 4), Point('A', 6), "WHITE")
+        # need to move white from A/6 to C/8
+        self.board_game.update_move(Point('A', 6), Point('C', 8), "WHITE")
+        # need to move white from D/7 to F/7
+        self.board_game.update_move(Point('D', 7), Point('F', 7), "WHITE")
+
+        self.set_board_blocked_by_list(blocking_lst)
+        
+        # it should be 31 in this case, AI should iterate and calculate future potential moves
+        self.assertEquals(13, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+
+        # it should be 8  in this case, AI should iterate and calculate future potential moves
+        self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+
+        # blocking_lst = [Point('A', 10), Point('A', 9), Point('A', 8), Point('A', 7), Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
+        #                 Point('B', 10), Point('B', 9), Point('B', 8), Point('B', 7), Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
+        #                 Point('C', 10), Point('C', 9), Point('C', 8), Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
+        #                 Point('D', 10), Point('D', 9), Point('D', 8), Point('D', 7), Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
+        #                 Point('E', 10), Point('E', 9), Point('E', 8), Point('E', 7), Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
+        #                 Point('F', 10), Point('F', 9), Point('F', 8), Point('F', 7), Point('F', 6), Point('F', 5), Point('F', 3), Point('F', 2), Point('F', 1),
+        #                 Point('G', 10), Point('G', 9), Point('G', 8), Point('G', 7), Point('G', 6), Point('G', 5), Point('G', 3), Point('G', 2), Point('G', 1),
+        #                 Point('H', 10), Point('H', 9), Point('H', 8), Point('H', 7), Point('H', 6), Point('H', 5), Point('H', 3), Point('H', 2), Point('H', 1),
+        #                 Point('I', 10), Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), Point('I', 5), Point('I', 3), Point('I', 2), Point('I', 1),
+        #                 Point('J', 10), Point('J', 9), Point('J', 8), Point('J', 7), Point('J', 6), Point('J', 5), Point('J', 4), Point('J', 3), Point('J', 2), Point('J', 1)]
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.ERROR)
+    unittest.main()
+
+
+# def test_calculate_number_of_available_steps_for_white_player_in_initial_game_position(self):
+    #     self.assertEquals(20, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 1)))
+
     # def turns_possible_job():
     #     # Test cases
     #     # 0 turns possible with full board
@@ -1503,81 +1631,6 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
     #     # 10 turns possible for white
 
     #     return True
-
-class WinnerDitermination(unittest.TestCase):
-    # once the game is over: no more rocks OR no more possible moves for player, need to decide who is the winner
-    # by counting number of possible moves
-    # set board, set positions, make move and calculate 
-    # Test cases need to verify in each board that the game is over (no more possible turns or no more rocks)
-    # Black should win
-    # white should win
-    # need to pay attention there are no doubling, think about case you can go 3 right. it means you have 3 options: 1 right, 2 right, 3 right NOT ONLY 1
-    def setUp(self):
-        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        self.turn_validator = TurnValidator(self.board_game)
-        self.available_steps_manager = AvailableStepsManger(self.board_game, self.turn_validator)
-
-    def set_board_blocked_by_list(self, blocking_lst):
-        for point in blocking_lst:
-            self.board_game.shoot_blocking_rock(point)
-
-    def test_winner_determination(self):
-        # running test case according to wikipedia
-        blocking_lst = [Point('A', 10),                Point('A', 8),                                                             Point('A', 3), Point('A', 2),
-                                        Point('B', 9), Point('B', 8),                               Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2), 
-                                        Point('C', 9),                Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4),                               Point('C', 1),
-                                        Point('D', 9), Point('D', 8), Point('D', 7),                Point('D', 5),                Point('D', 3), Point('D', 2),
-                        Point('E', 10),                Point('E', 8), Point('E', 7), Point('E', 6),                               Point('E', 3),                Point('E', 1),
-                                        Point('F', 9), Point('F', 8),                Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3), Point('F', 2), Point('F', 1),
-                                                       Point('G', 8),                   Point('G', 6),             Point('G', 4), Point('G', 3), Point('G', 2), 
-                        Point('H', 10),                Point('H', 8),                Point('H', 6), Point('H', 5),                Point('H', 3), 
-                                        Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), 
-                                                       Point('J', 8),                Point('J', 6),                                                             Point('J', 1)]
-        # need to move white from D/1 to D/7
-        self.board_game.update_move(Point('D', 1), Point('D', 7), "WHITE")
-        # need to move black from J/7 to D/1
-        self.board_game.update_move(Point('J', 7), Point('D', 1), "BLACK")
-        # need to move white from J/6 to J/7
-        self.board_game.update_move(Point('J', 4), Point('J', 7), "WHITE")
-        # need to move black from A/7 to D/4
-        self.board_game.update_move(Point('A', 7), Point('D', 4), "BLACK")
-        # need to move white from G/1 to G/2
-        self.board_game.update_move(Point('G', 1), Point('G', 2), "WHITE")
-        # need to move black from G/10 to G/1
-        self.board_game.update_move(Point('G', 10), Point('G', 1), "BLACK")
-        # need to move white from G/2to E/2
-        self.board_game.update_move(Point('G', 2), Point('E', 2), "WHITE")
-        # need to move black from D/4 to E/5
-        self.board_game.update_move(Point('D', 4), Point('E', 5), "BLACK")
-        # need to move white from A/4 to A/6
-        self.board_game.update_move(Point('A', 4), Point('A', 6), "WHITE")
-        # need to move white from A/6 to C/8
-        self.board_game.update_move(Point('A', 6), Point('C', 8), "WHITE")
-        # need to move white from D/7 to F/7
-        self.board_game.update_move(Point('D', 7), Point('F', 7), "WHITE")
-
-        self.set_board_blocked_by_list(blocking_lst)
-        
-        # it should be 31 in this case, AI should iterate and calculate future potential moves
-        self.assertEquals(13, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-
-        # it should be 8  in this case, AI should iterate and calculate future potential moves
-        self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
-
-        # blocking_lst = [Point('A', 10), Point('A', 9), Point('A', 8), Point('A', 7), Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
-        #                 Point('B', 10), Point('B', 9), Point('B', 8), Point('B', 7), Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
-        #                 Point('C', 10), Point('C', 9), Point('C', 8), Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 3), Point('C', 2), Point('C', 1),
-        #                 Point('D', 10), Point('D', 9), Point('D', 8), Point('D', 7), Point('D', 6), Point('D', 5), Point('D', 3), Point('D', 2), Point('D', 1),
-        #                 Point('E', 10), Point('E', 9), Point('E', 8), Point('E', 7), Point('E', 6), Point('E', 5), Point('E', 3), Point('E', 2), Point('E', 1),
-        #                 Point('F', 10), Point('F', 9), Point('F', 8), Point('F', 7), Point('F', 6), Point('F', 5), Point('F', 3), Point('F', 2), Point('F', 1),
-        #                 Point('G', 10), Point('G', 9), Point('G', 8), Point('G', 7), Point('G', 6), Point('G', 5), Point('G', 3), Point('G', 2), Point('G', 1),
-        #                 Point('H', 10), Point('H', 9), Point('H', 8), Point('H', 7), Point('H', 6), Point('H', 5), Point('H', 3), Point('H', 2), Point('H', 1),
-        #                 Point('I', 10), Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), Point('I', 5), Point('I', 3), Point('I', 2), Point('I', 1),
-        #                 Point('J', 10), Point('J', 9), Point('J', 8), Point('J', 7), Point('J', 6), Point('J', 5), Point('J', 4), Point('J', 3), Point('J', 2), Point('J', 1)]
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.ERROR)
-    unittest.main()
-
 
 # # new test case
 #     # testing turn starting with white amazon at 'C'/1
