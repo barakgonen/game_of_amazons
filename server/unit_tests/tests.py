@@ -14,8 +14,8 @@ from ..src.available_steps_manager import AvailableStepsManger
 class TestSmallBoardBasicMovement(unittest.TestCase):
     def run_simple_test(self, amazon_to_move, new_position):
         board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(board_game)
-        return turn_validator.is_step_valid(amazon_to_move, new_position)
+        turn_validator = TurnValidator()
+        return turn_validator.is_step_valid(board_game, amazon_to_move, new_position)
 
     def test_moving_horizontaly_to_the_left_one_step_to_an_empty_cell(self):
         self.assertTrue(self.run_simple_test(Point('D', 6), Point('C', 6)))
@@ -131,8 +131,8 @@ class TestSmallBoardBasicMovement(unittest.TestCase):
 class TestLargeBoardBasicMovement(unittest.TestCase):
     def run_simple_test(self, amazon_to_move, new_position):
         board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        turn_validator = TurnValidator(board_game)
-        return turn_validator.is_step_valid(amazon_to_move, new_position)
+        turn_validator = TurnValidator()
+        return turn_validator.is_step_valid(board_game, amazon_to_move, new_position)
 
     def test_moving_horizontaly_to_the_left_one_step_to_an_empty_cell(self):
         self.assertTrue(self.run_simple_test(Point('J', 7), Point('I', 7)))
@@ -236,8 +236,8 @@ class TestLargeBoardBasicMovement(unittest.TestCase):
 class TestShootingBlockingRock(unittest.TestCase):
     def run_simple_test(self, amazon_to_move, new_position):
         board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        turn_validator = TurnValidator(board_game)
-        return turn_validator.is_step_valid(amazon_to_move, new_position)
+        turn_validator = TurnValidator()
+        return turn_validator.is_step_valid(board_game, amazon_to_move, new_position)
     
     def get_blocked_board(self, blocked_cells):
         board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
@@ -248,292 +248,292 @@ class TestShootingBlockingRock(unittest.TestCase):
     def test_shooting_verticly_down_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('d', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('d', 4)))
 
     def test_shooting_verticly_down_to_non_empty_cell_white_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('d', 6), Point('c', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 5), Point('C', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 5), Point('C', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_verticly_down_to_cell_where_black_amazona_exists(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 6), Point('a', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('a', 6), Point('a', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
 
     def test_shooting_verticly_down_block_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('d', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('d', 1)))
 
     def test_shooting_verticly_down_in_the_way_there_is_white_amazon(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('c', 1), Point('d', 2), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('d', 1)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
 
     def test_shooting_verticly_down_in_the_way_there_is_black_amazon(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('a', 4), Point('d', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('d', 1)))
 
     def test_shooting_verticly_up_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('c', 3))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('c', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 1), Point('c', 3)))
 
     def test_shooting_verticly_up_to_cell_where_white_amazona_exists(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 2), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 2), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_verticly_up_to_cell_where_black_amazona_exists(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 5), Point('a', 2)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('a', 5), Point('a', 2)))
 
     def test_shooting_verticly_up_blocker_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('c', 3))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 1), Point('c', 6)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('d', 1))) # In real game we should not suppose to get this situation
 
     def test_shooting_verticly_up_white_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 1), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 1), Point('d', 6)))
 
     def test_shooting_verticly_up_black_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 1), Point('f', 5)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 1), Point('f', 5)))
 
     def test_shooting_horizontly_right_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('b', 4))
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 4), Point('c', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 4), Point('c', 4)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('C', 4))) # In real game we should not suppose to get this situation
 
     def test_shooting_horizontly_right_at_end_of_the_turn_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('a', 4), Point('b', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 3), Point('f', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('b', 3), Point('f', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('f', 3)))
 
     def test_shooting_horizontly_right_to_cell_where_there_is_white_amazon(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 6), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 6), Point('D', 6)))
 
     def test_shooting_horizontly_right_blocker_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('B', 6))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 6), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 6), Point('D', 6)))
 
     def test_shooting_horizontly_right_white_amazona_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 1), Point('D', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 1), Point('D', 1)))
 
     def test_shooting_horizontly_right_black_amazona_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
             
         # Moving amazon to the new pos
         test_board.update_move(Point('f', 3), Point('d', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 3), Point('f', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 3), Point('f', 3)))
 
     def test_shooting_horizontly_left_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('D', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 3), Point('C', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('F', 3), Point('C', 3)))
         self.assertTrue(test_board.shoot_blocking_rock(Point('C', 3))) # In real game we should not suppose to get this situation
 
     def test_shooting_horizontly_left_to_non_empty_cell_white_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 6), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 6), Point('d', 6)))
     
     def test_shooting_horizontly_left_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('f', 3), Point('e', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('e', 4), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('e', 4), Point('a', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('a', 4)))
 
     def test_shooting_horizontly_left_blocker_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('E', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('d', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 3), Point('d', 3)))
 
     def test_shooting_horizontly_left_white_amazona_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 1), Point('b', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 1), Point('b', 1)))
 
     def test_shooting_horizontly_left_black_amazona_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
         
         # Moving amazon to the new pos
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 4), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 4), Point('a', 4)))
 
     def test_shooting_diagonaly_north_east_to_non_empty_cell_white_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('c', 1), Point('A', 3), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 3), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 3), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_diagonaly_north_east_at_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('E', 3))
     
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('C', 1), Point('F', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('C', 1), Point('F', 4)))
 
     def test_shooting_diagonaly_north_east_in_destination_there_is_black_amazon(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shoot_valid(Point('D', 1), Point('F', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('D', 1), Point('F', 3)))
 
     def test_shooting_diagonaly_north_east_way_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('b', 5))
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shoot_valid(Point('A', 4), Point('C', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('A', 4), Point('C', 6)))
 
     def test_shooting_diagonaly_north_east_white_amazona_in_route(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('c', 1), Point('c', 5), "WHITE")
@@ -542,219 +542,219 @@ class TestShootingBlockingRock(unittest.TestCase):
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 4), Point('D', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('b', 4), Point('D', 6)))
     
     def test_shooting_diagonaly_north_east_black_amazona_in_route(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('F', 3), Point('e', 3), "BLACK")
 
         # shoot to black amazon cell
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('f', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 1), Point('f', 4)))
 
     def test_shooting_diagonaly_south_west_to_blocked_cell(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('d', 1))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 3), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('F', 3), Point('d', 1)))
     
     def test_shooting_diagonaly_south_west_to_cell_where_white_amazona_exists(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('F', 4), Point('c', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('F', 4), Point('c', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_west_to_cell_where_black_amazona_exists(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 6), Point('a', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 6), Point('a', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_west_block_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # preparing test case
         test_board.shoot_blocking_rock(Point('c', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_west_white_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('c', 1), Point('c', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_west_black_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('a', 4), Point('b', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('a', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('a', 3)))
 
     def test_shooting_diagonaly_south_east_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('A', 4), Point('C', 6), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('C', 6), Point('F', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('C', 6), Point('F', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('F', 3)))
 
     def test_shooting_diagonaly_south_east_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         test_board.shoot_blocking_rock(Point('b', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 4), Point('b', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('a', 4), Point('b', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('b', 3)))
 
     def test_shooting_diagonaly_south_east_in_destination_there_is_white_amazon(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 3), Point('c', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('a', 3), Point('c', 1)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('c', 1)))
 
     def test_shooting_diagonaly_south_east_way_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         test_board.shoot_blocking_rock(Point('e', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('d', 6), Point('f', 2)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('d', 6), Point('f', 2)))
 
     def test_shooting_diagonaly_south_east_white_amazona_blocks_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('D', 6), Point('d', 2), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('b', 4), Point('e', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('b', 4), Point('e', 1)))
 
     def test_shooting_diagonaly_south_east_black_amazona_blocks_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('F', 3), Point('b', 3), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('a', 4), Point('d', 1)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('a', 4), Point('d', 1)))
 
     def test_shooting_diagonaly_north_west_to_non_empty_cell_black_amazon_there(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('f', 3), Point('D', 1), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('D', 1), Point('A', 4)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('D', 1), Point('A', 4)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('A', 4)))
 
     def test_shooting_diagonaly_north_west_destination_is_blocked(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.shoot_blocking_rock(Point('a', 3))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('c', 1), Point('A', 3)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('c', 1), Point('A', 3)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('A', 3)))
 
     def test_shooting_diagonaly_north_west_white_amazona_in_destination(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('c', 1), Point('f', 4), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 4), Point('d', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 4), Point('d', 6)))
         self.assertFalse(test_board.shoot_blocking_rock(Point('d', 6)))
 
     def test_shooting_diagonaly_north_west_block_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.shoot_blocking_rock(Point('d', 5))
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 3), Point('c', 6)))
 
     def test_shooting_diagonaly_north_west_white_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('d', 6), Point('d', 5), "WHITE")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 3), Point('c', 6)))
 
     def test_shooting_diagonaly_north_west_black_amazona_is_in_the_way(self):
         # Getting blocked board
         test_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        turn_validator = TurnValidator(test_board)
+        turn_validator = TurnValidator()
 
         # Moving amazon to the new pos
         test_board.update_move(Point('a', 4), Point('e', 4), "BLACK")
 
         # shoot block rock after movment
-        self.assertFalse(turn_validator.is_shoot_valid(Point('f', 3), Point('c', 6)))
+        self.assertFalse(turn_validator.is_shoot_valid(test_board, Point('f', 3), Point('c', 6)))
 
 class TestBlockingCellsValidationProcess(unittest.TestCase):
     def run_simple_test(self, amazon_to_move, new_position):
         board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        turn_validator = TurnValidator(board_game)
-        return turn_validator.is_step_valid(amazon_to_move, new_position)
+        turn_validator = TurnValidator()
+        return turn_validator.is_step_valid(board_game, amazon_to_move, new_position)
 
     def get_blocked_board(self, blocked_cells):
         board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
@@ -764,10 +764,10 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
 
     def run_loop_of_simple_movement_tests(self, amazon_to_move, position_lst, expected_result, board):
         result = expected_result
+        turn_validator = TurnValidator()
         for pos in position_lst:
             if result == expected_result:
-                    turn_validator = TurnValidator(board)
-                    result = turn_validator.is_step_valid(amazon_to_move, pos)
+                    result = turn_validator.is_step_valid(board, amazon_to_move, pos)
             else:
                 break
         return result
@@ -865,34 +865,45 @@ class TestBlockingCellsValidationProcess(unittest.TestCase):
 #                     Point('F', 6), Point('F', 5), Point('F', 3), Point('F', 2), Point('F', 1),
 #                     Point('G', 6), Point('G', 5), Point('G', 3), Point('G', 2), Point('G', 1)]
 
-class BlockingRocksManagerTests(unittest.TestCase):
-    def use_blockers(self, number_of_blockers_to_use, blocking_manager):
+class BlockingRocksManagerSmallBoardTests(unittest.TestCase):
+    def setUp(self):
+        self.game_board = BoardGame(Constants.SMALL_BOARD_SIZE)
+        self.movement_validator = TurnValidator()
+        self.blocking_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE, self.movement_validator)
+
+    def use_blockers(self, number_of_blockers_to_use):
         for i in range(0, number_of_blockers_to_use):
-            self.assertTrue(blocking_manager.get_rock())
+            self.assertTrue(self.blocking_manager.get_rock())
 
     def test_game_runs_on_small_board_while_there_available_blocking_rocks(self):
-        blocking_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE)
-        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_SMALL_BOARD, blocking_manager)
+        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_SMALL_BOARD)
 
     def test_game_ends_on_small_board_while_there_are_no_available_blocking_rocks(self):
-        blocking_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE)
-        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_SMALL_BOARD, blocking_manager)
-        self.assertFalse(blocking_manager.get_rock())
+        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_SMALL_BOARD)
+        self.assertFalse(self.blocking_manager.get_rock())
+
+class BlockingRocksManagerLargeBoardTests(unittest.TestCase):
+    def setUp(self):
+        self.game_board = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.movement_validator = TurnValidator()
+        self.blocking_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.movement_validator)
+
+    def use_blockers(self, number_of_blockers_to_use):
+        for i in range(0, number_of_blockers_to_use):
+            self.assertTrue(self.blocking_manager.get_rock())
 
     def test_game_runs_on_large_board_while_there_available_blocking_rocks(self):
-        blocking_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE)
-        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_LARGE_BOARD, blocking_manager)
+        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_LARGE_BOARD)
 
     def test_game_ends_on_large_board_while_there_are_no_available_blocking_rocks(self):
-        blocking_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE)
-        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_LARGE_BOARD, blocking_manager)
-        self.assertFalse(blocking_manager.get_rock())
+        self.use_blockers(Constants.NUMBER_OF_ROCKS_IN_LARGE_BOARD)
+        self.assertFalse(self.blocking_manager.get_rock())
     
 class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
     def setUp(self):
         self.game_board = BoardGame(Constants.SMALL_BOARD_SIZE)
-        self.movement_validator = TurnValidator(self.game_board)
-        self.available_steps_manager = AvailableStepsManger(self.game_board, self.movement_validator)
+        self.movement_validator = TurnValidator()
+        self.available_steps_manager = AvailableStepsManger(self.movement_validator)
         self.black_amazon_init_blk_lst = [Point('A', 5), Point('B', 5), Point('B', 4), Point('B', 3), Point('A', 3), 
                                              Point('F', 4), Point('E', 4), Point('E', 3), Point('E', 2), Point('F', 2)]
         self.white_amazon_init_blk_lst = [Point('c', 6), Point('c', 5), Point('d', 5), Point('e', 5), Point('E', 6),
@@ -915,82 +926,82 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
     def test_zero_available_steps_to_black_amazon(self):
         # starting in initial state, blocking all black amazons
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
 
     def test_zero_available_steps_to_white_amazon(self):
         # starting in initial state, blocking all white amazons
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 4))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('F', 3))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('A', 4))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_south_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 4))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('F', 3))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_east_in_initial_state_for_black_amazon(self):
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 4))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('F', 3))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('F', 3))))
     
     def test_number_of_available_steps_west_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 4))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_west(Point('F', 3))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('A', 4))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('F', 3))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 4))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('F', 3))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 4))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('F', 3))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 4))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NW(Point('F', 3))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('A', 4))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 4))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('F', 3))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('F', 3))))
 
     def test_number_of_available_steps_north_in_initial_state_for_white_amazon(self):
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_north(Point('c', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('d', 6))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('d', 6))))
 
     def test_number_of_available_steps_south_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('c', 1))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_south(Point('d', 6))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('c', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('d', 6))))
 
     def test_number_of_available_steps_east_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('c', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('d', 6))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('c', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('d', 6))))
     
     def test_number_of_available_steps_west_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('c', 1))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('d', 6))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('c', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('d', 6))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NE(Point('c', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('d', 6))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('d', 6))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('c', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('d', 6))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('c', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('d', 6))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('c', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('d', 6))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('c', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('d', 6))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('c', 1))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SW(Point('d', 6))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('c', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('d', 6))))
     
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(24, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1001,8 +1012,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.game_board.shoot_blocking_rock(Point(chr(ord(removed_blocked_cell.get_x()) + 1), removed_blocked_cell.get_y() + 1))
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
 
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_one_available_step_to_white_amazon(self):
         # starting in initial state, blocking all white
@@ -1013,8 +1024,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.game_board.shoot_blocking_rock(Point(chr(ord(removed_blocked_cell.get_x()) + 1), removed_blocked_cell.get_y()))
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_two_available_steps_to_black_amazon_and_one_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1028,8 +1039,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_two_available_steps_to_white_amazon_and_one_for_the_black(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1046,8 +1057,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_three_available_steps_to_black_amazon_and_two_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1068,8 +1079,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_board_snepshot_with_many_blocked_cells(self):
         blocked_cells_lst = [Point('c', 6),
@@ -1082,21 +1093,21 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         # blocking states with an updated blocking lists
         self.set_board_blocked_by_list(blocked_cells_lst)
 
-        self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(6, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(9, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_calculate_number_of_available_steps_for_black_player_in_initial_game_position(self):
-        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_depth("BLACK", 1)))
+        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_distance(self.game_board,"BLACK", 1)))
 
     def test_calculate_number_of_available_steps_for_white_player_in_initial_game_position(self):
-        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 1)))
+        self.assertEquals(10, len(self.available_steps_manager.get_available_mooves_in_distance(self.game_board,"WHITE", 1)))
 
 
 class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
     def setUp(self):
         self.game_board = BoardGame(Constants.LARGE_BOARD_SIZE)
-        self.movement_validator = TurnValidator(self.game_board)
-        self.available_steps_manager = AvailableStepsManger(self.game_board, self.movement_validator)
+        self.movement_validator = TurnValidator()
+        self.available_steps_manager = AvailableStepsManger(self.movement_validator)
         self.black_amazon_init_blk_lst = [Point('c', 10), Point('e', 10), Point('f', 10), Point('h', 10), 
                                           Point('c', 9), Point('d', 9), Point('e', 9), Point('f', 9), Point('g', 9), Point('h', 9),
                                           Point('A', 8), Point('B', 8), Point('i', 8), Point('j', 8), 
@@ -1126,114 +1137,114 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
     def test_zero_available_steps_to_black_amazon(self):
         # starting in initial state, blocking all black amazons
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
 
     def test_zero_available_steps_to_white_amazon(self):
         # starting in initial state, blocking all white amazons
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 7))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('d', 10))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(Point('g', 10))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(Point('j', 7))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('g', 10))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_south_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 7))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(Point('d', 10))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(Point('g', 10))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(Point('j', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('A', 7))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('d', 10))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('g', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_east_in_initial_state_for_black_amazon(self):
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 7))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('d', 10))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('g', 10))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('j', 7))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('A', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('d', 10))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('g', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('j', 7))))
     
     def test_number_of_available_steps_west_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 7))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('d', 10))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('g', 10))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(Point('j', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('A', 7))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('d', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('g', 10))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('j', 7))))
     
     def test_number_of_available_steps_NE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 7))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('d', 10))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('g', 10))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('j', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('g', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_black_amazon(self):
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 7))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(Point('d', 10))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('g', 10)))) 
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('j', 7))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('A', 7))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('d', 10))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('g', 10)))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 7))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('d', 10))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('g', 10)))) 
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('j', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('A', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('d', 10))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('g', 10)))) 
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_black_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 7))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('d', 10))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(Point('g', 10))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(Point('j', 7))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('A', 7))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('d', 10))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('g', 10))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('j', 7))))
 
     def test_number_of_available_steps_north_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('A', 4))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(Point('D', 1))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(Point('g', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(Point('j', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('A', 4))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('D', 1))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('g', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_north(self.game_board, Point('j', 4))))
 
     def test_number_of_available_steps_south_in_initial_state_for_white_amazon(self):
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('A', 4)))) 
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('D', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(Point('g', 1)))) 
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(Point('j', 4))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('A', 4)))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('g', 1)))) 
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_south(self.game_board, Point('j', 4))))
 
     def test_number_of_available_steps_east_in_initial_state_for_white_amazon(self):
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(Point('A', 4))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(Point('D', 1))))
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(Point('g', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(Point('j', 4))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('D', 1))))
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_east(self.game_board, Point('j', 4))))
     
     def test_number_of_available_steps_west_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(Point('A', 4)))) 
-        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(Point('D', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(Point('g', 1))))
-        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(Point('j', 4)))) 
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('A', 4)))) 
+        self.assertEquals(3, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('D', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('g', 1))))
+        self.assertEquals(8, len(self.available_steps_manager.get_available_moves_to_the_west(self.game_board, Point('j', 4)))) 
 
     def test_number_of_available_steps_NE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(Point('A', 4))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(Point('D', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(Point('g', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(Point('j', 4))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('A', 4))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('D', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NE(self.game_board, Point('j', 4))))
 
     def test_number_of_available_steps_SE_in_initial_state_for_white_amazon(self):
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(Point('A', 4))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('D', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('g', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(Point('j', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('g', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SE(self.game_board, Point('j', 4))))
 
     def test_number_of_available_steps_NW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(Point('A', 4))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(Point('D', 1))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(Point('g', 1))))
-        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(Point('j', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('A', 4))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('D', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('g', 1))))
+        self.assertEquals(5, len(self.available_steps_manager.get_available_moves_to_NW(self.game_board, Point('j', 4))))
 
     def test_number_of_available_steps_SW_in_initial_state_for_white_amazon(self):
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('A', 4))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('D', 1))))
-        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(Point('g', 1))))
-        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(Point('j', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('A', 4))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('D', 1))))
+        self.assertEquals(0, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('g', 1))))
+        self.assertEquals(2, len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('j', 4))))
     
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(58, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1244,8 +1255,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
 
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
 
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_one_available_step_to_white_amazon(self):
         # starting in initial state, blocking all white
@@ -1255,8 +1266,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.white_amazon_init_blk_lst.pop(15)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
     
     def test_two_available_steps_to_black_amazon_and_one_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1270,8 +1281,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_two_available_steps_to_white_amazon_and_one_for_the_black(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1285,8 +1296,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_three_available_steps_to_black_amazon_and_two_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1300,8 +1311,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(3, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
     def test_board_snepshot_with_many_blocked_cells(self):
         blocked_cells_lst = [Point('c', 9),
@@ -1316,10 +1327,10 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         # blocking states with an updated blocking lists
         self.set_board_blocked_by_list(blocked_cells_lst)
 
-        self.assertEquals(44, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
-        self.assertEquals(29, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(44, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "BLACK"))
+        self.assertEquals(29, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board, "WHITE"))
 
-    def test_calculate_number_of_available_stepst_for_black_player_in_hypothtical_state_in_depth_one(self):
+    def test_calculate_number_of_available_stepst_for_black_player_in_hypothtical_state_in_distance_one(self):
         blocked_cells_lst = [
                             Point('G', 7), Point('i', 7),
                             Point('b', 5), Point('e', 5),
@@ -1339,10 +1350,10 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.game_board.update_move(Point('g', 10), Point('b', 3), "WHITE")
         self.game_board.update_move(Point('a', 4), Point('b', 3), "WHITE")
 
-        self.assertEquals(18, len(self.available_steps_manager.get_available_mooves_in_depth("BLACK", 1)))
+        self.assertEquals(18, len(self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "BLACK", 1)))
 
 
-    def test_calculate_number_of_available_stepst_for_white_player_in_hypothtical_state_in_depth_two(self):
+    def test_calculate_number_of_available_stepst_for_white_player_in_hypothtical_state_in_distance_two(self):
         blocked_cells_lst = [
                             Point('G', 7), Point('i', 7),
                             Point('b', 5), Point('e', 5),
@@ -1361,7 +1372,7 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.game_board.update_move(Point('g', 1), Point('b', 3), "WHITE")
         self.game_board.update_move(Point('a', 4), Point('a', 8), "WHITE")
 
-        self.assertEquals(43, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 2)))
+        self.assertEquals(43, len(self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "WHITE", 2)))
 
 class WinnerDitermination(unittest.TestCase):
     # once the game is over: no more rocks OR no more possible moves for player, need to decide who is the winner
@@ -1373,8 +1384,8 @@ class WinnerDitermination(unittest.TestCase):
     # need to pay attention there are no doubling, think about case you can go 3 right. it means you have 3 options: 1 right, 2 right, 3 right NOT ONLY 1
     def setUp(self):
         self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        self.turn_validator = TurnValidator(self.board_game)
-        self.available_steps_manager = AvailableStepsManger(self.board_game, self.turn_validator)
+        self.turn_validator = TurnValidator()
+        self.available_steps_manager = AvailableStepsManger(self.turn_validator)
 
     def set_board_blocked_by_list(self, blocking_lst):
         for point in blocking_lst:
@@ -1418,10 +1429,59 @@ class WinnerDitermination(unittest.TestCase):
         self.set_board_blocked_by_list(blocking_lst)
         
         # it should be 31 in this case, AI should iterate and calculate future potential moves
-        self.assertEquals(13, self.available_steps_manager.get_number_of_available_mooves_for_player("BLACK"))
+        self.assertEquals(13, self.available_steps_manager.get_number_of_available_mooves_for_player(self.board_game, "BLACK"))
 
         # it should be 8  in this case, AI should iterate and calculate future potential moves
-        self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player("WHITE"))
+        self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player(self.board_game, "WHITE"))
+
+
+# class AI_Player_Small_Board_Tests(unittest.TestCase):
+#     # This test class will demonstrate AI player minds
+#     # It will implement the following tests
+#     # 1. Get all possible states for amazona in large board in specific distance (for specific move includes throwing blocking rock)
+#     # 2. Build next state tree, for the player plays against us
+#     # 3. Run minimax with AlphaBetaPurning on the tree and eliminate non-relevant results.
+#     # 4. Being able to get next move successfully
+#     def setUp(self):
+#         self.board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
+#         self.turn_validator = TurnValidator()
+#         self.available_steps_manager = AvailableStepsManger(self.turn_validator)
+#         self.searching_distance = 5
+#         self.blocking_rocks_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE, self.turn_validator)
+#         self.searching_depth = 2 # means the search tree will have 2 levels, AI turn, opponent
+#         self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.searching_distance, self.blocking_rocks_manager, self.searching_depth)
+
+#     def test_exploring_full_turn_includes_move_and_throwing_blocking_rock_from_initial_position(self):
+#         self.ai_player.make_move(self.board_game)
+#         # I mean this test will be shitty one since I will build each board and test it created as expected..
+#         self.assertEquals(1, 1)
+
+class AI_Player_Large_Board_Tests(unittest.TestCase):
+    # This test class will demonstrate AI player minds
+    # It will implement the following tests
+    # 1. Get all possible states for amazona in large board in specific distance (for specific move includes throwing blocking rock)
+    # 2. Build next state tree, for the player plays against us
+    # 3. Run minimax with AlphaBetaPurning on the tree and eliminate non-relevant results.
+    # 4. Being able to get next move successfully
+    def setUp(self):
+        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.turn_validator = TurnValidator()
+        self.available_steps_manager = AvailableStepsManger(self.turn_validator)
+        self.searching_distance = 9
+        self.blocking_rocks_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.turn_validator)
+        self.searching_depth = 2 # means the search tree will have 2 levels, AI turn, opponent
+        self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.searching_distance, self.blocking_rocks_manager, self.searching_depth)
+
+    # def test_exploring_full_turn_includes_move_and_throwing_blocking_rock_initial_pos(self):
+    #     self.ai_player.make_move(self.board_game)
+    #     # I mean this test will be shitty one since I will build each board and test it created as expected..
+    #     self.assertEquals(1, 1)
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.ERROR)
+    unittest.main()
+
 
         # blocking_lst = [Point('A', 10), Point('A', 9), Point('A', 8), Point('A', 7), Point('A', 6), Point('A', 5), Point('A', 3), Point('A', 2), Point('A', 1),
         #                 Point('B', 10), Point('B', 9), Point('B', 8), Point('B', 7), Point('B', 6), Point('B', 5), Point('B', 3), Point('B', 2), Point('B', 1),
@@ -1433,13 +1493,8 @@ class WinnerDitermination(unittest.TestCase):
         #                 Point('H', 10), Point('H', 9), Point('H', 8), Point('H', 7), Point('H', 6), Point('H', 5), Point('H', 3), Point('H', 2), Point('H', 1),
         #                 Point('I', 10), Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6), Point('I', 5), Point('I', 3), Point('I', 2), Point('I', 1),
         #                 Point('J', 10), Point('J', 9), Point('J', 8), Point('J', 7), Point('J', 6), Point('J', 5), Point('J', 4), Point('J', 3), Point('J', 2), Point('J', 1)]
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.ERROR)
-    unittest.main()
-
-
 # def test_calculate_number_of_available_steps_for_white_player_in_initial_game_position(self):
-    #     self.assertEquals(20, len(self.available_steps_manager.get_available_mooves_in_depth("WHITE", 1)))
+    #     self.assertEquals(20, len(self.available_steps_manager.get_available_mooves_in_distance("WHITE", 1)))
 
     # def turns_possible_job():
     #     # Test cases

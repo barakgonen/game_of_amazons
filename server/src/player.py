@@ -1,10 +1,14 @@
+import copy
 import random
+import numpy as np
 from point import Point
+from game_tree import GameTree
 
 class Player:
-    def __init__(self, name, color):
+    def __init__(self, name, color, current_board_game):
         self.name = name
         self.color = color
+        self.board_game = current_board_game
         print ("Creating an instance of Player, name is: " + self.name + ", color is: " + self.color)
 
     def get_name(self):
@@ -13,15 +17,25 @@ class Player:
     def get_color(self):
         return self.color
 
+# This class implements my AI Functionality, it has it's own implementation of make_move func, which calculates the next best move to do
 class ComputerPlayer(Player):
-    def __init__(self, name, color):
+    def __init__(self, name, color, available_steps_manager, searching_distance, blocking_rocks_manager, searching_depth):
         self.name = name
         self.color = color
-        # self.movesCalculator = movesCalculator
-    def make_move(self):
-        algo_move = self.calculate_next_move()
-        print "This is algorithm turn, " + algo_move.to_string()
-        return ""
+        self.available_steps_manager = available_steps_manager
+        self.searching_distance = searching_distance
+        self.blocking_rocks_manager = blocking_rocks_manager
+        self.searching_depth = searching_depth
+        
+    def make_move(self, current_board_game):
+        # Building GameTree from current board, each level below level 1 represents game state
+        game_tree = GameTree(current_board_game, 
+                             self.color, 
+                             self.searching_distance, 
+                             self.available_steps_manager, 
+                             self.blocking_rocks_manager, 
+                             self.searching_depth)
+        return game_tree.get_next_move()
 
     def calculate_next_move(self):
         list1=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -34,7 +48,7 @@ class ComputerPlayer(Player):
         return self.calculate_next_move()
 
 class HumanPlayer(Player):
-    def __init__(self, name, color):
+    def __init__(self, name, color, board_game=None):
         self.name = name
         self.color = color
 
