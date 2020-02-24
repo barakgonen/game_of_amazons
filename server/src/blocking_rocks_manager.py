@@ -1,6 +1,7 @@
 from constants import Constants
 import logging
 from point import Point
+from board_game import BoardGame
 
 class BlockingRocksManager:
     def __init__(self, board_size, movement_validator):
@@ -184,3 +185,7 @@ class BlockingRocksManager:
             uniq_moves_for_amazona.add(move)
         
         return uniq_moves_for_amazona
+
+    def generate_available_throwing_options(self, board_size, white_amazons_position, black_amazons_position, blockers_pos, throw_pos, distance):
+        current_board = BoardGame(board_size, white_amazons_position, black_amazons_position, blockers_pos)
+        return self.get_available_positions_to_throw_blocking_rock_for_amazona(current_board, throw_pos, distance)

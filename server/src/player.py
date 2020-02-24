@@ -29,12 +29,16 @@ class ComputerPlayer(Player):
         
     def make_move(self, current_board_game):
         # Building GameTree from current board, each level below level 1 represents game state
-        game_tree = GameTree(current_board_game, 
+
+        game_tree = GameTree(current_board_game.get_players_positions("WHITE"),
+                             current_board_game.get_players_positions("BLACK"), 
+                             current_board_game.get_blocking_rocks(),
+                             current_board_game.get_size(),
                              self.color, 
                              self.searching_distance, 
-                             self.available_steps_manager, 
                              self.blocking_rocks_manager, 
-                             self.searching_depth)
+                             self.searching_depth,
+                             self.available_steps_manager)
         return game_tree.get_next_move()
 
     def calculate_next_move(self):

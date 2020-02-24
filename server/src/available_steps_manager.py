@@ -1,4 +1,5 @@
 from point import Point
+from board_game import BoardGame
 
 class AvailableStepsManger:
     def __init__(self, movement_validator=None):
@@ -164,12 +165,36 @@ class AvailableStepsManger:
     def get_number_of_available_mooves(self):
         return 0
 
+    def get_available_mooves_for_player(self, current_board_game, player_color):
+        players_position = current_board_game.get_players_positions(player_color)
+        total_available_mooves = set()
+        for amazona in players_position:
+            total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
+        return len(total_available_mooves)
+
     def get_number_of_available_mooves_for_player(self, current_board_game, player_color):
         players_position = current_board_game.get_players_positions(player_color)
         total_available_mooves = set()
         for amazona in players_position:
             total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
         return len(total_available_mooves)
+
+    def get_available_states_for_player(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst, player_color):
+        current_board_game = BoardGame(board_size, white_amazons_pos, black_amazons_pos, blocking_lst)
+        players_position = current_board_game.get_players_positions(player_color)
+        total_available_mooves = set()
+        for amazona in players_position:
+            total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
+        del current_board_game
+        return total_available_mooves
+
+    def get_available_moves_for_amazona(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst, player_color, playing_amazona):
+        current_board_game = BoardGame(board_size, white_amazons_pos, black_amazons_pos, blocking_lst)
+        total_available_mooves = set()
+        total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, playing_amazona))
+        del current_board_game
+        return total_available_mooves
+
 
     def get_available_mooves_in_distance(self, current_board_game, player_color, distance):
         players_position = current_board_game.get_players_positions(player_color)

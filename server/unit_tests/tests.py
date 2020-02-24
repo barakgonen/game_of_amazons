@@ -1434,6 +1434,63 @@ class WinnerDitermination(unittest.TestCase):
         # it should be 8  in this case, AI should iterate and calculate future potential moves
         self.assertEquals(4, self.available_steps_manager.get_number_of_available_mooves_for_player(self.board_game, "WHITE"))
 
+class Configuration_To_Small_Board_Tests(unittest.TestCase):
+    def setUp(self):
+        self.blocking_lst = [Point('b', 5), Point('e', 5), Point('c', 4), Point('d', 2)]
+        self.white_amazons = [Point('B', 2), Point('c', 5)]
+        self.black_amazons = [Point('d', 3), Point('a', 6)]
+        self.board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
+
+    def test_creating_board_as_expected(self):
+        self.board_game.update_move(Point('c', 1), Point('b', 2), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('d', 2))
+        self.board_game.update_move(Point('F', 3), Point('D', 3), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('C', 4))
+        self.board_game.update_move(Point('d', 6), Point('c', 5), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('e', 5))
+        self.board_game.update_move(Point('a', 4), Point('a', 6), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('b', 5))
+        self.assertEquals(self.board_game, BoardGame(Constants.SMALL_BOARD_SIZE, self.white_amazons, self.black_amazons, self.blocking_lst))
+
+    def test_not_equal_when_there_is_no_correlation_between_them(self):
+        self.board_game.update_move(Point('c', 1), Point('b', 2), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('d', 2))
+        self.board_game.update_move(Point('F', 3), Point('D', 3), "BLACK")
+        self.board_game.update_move(Point('d', 6), Point('c', 5), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('e', 5))
+        self.board_game.update_move(Point('a', 4), Point('a', 6), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('b', 5))
+        self.assertNotEquals(self.board_game, BoardGame(Constants.SMALL_BOARD_SIZE, self.white_amazons, self.black_amazons, self.blocking_lst))
+
+class Configuration_To_Large_Board_Tests(unittest.TestCase):
+    def setUp(self):
+        self.blocking_lst = [Point('A', 10), Point('A', 8), Point('A', 3),
+                            Point('b', 5),
+                            Point('D', 9),  Point('D', 6),
+                            Point('f', 8),  Point('f', 4)]
+        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+        self.white_amazons = [Point('g', 4), Point('a', 9), Point('j', 6), Point('d', 8)]
+        self.black_amazons = [Point('e', 3), Point('a', 7), Point('b', 8), Point('c', 6)]
+
+    def test_creating_board_as_expected(self):
+        self.board_game.update_move(Point('g', 1), Point('g', 4), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('f', 4))
+        self.board_game.update_move(Point('a', 7), Point('e', 3), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('a', 3))
+        self.board_game.update_move(Point('a', 4), Point('a', 9), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('a', 10))
+        self.board_game.update_move(Point('j', 7), Point('a', 7), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('a', 8))
+        self.board_game.update_move(Point('j', 4), Point('j', 6), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('d', 6))
+        self.board_game.update_move(Point('d', 10), Point('b', 8), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('f', 8))
+        self.board_game.update_move(Point('d', 1), Point('d', 8), "WHITE")
+        self.board_game.shoot_blocking_rock(Point('d', 9))
+        self.board_game.update_move(Point('g', 10), Point('c', 6), "BLACK")
+        self.board_game.shoot_blocking_rock(Point('b', 5))
+
+        self.assertEquals(self.board_game, BoardGame(Constants.LARGE_BOARD_SIZE, self.white_amazons, self.black_amazons, self.blocking_lst))
 
 # class AI_Player_Small_Board_Tests(unittest.TestCase):
 #     # This test class will demonstrate AI player minds
@@ -1467,15 +1524,15 @@ class AI_Player_Large_Board_Tests(unittest.TestCase):
         self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
         self.turn_validator = TurnValidator()
         self.available_steps_manager = AvailableStepsManger(self.turn_validator)
-        self.searching_distance = 9
+        self.searching_distance = 1
         self.blocking_rocks_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.turn_validator)
         self.searching_depth = 2 # means the search tree will have 2 levels, AI turn, opponent
         self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.searching_distance, self.blocking_rocks_manager, self.searching_depth)
 
-    # def test_exploring_full_turn_includes_move_and_throwing_blocking_rock_initial_pos(self):
-    #     self.ai_player.make_move(self.board_game)
-    #     # I mean this test will be shitty one since I will build each board and test it created as expected..
-    #     self.assertEquals(1, 1)
+    def test_exploring_full_turn_includes_move_and_throwing_blocking_rock_initial_pos(self):
+        self.ai_player.make_move(self.board_game)
+        # I mean this test will be shitty one since I will build each board and test it created as expected..
+        self.assertEquals(1, 1)
 
 
 if __name__ == '__main__':
