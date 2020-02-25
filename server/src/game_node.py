@@ -1,4 +1,5 @@
 import copy
+import random
 
 # This class represents a node in the game tree
 class GameNode:
@@ -13,7 +14,9 @@ class GameNode:
         self.available_steps_manager = available_steps_manager
         # self.black_moves = len(available_steps_manager.get_available_states_for_player(board_size, self.white_amazons_pos, self.black_amazons_pos, self.blocking_lst, "BLACK"))
         # self.white_moves = len(available_steps_manager.get_available_states_for_player(board_size, self.white_amazons_pos, self.black_amazons_pos, self.blocking_lst, "WHITE"))
-        return
 
+        ### TODO: CALCULATE HEURISTICS - RANDOM HEIURISTIC, MOVE-COUNT HEIURISTIC & MOBILITY HEIURISTIC
+        return
+        
     def addChildNode(self, node):
         self.children.append(node)

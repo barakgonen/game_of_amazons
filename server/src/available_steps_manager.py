@@ -1,6 +1,7 @@
 from point import Point
 from board_game import BoardGame
 
+
 class AvailableStepsManger:
     def __init__(self, movement_validator=None):
         self.movement_validator = movement_validator
@@ -9,13 +10,13 @@ class AvailableStepsManger:
         valid_path = True
         index = 1
         available_moves = []
-        while (valid_path and amazona.get_y() + index <= current_board_game.get_size()):
+        while valid_path and amazona.get_y() + index <= current_board_game.get_size():
             next_step = Point(amazona.get_x(), amazona.get_y() + index)
             valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-            if (valid_path):
+            if valid_path:
                 available_moves.append(next_step)
-            if (distance is not None):
-                if (distance <= index):
+            if distance is not None:
+                if distance <= index:
                     break
             index += 1
         return available_moves
@@ -24,13 +25,13 @@ class AvailableStepsManger:
         valid_path = True
         index = 1
         available_moves = []
-        while (valid_path and amazona.get_y() - index >= 0):
+        while valid_path and amazona.get_y() - index >= 0:
             next_step = Point(amazona.get_x(), amazona.get_y() - index)
             valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-            if (valid_path):
+            if valid_path:
                 available_moves.append(next_step)
-            if (distance is not None):
-                if (distance <= index):
+            if distance is not None:
+                if distance <= index:
                     break
             index += 1
         return available_moves
@@ -39,13 +40,13 @@ class AvailableStepsManger:
         valid_path = True
         index = 1
         available_moves = []
-        while (valid_path and (ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size()):
+        while valid_path and (ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size():
             next_step = Point(chr(ord(amazona.get_x()) + index), amazona.get_y())
             valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-            if (valid_path):
+            if valid_path:
                 available_moves.append(next_step)
-            if (distance is not None):
-                if (distance <= index):
+            if distance is not None:
+                if distance <= index:
                     break
             index += 1
         return available_moves
@@ -54,13 +55,13 @@ class AvailableStepsManger:
         valid_path = True
         index = 1
         available_moves = []
-        while (valid_path and (ord(amazona.get_x()) - ord('A') - index) >= 0):
+        while valid_path and (ord(amazona.get_x()) - ord('A') - index) >= 0:
             next_step = Point(chr(ord(amazona.get_x()) - index), amazona.get_y())
             valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-            if (valid_path):
+            if valid_path:
                 available_moves.append(next_step)
-            if (distance is not None):
-                if (distance <= index):
+            if distance is not None:
+                if distance <= index:
                     break
             index += 1
         return available_moves
@@ -69,17 +70,18 @@ class AvailableStepsManger:
         valid_path = True
         index = 1
         available_moves = []
-        while ((0 <= (ord(amazona.get_x()) - ord('A')) and ((ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size())) 
-            and (amazona.get_y() + index) <= current_board_game.get_size()
-            and valid_path):
-                next_step = Point(chr(index + ord(amazona.get_x())), amazona.get_y() + index)
-                valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-                if (valid_path):
-                    available_moves.append(next_step)
-                if (distance is not None):
-                    if (distance <= index):
-                        break                
-                index += 1
+        while ((0 <= (ord(amazona.get_x()) - ord('A')) and (
+                (ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size()))
+               and (amazona.get_y() + index) <= current_board_game.get_size()
+               and valid_path):
+            next_step = Point(chr(index + ord(amazona.get_x())), amazona.get_y() + index)
+            valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
+            if valid_path:
+                available_moves.append(next_step)
+            if distance is not None:
+                if distance <= index:
+                    break
+            index += 1
         return available_moves
 
     def get_available_moves_to_NW(self, current_board_game, amazona, distance=None):
@@ -87,33 +89,34 @@ class AvailableStepsManger:
         index = 1
         available_moves = []
         while (0 <= (ord(amazona.get_x()) - ord('A') - index)
-            and (amazona.get_y() + index <= current_board_game.get_size())
-            and valid_path):
-                next_step = Point(chr(ord(amazona.get_x()) - index), amazona.get_y() + index)
-                valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-                if (valid_path):
-                    available_moves.append(next_step)
-                if (distance is not None):
-                    if (distance <= index):
-                        break
-                index += 1
+               and (amazona.get_y() + index <= current_board_game.get_size())
+               and valid_path):
+            next_step = Point(chr(ord(amazona.get_x()) - index), amazona.get_y() + index)
+            valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
+            if valid_path:
+                available_moves.append(next_step)
+            if distance is not None:
+                if distance <= index:
+                    break
+            index += 1
         return available_moves
 
     def get_available_moves_to_SE(self, current_board_game, amazona, distance=None):
         valid_path = True
         index = 1
         available_moves = []
-        while ((0 <= (ord(amazona.get_x()) - ord('A')) and ((ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size())) 
-            and 0 <= (amazona.get_y() - index)
-            and valid_path):
-                next_step = Point(chr(index + ord(amazona.get_x())), amazona.get_y() - index)
-                valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-                if (valid_path):
-                    available_moves.append(next_step)
-                if (distance is not None):
-                    if (distance <= index):
-                        break
-                index += 1
+        while ((0 <= (ord(amazona.get_x()) - ord('A')) and (
+                (ord(amazona.get_x()) - ord('A') + index) <= current_board_game.get_size()))
+               and 0 <= (amazona.get_y() - index)
+               and valid_path):
+            next_step = Point(chr(index + ord(amazona.get_x())), amazona.get_y() - index)
+            valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
+            if valid_path:
+                available_moves.append(next_step)
+            if distance is not None:
+                if distance <= index:
+                    break
+            index += 1
         return available_moves
 
     def get_available_moves_to_SW(self, current_board_game, amazona, distance=None):
@@ -121,16 +124,16 @@ class AvailableStepsManger:
         index = 1
         available_moves = []
         while (0 <= (ord(amazona.get_x()) - ord('A') - index)
-            and (0 <= amazona.get_y() - index)
-            and valid_path):
-                next_step = Point(chr(ord(amazona.get_x()) - index), amazona.get_y() - index)
-                valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
-                if (valid_path):
-                    available_moves.append(next_step)
-                if (distance is not None):
-                    if (distance <= index):
-                        break
-                index += 1
+               and (0 <= amazona.get_y() - index)
+               and valid_path):
+            next_step = Point(chr(ord(amazona.get_x()) - index), amazona.get_y() - index)
+            valid_path = self.movement_validator.is_movement_leagal(current_board_game, amazona, next_step)
+            if valid_path:
+                available_moves.append(next_step)
+            if distance is not None:
+                if distance <= index:
+                    break
+            index += 1
         return available_moves
 
     def get_available_moves_set_for_amazon(self, current_board_game, amazona, distance=None):
@@ -159,7 +162,7 @@ class AvailableStepsManger:
         available_moves_for_amazona = self.get_available_moves_to_SW(current_board_game, amazona, distance)
         for move in available_moves_for_amazona:
             uniq_moves_for_amazona.add(move)
-        
+
         return uniq_moves_for_amazona
 
     def get_number_of_available_mooves(self):
@@ -179,7 +182,8 @@ class AvailableStepsManger:
             total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
         return len(total_available_mooves)
 
-    def get_available_states_for_player(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst, player_color):
+    def get_available_states_for_player(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst,
+                                        player_color):
         current_board_game = BoardGame(board_size, white_amazons_pos, black_amazons_pos, blocking_lst)
         players_position = current_board_game.get_players_positions(player_color)
         total_available_mooves = set()
@@ -188,18 +192,18 @@ class AvailableStepsManger:
         del current_board_game
         return total_available_mooves
 
-    def get_available_moves_for_amazona(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst, player_color, playing_amazona):
+    def get_available_moves_for_amazona(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst,
+                                        player_color, playing_amazona):
         current_board_game = BoardGame(board_size, white_amazons_pos, black_amazons_pos, blocking_lst)
         total_available_mooves = set()
         total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, playing_amazona))
         del current_board_game
         return total_available_mooves
 
-
     def get_available_mooves_in_distance(self, current_board_game, player_color, distance):
         players_position = current_board_game.get_players_positions(player_color)
         total_moves_in_distance = set()
         for amazona in players_position:
-            total_moves_in_distance.update(self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
+            total_moves_in_distance.update(
+                self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
         return total_moves_in_distance
-        
