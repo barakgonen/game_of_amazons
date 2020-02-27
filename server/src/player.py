@@ -21,13 +21,14 @@ class Player:
 # This class implements my AI Functionality, it has it's own implementation of make_move func, which calculates the next best move to do
 class ComputerPlayer(Player):
     def __init__(self, name, color, available_steps_manager, searching_distance, blocking_rocks_manager,
-                 searching_depth):
+                 searching_depth, turn_validator):
         self.name = name
         self.color = color
         self.available_steps_manager = available_steps_manager
         self.searching_distance = searching_distance
         self.blocking_rocks_manager = blocking_rocks_manager
         self.searching_depth = searching_depth
+        self.turn_validator = turn_validator
 
     def make_move(self, current_board_game):
         # Building GameTree from current board, each level below level 1 represents game state
@@ -40,7 +41,8 @@ class ComputerPlayer(Player):
                              self.searching_distance,
                              self.blocking_rocks_manager,
                              self.searching_depth,
-                             self.available_steps_manager)
+                             self.available_steps_manager,
+                             self.turn_validator)
         return game_tree.get_next_move()
 
     def calculate_next_move(self):

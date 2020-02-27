@@ -25,7 +25,7 @@ class BoardGame:
         if white_amazons is None and black_amazons is None and blockers_pos is None:
             logging.info("<BoardGame::BoardGame()> Placing amazons in the board. Board size is: " + str(size))
             try:
-                if (self.size == Constants.LARGE_BOARD_SIZE):
+                if self.size == Constants.LARGE_BOARD_SIZE:
                     self.board[get_raw_index(7, self.size)][
                         get_col_index('A', self.size)].state = CellState.BLACK_AMAZON
                     self.board[get_raw_index(10, self.size)][

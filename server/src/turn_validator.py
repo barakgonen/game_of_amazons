@@ -1,6 +1,7 @@
 from server.src.common_funcs import get_col_index, get_raw_index
 from server.src.point import Point
 from server.src.constants import CellState
+from server.src.board_game import BoardGame
 import logging
 
 
@@ -131,3 +132,62 @@ class TurnValidator:
         else:
             logging.error("<TurnValidator::is_shoot_valid()> step_is_invalid")
             return False
+
+    def is_valid_horizontal_movement(self, src, dst):
+        return (src.get_y() == dst.get_y()) and (src.get_x() != dst.get_x())
+
+    def is_valid_vertical_movement(self, src, dst):
+        return (src.get_y() != dst.get_y()) and (src.get_x() == dst.get_x())
+
+    def is_valid_diagonal_movement(self, src, dst):
+        orig_x = src.get_x()
+        orig_y = src.get_y()
+        dest_x = dst.get_x()
+        dest_y = dst.get_y()
+        if orig_x != dest_x and orig_y != dest_y:
+            if orig_x > dest_x:
+                # moving W
+                if orig_y > dest_y:
+                    # moving SW
+                    is_route_ok = True
+                    while (((ord('A') <= ord(orig_x)) and (orig_x != dest_x))
+                           and ((0 <= orig_y) and (orig_y != dest_y))):
+                        orig_x = chr(ord(orig_x) - 1)
+                        orig_y -= 1
+                else:
+                    # moving NW
+                    while (((ord('A') <= ord(orig_x)) and (orig_x != dest_x))
+                           and ((0 <= orig_y) and (orig_y != dest_y))):
+                        orig_x = chr(ord(orig_x) - 1)
+                        orig_y += 1
+            else:
+                # moving E
+                if orig_y > dest_y:
+                    # moving SE
+                    while (((ord('A') <= ord(orig_x)) and (orig_x != ord(dest_x)))
+                           and ((0 <= orig_y) and (orig_y != dest_y))):
+                        orig_x = chr(1 + ord(orig_x))
+                        orig_y -= 1
+                else:
+                    # moving NE
+                    while (((ord('A') <= ord(orig_x)) and (orig_x != dest_x))
+                           and ((0 <= orig_y) and (orig_y != dest_y))):
+                        orig_x = chr(1 + ord(orig_x))
+                        orig_y += 1
+            if orig_x == dest_x and orig_y == dest_y:
+                return True
+        else:
+            return False
+
+    def is_legal_move(self, opponent_amazona, possible_move):
+        # if we got here, it means possible_move does not intersects with another quenns or blocking rocks,
+        # thus we just have to validate if the movement is ok
+        try:
+            if (self.is_valid_horizontal_movement(opponent_amazona, possible_move)
+                    or self.is_valid_vertical_movement(opponent_amazona, possible_move)
+                    or self.is_valid_diagonal_movement(opponent_amazona, possible_move)):
+                return True
+        except (IndexError, KeyError) as err:
+            print(err)
+
+        return False

@@ -186,6 +186,6 @@ class BlockingRocksManager:
         
         return uniq_moves_for_amazona
 
-    def generate_available_throwing_options(self, board_size, white_amazons_position, black_amazons_position, blockers_pos, throw_pos, distance):
+    def generate_available_throwing_options(self, board_size, white_amazons_position, black_amazons_position, blockers_pos, throw_pos, distance=None):
         current_board = BoardGame(board_size, white_amazons_position, black_amazons_position, blockers_pos)
         return self.get_available_positions_to_throw_blocking_rock_for_amazona(current_board, throw_pos, distance)
