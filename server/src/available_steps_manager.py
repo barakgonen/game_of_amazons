@@ -1,5 +1,5 @@
-from point import Point
-from board_game import BoardGame
+from server.src.point import Point
+from server.src.board_game import BoardGame
 
 
 class AvailableStepsManger:

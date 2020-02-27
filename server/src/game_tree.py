@@ -79,7 +79,11 @@ class GameTree:
 
         # We must normalize received results
         self.normalize_results(.25, 1, 1)
-        self.root.children = self.get_best_n_moves(50)
+        self.root.children = self.get_best_n_moves(10)
+
+        end_time = int(round(time.time() * 1000))
+        total_time_milliseconds = end_time - start_time
+        logging.info("<generate_my_amazons_next_possible_move_and_shot()> TOOK JUST: ", str(total_time_milliseconds))
 
         # counter = 0
         is_maximizer = not is_maximizer

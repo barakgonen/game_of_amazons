@@ -44,109 +44,48 @@ class GameNode:
 
     def calculate_heuristics(self):
         random_heuristic_res = self.calculate_random_heuristic()
-        self.scores_arr.append(self.calculate_mobility_heuristic())
-        # self.scores_arr.append(self.calculate_move_count_heuristic())
+#        mobility_heuristic_res = self.calculate_mobility_heuristic()
+#        move_count_heuristic_res = self.calculate_move_count_heuristic()
+        mobility_heuristic_res = 1
+        move_count_heuristic_res = 1
         self.scores_arr.append(random_heuristic_res)
-        self.calculated_result += random_heuristic_res
+        self.scores_arr.append(mobility_heuristic_res)
+        self.scores_arr.append(move_count_heuristic_res)
+        self.calculated_result = random_heuristic_res + mobility_heuristic_res + move_count_heuristic_res
 
     def addChildNode(self, node):
         self.children.append(node)
 
-    def get_number_of_moves_for_player(self, is_black):
-        moves_counter = 0
-        oponent_amazonas = []
-        my_amazons = []
-
-        if is_black:
-            # BLACK PLAYER PLAYS, means opponent is white
-            oponent_amazonas = self.white_amazons_pos
-            my_amazons = self.black_amazons_pos
-        else:
-            # WHITE PLAYER PLAYS, means opponent is black
-            oponent_amazonas = self.black_amazons_pos
-            my_amazons = self.white_amazons_pos
-
-        for amazon in my_amazons:
-            for dst_x in range(0, self.board_size):
-                for dst_y in range(0, self.board_size):
-                    destination_amazon = Point(chr(dst_x + ord('A')), dst_y)
-                    if destination_amazon not in my_amazons:
-                        if destination_amazon not in oponent_amazonas:
-                            if destination_amazon not in self.blocking_lst:
-                                for throw_x in range(0, self.board_size):
-                                    for throw_y in range(0, self.board_size):
-                                        throw_target = Point(chr(throw_x + ord('A')), throw_y)
-                                        if self.turn_validator.is_legal_move(destination_amazon, throw_target):
-                                            moves_counter += 1
-        return moves_counter
-
     def calculate_move_count_heuristic(self):
-        return self.get_number_of_moves_for_player(self.is_black_player) \
-               - self.get_number_of_moves_for_player(not self.is_black_player)
+        return self._calculate_moves_differences()
 
     def calculate_random_heuristic(self):
-        # return random.randrange(1, 10, 1)
-        return random.randrange(1, 1000, 1)
+        return random.randrange(1, 10, 1)
 
     def calculate_mobility_heuristic(self):
-        start_time = int(round(time.time() * 1000))
-        blu = self.calculate_opponent_mobility()
-        bla = self.calculate_player_mobility()
-        end_time = int(round(time.time() * 1000))
-        took = end_time - start_time
-        return bla + blu
+        return random.randrange(1, 10, 1)
+        # I will define mobility as the ability to move on the board.
+        # start_time = int(round(time.time() * 1000))
+        # mobility_res = self.__calculate_mobility()
+        # end_time = int(round(time.time() * 1000))
+        # took = end_time - start_time
+        # return mobility_res
 
-    def calculate_opponent_mobility(self):
-        score = 0
-        oponent_amazonas = []
-        my_amazons = []
-
+    def _calculate_moves_differences(self):
+        white_steps = self.available_steps_manager.get_available_states_for_player(self.board_size,
+                                                                                   self.white_amazons_pos,
+                                                                                   self.black_amazons_pos,
+                                                                                   self.blocking_lst, "WHITE")
+        black_available_steps = self.available_steps_manager.get_available_states_for_player(self.board_size,
+                                                                                             self.white_amazons_pos,
+                                                                                             self.black_amazons_pos,
+                                                                                             self.blocking_lst, "BLACK")
         if self.is_black_player:
             # BLACK PLAYER PLAYS, means opponent is white
-            oponent_amazonas = self.white_amazons_pos
-            my_amazons = self.black_amazons_pos
+            oponent_available_steps = len(white_steps) * -1
+            num_of_available_steps_for_me = len(black_available_steps)
         else:
             # WHITE PLAYER PLAYS, means opponent is black
-            oponent_amazonas = self.black_amazons_pos
-            my_amazons = self.white_amazons_pos
-
-        for opponent_amazona in oponent_amazonas:
-            for dx in range(-2, 3):
-                for dy in range(-2, 3):
-                    if "A" <= chr(dx + ord(opponent_amazona.get_x())) <= chr(ord("A") + self.board_size):
-                        if 1 <= dy <= self.board_size:
-                            possible_move = Point(chr(dx + ord(opponent_amazona.get_x())),
-                                                            int(opponent_amazona.get_y() + dy))
-                            if possible_move not in my_amazons:
-                                if possible_move not in oponent_amazonas:
-                                    if possible_move not in self.blocking_lst:
-                                        if self.turn_validator.is_legal_move(opponent_amazona, possible_move):
-                                            score -= 1
-        return score
-
-    def calculate_player_mobility(self):
-        score = 0
-        oponent_amazonas = []
-        my_amazons = []
-
-        if self.is_black_player:
-            # BLACK PLAYER PLAYS, means opponent is white
-            oponent_amazonas = self.white_amazons_pos
-            my_amazons = self.black_amazons_pos
-        else:
-            # WHITE PLAYER PLAYS, means opponent is black
-            oponent_amazonas = self.black_amazons_pos
-            my_amazons = self.white_amazons_pos
-
-        for opponent_amazona in oponent_amazonas:
-            for dx in range(-2, 3):
-                for dy in range(-2, 3):
-                    possible_move = Point(chr(dx + ord(opponent_amazona.get_x())), int(opponent_amazona.get_y() + dy))
-                    if (ord('A') <= ord(possible_move.get_x())) <= self.board_size:
-                        if 1 <= possible_move.get_y() <= self.board_size:
-                            if possible_move not in my_amazons:
-                                if possible_move not in oponent_amazonas:
-                                    if possible_move not in self.blocking_lst:
-                                        if self.turn_validator.is_legal_move(opponent_amazona, possible_move):
-                                            score += 1
-        return score
+            oponent_available_steps = len(black_available_steps) * -1
+            num_of_available_steps_for_me = len(white_steps)
+        return num_of_available_steps_for_me + oponent_available_steps
