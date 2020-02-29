@@ -1,8 +1,10 @@
-import copy
 import math
+import random
+
 import numpy
 import logging
 
+from server.src.board_game import BoardGame
 from server.src.evaluation_thread import EvaluationThread
 from server.src.game_node import GameNode
 from server.src.next_state_generation_utils import generate_possible_board_states_for_amazona
@@ -23,15 +25,19 @@ class GameTree:
                  searching_depth,
                  available_steps_manager,
                  turn_validator):
+        self.current_board_game = current_board_game
         self.is_black_player = is_black_player
         self.blocking_rocks_manager = blocking_rocks_manager
         self.searching_depth = searching_depth
         self.available_steps_manager = available_steps_manager
         self.turn_validator = turn_validator
-        self.root = GameNode(current_board_game,
-                             self.turn_validator,
-                             self.available_steps_manager,
+        self.root = GameNode(current_board_game.get_players_positions("WHITE"),
+                             current_board_game.get_players_positions("BLACK"),
+                             current_board_game.get_blocking_rocks(),
                              self.is_black_player)
+                             # self.turn_validator,
+                             # self.available_steps_manager,
+                             # self.is_black_player)
         # Generate all possible moves for me and blocking rock shots
         self.generate_my_amazons_next_possible_move_and_shot()
 
@@ -51,8 +57,10 @@ class GameTree:
             oponents_amazons = self.root.get_black_amazons()
 
         for amazona in playing_player_amazons:
-            available_playing_states = generate_possible_board_states_for_amazona(self.root,
+            available_playing_states = generate_possible_board_states_for_amazona(self.current_board_game.get_size(),
+                                                                                  self.root,
                                                                                   amazona,
+                                                                                  self.available_steps_manager.get_available_moves_set_for_amazon(self.current_board_game, amazona),
                                                                                   self.blocking_rocks_manager,
                                                                                   self.available_steps_manager,
                                                                                   self.turn_validator)
@@ -63,6 +71,9 @@ class GameTree:
 
         # I know how to reduce calculations of avalable steps for player, doing it by saving list of tuples of available movements for amazons [(from, [to])] and each time move just one key, from, and calculate for it.. you are king
         #         We must normalize received results
+        for c in range(0, 15):
+            self.__print_board(random.randrange(0, len(self.root.children), 1))
+
         self.normalize_results(.25, 1, 1)
         self.root.children = self.get_best_n_moves(10)
 
@@ -126,3 +137,11 @@ class GameTree:
         if num > len(self.root.children):
             num = len(self.root.children)
         return sorted(self.root.children, key=attrgetter('calculated_result'), reverse=True)[:num]
+
+    # Private method to print random generated board to make sure it works as expected
+    def __print_board(self, index):
+        print('BOARD IS: of index ' + str(index))
+        game_node = self.root.children[index]
+        board = BoardGame(self.current_board_game.get_size(), False, game_node.get_white_amazons(),
+                          game_node.get_black_amazons(), game_node.get_blocking_rocks())
+        board.print_board()
