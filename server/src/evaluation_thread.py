@@ -50,30 +50,29 @@ class EvaluationThread:
 # it generate next moves
     def __minimax(self, game_state, is_maximizer, depth):
         if depth == self.max_depth:   # OR THIS IS THE END OF THE GAME
-            return random.uniform(1.0, 15.0,), game_state
+            return game_state.calculated_result, game_state
         if is_maximizer:
             return self.__get_max(depth)
         else:
             return self.__get_min(depth)
 
     def __get_max(self, depth):
-        best_move = (float("-inf"), self.current_game_state)
+        beta = (float("-inf"), self.current_game_state)
         depth += 1
         for move in self.generate_my_amazons_next_possible_move_and_shot():
             calculated_move = self.__minimax(move, False, depth)
-            if best_move[0] <= calculated_move[0]:
-                best_move = calculated_move
-                best_move[1].current_board.print_board()
-        return best_move
+            if beta[0] <= calculated_move[0]:
+                beta = calculated_move
+        return beta
 
     def __get_min(self, depth):
-        worst_move = (float("inf"), self.current_game_state)
+        alpha = (float("inf"), self.current_game_state)
         depth += 1
         for move in self.generate_my_amazons_next_possible_move_and_shot():
             score = self.__minimax(move, True, depth)
-            if score[0] <= worst_move[0]:
-                worst_move = score
-        return worst_move
+            if score[0] <= alpha[0]:
+                alpha = score
+        return alpha
 
     def generate_my_amazons_next_possible_move_and_shot(self):
         available_playing_states_to_return = []

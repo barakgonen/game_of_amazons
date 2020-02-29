@@ -26,8 +26,8 @@ class GameNode:
                                                                                                  self.black_amazons)
         self.children = []
         self.calculated_result = 0
-        # self.winner = ""
-        # self.is_game_over = False
+        self.winner = ""
+        self.is_game_over = False
         self.calculate_heuristics()
 
     """ Node within the game tree
@@ -48,13 +48,16 @@ class GameNode:
         return self.blocking_rocks
 
     def get_calculated_result(self):
-        return self.self.calculated_result
+        return self.calculated_result
 
     def remove_score(self):
         self.calculated_result = 0
 
     def reset_results(self):
         self.calculated_result = 0
+
+    def print_board(self):
+        self.current_board.print_board()
 
     def calculate_heuristics(self):
         self.calculated_result = self.__calculate_random_heuristic() + \
