@@ -1,5 +1,8 @@
 import copy
 import random
+
+from pip._vendor.distlib.compat import raw_input
+
 from server.src.point import Point
 from server.src.game_tree import GameTree
 
@@ -9,6 +12,7 @@ class Player:
         self.name = name
         self.color = color
         self.board_game = current_board_game
+        self.kind = "Person"
         print("Creating an instance of Player, name is: " + self.name + ", color is: " + self.color)
 
     def get_name(self):
@@ -24,11 +28,13 @@ class ComputerPlayer(Player):
     def __init__(self, name, color, available_steps_manager, blocking_rocks_manager,
                  searching_depth, turn_validator):
         self.name = name
+        self.color = color
         self.is_black_player = (color == "BLACK")
         self.available_steps_manager = available_steps_manager
         self.blocking_rocks_manager = blocking_rocks_manager
         self.searching_depth = searching_depth
         self.turn_validator = turn_validator
+        self.kind = "AI"
 
     def make_move(self, current_board_game):
         # Building GameTree from current board, each level below level 1 represents game state
@@ -41,6 +47,7 @@ class ComputerPlayer(Player):
         return game_tree.get_next_move()
 
     def calculate_next_move(self):
+        pass
         list1 = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
         b = random.randint(0, 5)
         x = str(list1[b])
@@ -75,6 +82,7 @@ class HumanPlayer(Player):
         return Point(x, y)
 
     def get_amazon_to_move(self):
+        print("Choose amazon to move:")
         x = str(raw_input("Enter x (horizontal,  capital letter): "))[0]
         if x.islower():
             x = x.upper()[0]

@@ -241,7 +241,7 @@ class AvailableMovementsManger:
         uniq_moves_for_amazona.extend(self.__get_available_moves_to_NW(current_board_game, amazona, distance))
         uniq_moves_for_amazona.extend(self.__get_available_moves_to_SE(current_board_game, amazona, distance))
         uniq_moves_for_amazona.extend(self.__get_available_moves_to_SW(current_board_game, amazona, distance))
-        return sorted(set(uniq_moves_for_amazona))
+        return set(uniq_moves_for_amazona)
 
     def get_number_of_available_moves_for_player(self, current_board_game, queens_coordinates):
         total_available_mooves = set()
@@ -250,9 +250,9 @@ class AvailableMovementsManger:
         return len(total_available_mooves)
 
     def get_available_moves_for_player(self, current_board_game, queens_coordinates):
-        total_available_mooves = {}
+        total_available_mooves = set()
         for queen_pos in queens_coordinates:
-            total_available_mooves[queen_pos] = self.get_available_moves_set_for_amazon(current_board_game, queen_pos)
+            total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, queen_pos))
         return total_available_mooves
 
     def get_available_moves_in_distance(self, current_board_game, queens_pos, distance):

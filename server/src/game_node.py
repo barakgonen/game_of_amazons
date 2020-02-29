@@ -71,14 +71,8 @@ class GameNode:
         return self._calculate_moves_differences()
 
     def _calculate_moves_differences(self):
-        white_steps = 0
-        for direction in self.white_available_moves:
-            white_steps += len(direction)
-
-        black_steps = 0
-        for direction in self.black_amazons:
-            black_steps += len(direction)
-
+        white_steps = len(self.white_available_moves)
+        black_steps = len(self.black_available_moves)
         if self.is_black_player:
             # BLACK PLAYER PLAYS, means opponent is white
             oponent_available_steps = white_steps * -1
@@ -104,6 +98,14 @@ class GameNode:
     def calculate_mobility_heuristic(self):
         return self.__calculate_mobility()
 
+    # I define mobility as number of directions a player can move, how mobile is he
+    # Example:
+    # 1 0 0 0 0 0
+    # 0 0 0 0 0 0
+    # 0 0 1 0 0 0
+    # 0 0 0 0 0 0
+    # Player number 1 has 8 + 3 options to move, 11
+    # Off course we prefer to have more mobile amazons
     def __calculate_mobility(self):
         black_available_moves = len(self.available_steps_manager.get_available_moves_in_distance(self.current_board,
                                                                                       self.black_amazons, 1))

@@ -39,6 +39,4 @@ def generate_possible_board_states_for_amazona(game_size,
             available_states_for_amazona.append(turn_game_node)
             current_game_node.current_board.undo_temporary_block(available_throwing_option)
         is_board_ok = current_game_node.current_board.undo_temporary_movement_for_amazon(amazona_to_move, available_move)
-    if not is_board_ok or is_blocking_rock_ok:
-        raise InterruptedError()
     return available_states_for_amazona

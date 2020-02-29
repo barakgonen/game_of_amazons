@@ -4,7 +4,7 @@ class Point:
     def __init__(self, x, y):
         """ Create a new point at the origin """
         self.x = str(x).upper()
-        self.y = y
+        self.y = int(y)
 
     def get_x(self):
         return self.x

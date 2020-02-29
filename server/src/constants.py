@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class Constants:
     SMALL_BOARD_SIZE = 6
     LARGE_BOARD_SIZE = 10
@@ -10,4 +7,6 @@ class Constants:
     BLACK_AMAZON_VAL = 1
     WHITE_AMAZON_VAL = 2
     BLOCKED_CELL_VAL = 3
+    OPONNENT_MODE = 1
+    ONE_ON_ONE = 2
     COLUMNS_ARRAY = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
