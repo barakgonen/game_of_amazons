@@ -16,6 +16,9 @@ class GameNode:
                  available_steps_manager,
                  is_black_player):
         self.current_board = copy.deepcopy(current_board)
+        self.black_amazons = self.current_board.get_players_positions("BLACK")
+        self.white_amazons = self.current_board.get_players_positions("WHITE")
+        self.blocking_rocks = self.current_board.get_blocking_rocks()
         self.turn_validator = turn_validator
         self.is_black_player = is_black_player
         self.available_steps_manager = available_steps_manager
@@ -37,13 +40,13 @@ class GameNode:
         return self.current_board.get_size()
 
     def get_white_amazons(self):
-        return self.current_board.get_players_positions("WHITE")
+        return self.white_amazons
 
     def get_black_amazons(self):
-        return self.current_board.get_players_positions("BLACK")
+        return self.black_amazons
 
     def get_blocking_rocks(self):
-        return self.current_board.get_blocking_rocks()
+        return self.blocking_rocks
 
     def get_available_steps_for_amazona(self, amazona):
         return self.available_steps_manager.get_available_moves_set_for_amazon(self.current_board, amazona)
@@ -73,8 +76,8 @@ class GameNode:
 
     def calculate_heuristics(self):
         self.scores_arr.append(self.__calculate_random_heuristic())
-        self.scores_arr.append(self.__calculate_mobility())
-        self.scores_arr.append(self._calculate_moves_differences())
+        self.scores_arr.append(7)
+        self.scores_arr.append(8)
 
 
     def addChildNode(self, node):
@@ -84,10 +87,10 @@ class GameNode:
         return self._calculate_moves_differences()
 
     def _calculate_moves_differences(self):
-        white_steps = self.available_steps_manager.get_number_of_available_mooves_for_player(self.current_board,
-                                                                                             "WHITE")
-        black_steps = self.available_steps_manager.get_number_of_available_mooves_for_player(self.current_board,
-                                                                                             "BLACK")
+        white_steps = self.available_steps_manager.get_number_of_available_moves_for_player(self.current_board,
+                                                                                            self.white_amazons)
+        black_steps = self.available_steps_manager.get_number_of_available_moves_for_player(self.current_board,
+                                                                                            self.black_amazons)
         if self.is_black_player:
             # BLACK PLAYER PLAYS, means opponent is white
             oponent_available_steps = white_steps * -1
@@ -115,10 +118,11 @@ class GameNode:
 
     def __calculate_mobility(self):
         if self.is_black_player:
-            return len(self.available_steps_manager.get_available_mooves_in_distance(self.current_board, "BLACK", 1))
+            return len(self.available_steps_manager.get_available_mooves_in_distance(self.current_board,
+                                                                                     self.black_amazons, 1))
         else:
-            return len(self.available_steps_manager.get_available_mooves_in_distance(self.current_board, "WHITE", 1))
+            return len(self.available_steps_manager.get_available_mooves_in_distance(self.current_board,
+                                                                                     self.white_amazons, 1))
 
     def calculate_mobility_heuristic(self):
-        mobility_res = self.__calculate_mobility()
-        return mobility_res
+        return self.__calculate_mobility()

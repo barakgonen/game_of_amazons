@@ -935,14 +935,12 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
     def test_zero_available_steps_to_black_amazon(self):
         # starting in initial state, blocking all black amazons
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
 
     def test_zero_available_steps_to_white_amazon(self):
         # starting in initial state, blocking all white amazons
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
         self.assertEqual(2, len(
@@ -1041,12 +1039,10 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
                          len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('d', 6))))
 
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEqual(24, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "BLACK"))
+        self.assertEqual(24, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEqual(24, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "WHITE"))
+        self.assertEqual(24, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1058,10 +1054,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
             Point(chr(ord(removed_blocked_cell.get_x()) + 1), removed_blocked_cell.get_y() + 1))
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
 
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_one_available_step_to_white_amazon(self):
         # starting in initial state, blocking all white
@@ -1073,10 +1067,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
             Point(chr(ord(removed_blocked_cell.get_x()) + 1), removed_blocked_cell.get_y()))
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_two_available_steps_to_black_amazon_and_one_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1091,10 +1083,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_two_available_steps_to_white_amazon_and_one_for_the_black(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1112,10 +1102,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_three_available_steps_to_black_amazon_and_two_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1139,10 +1127,8 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(3, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(3, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_board_snapshot_with_many_blocked_cells(self):
         blocked_cells_lst = [Point('c', 6),
@@ -1157,16 +1143,15 @@ class AvailableStepsManagerSmallBoardTests(unittest.TestCase):
 
         # self.assertEqual(6, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
         #                                                                                             "BLACK"))
-        self.assertEqual(9, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(9, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_calculate_number_of_available_steps_for_black_player_in_initial_game_position(self):
         self.assertEqual(10, len(
-            self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "BLACK", 1)))
+            self.available_steps_manager.get_available_moves_in_distance(self.game_board, self.game_board.get_players_positions("BLACK"), 1)))
 
     def test_calculate_number_of_available_steps_for_white_player_in_initial_game_position(self):
         self.assertEqual(10, len(
-            self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "WHITE", 1)))
+            self.available_steps_manager.get_available_moves_in_distance(self.game_board, self.game_board.get_players_positions("WHITE"), 1)))
 
 
 class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
@@ -1197,25 +1182,28 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
                 if self.game_board.is_free_cell(raw, col):
                     self.game_board.shoot_blocking_rock(Point(Constants.COLUMNS_ARRAY[j - 1], i))
 
+    def get_number_of_available_mooves(self):
+        black_available_moves = self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK"))
+        white_available_moves = self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE"))
+        return black_available_moves + white_available_moves
+
     def set_board_blocked_by_list(self, blocking_lst):
         for point in blocking_lst:
             self.game_board.shoot_blocking_rock(point)
 
     def test_zero_available_steps_on_fully_blocked_board(self):
         self.set_full_blocked_board()
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves(self.game_board))
+        self.assertEqual(0, self.get_number_of_available_mooves())
 
     def test_zero_available_steps_to_black_amazon(self):
         # starting in initial state, blocking all black amazons
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
 
     def test_zero_available_steps_to_white_amazon(self):
         # starting in initial state, blocking all white amazons
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_number_of_available_steps_north_in_initial_state_for_black_amazon(self):
         self.assertEqual(3, len(
@@ -1378,12 +1366,12 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
                          len(self.available_steps_manager.get_available_moves_to_SW(self.game_board, Point('j', 4))))
 
     def test_number_of_total_available_steps_in_initial_state_for_black_amazon(self):
-        self.assertEqual(58, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "BLACK"))
+        self.assertEqual(58, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("BLACK")))
 
     def test_number_of_total_available_steps_in_initial_state_for_white_amazon(self):
-        self.assertEqual(58, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "WHITE"))
+        self.assertEqual(58, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("WHITE")))
 
     def test_one_available_step_to_black_amazon(self):
         # starting in initial state, blocking all white
@@ -1394,10 +1382,11 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
 
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
 
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                  self.game_board.get_players_positions(
+                                                                                                      "BLACK")))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                  self.game_board.get_players_positions("WHITE")))
 
     def test_one_available_step_to_white_amazon(self):
         # starting in initial state, blocking all white
@@ -1407,10 +1396,11 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.white_amazon_init_blk_lst.pop(15)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(0, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(0, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                  self.game_board.get_players_positions(
+                                                                                                      "BLACK")))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("WHITE")))
 
     def test_two_available_steps_to_black_amazon_and_one_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1424,10 +1414,11 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                  self.game_board.get_players_positions(
+                                                                                                      "BLACK")))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("WHITE")))
 
     def test_two_available_steps_to_white_amazon_and_one_for_the_black(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1441,10 +1432,10 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(1, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(1, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("WHITE")))
 
     def test_three_available_steps_to_black_amazon_and_two_for_the_white(self):
         # removing first blocker from black, and updating it in order to set black player just 1 available move
@@ -1458,10 +1449,10 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.set_board_blocked_by_list(self.black_amazon_init_blk_lst)
         self.set_board_blocked_by_list(self.white_amazon_init_blk_lst)
 
-        self.assertEqual(3, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "BLACK"))
-        self.assertEqual(2, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                   "WHITE"))
+        self.assertEqual(3, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(2, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board,
+                                                                                                   self.game_board.get_players_positions("WHITE")))
 
     def test_board_snapshot_with_many_blocked_cells(self):
         blocked_cells_lst = [Point('c', 9),
@@ -1476,10 +1467,8 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         # blocking states with an updated blocking lists
         self.set_board_blocked_by_list(blocked_cells_lst)
 
-        self.assertEqual(44, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "BLACK"))
-        self.assertEqual(29, self.available_steps_manager.get_number_of_available_mooves_for_player(self.game_board,
-                                                                                                    "WHITE"))
+        self.assertEqual(44, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("BLACK")))
+        self.assertEqual(29, self.available_steps_manager.get_number_of_available_moves_for_player(self.game_board, self.game_board.get_players_positions("WHITE")))
 
     def test_calculate_number_of_available_stepst_for_black_player_in_hypothtical_state_in_distance_one(self):
         blocked_cells_lst = [
@@ -1502,7 +1491,7 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.game_board.update_move(Point('a', 4), Point('b', 3), "WHITE")
 
         self.assertEqual(18, len(
-            self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "BLACK", 1)))
+            self.available_steps_manager.get_available_moves_in_distance(self.game_board, self.game_board.get_players_positions("BLACK"), 1)))
 
     def test_calculate_number_of_available_steps_for_white_player_in_hypothetical_state(self):
         blocked_cells_lst = [
@@ -1524,7 +1513,7 @@ class AvailableStepsManagerLargeBoardTests(unittest.TestCase):
         self.game_board.update_move(Point('a', 4), Point('a', 8), "WHITE")
 
         self.assertEqual(43, len(
-            self.available_steps_manager.get_available_mooves_in_distance(self.game_board, "WHITE", 2)))
+            self.available_steps_manager.get_available_moves_in_distance(self.game_board, self.game_board.get_players_positions("WHITE"), 2)))
 
 
 class WinnerDitermination(unittest.TestCase):
@@ -1583,12 +1572,13 @@ class WinnerDitermination(unittest.TestCase):
         self.set_board_blocked_by_list(blocking_lst)
 
         # it should be 31 in this case, AI should iterate and calculate future potential moves
-        self.assertEqual(13, self.available_steps_manager.get_number_of_available_mooves_for_player(self.board_game,
-                                                                                                    "BLACK"))
+        self.assertEqual(13, self.available_steps_manager.get_number_of_available_moves_for_player(self.board_game,
+                                                                                                    self.board_game.get_players_positions("BLACK")))
 
         # it should be 8  in this case, AI should iterate and calculate future potential moves
-        self.assertEqual(4, self.available_steps_manager.get_number_of_available_mooves_for_player(self.board_game,
-                                                                                                   "WHITE"))
+        self.assertEqual(4, self.available_steps_manager.get_number_of_available_moves_for_player(self.board_game,
+                                                                                                  self.board_game.get_players_positions(
+                                                                                                      "WHITE")))
 
 
 class ConfigurationToSmallBoardTests(unittest.TestCase):
@@ -1607,7 +1597,10 @@ class ConfigurationToSmallBoardTests(unittest.TestCase):
         self.board_game.shoot_blocking_rock(Point('e', 5))
         self.board_game.update_move(Point('a', 4), Point('a', 6), "BLACK")
         self.board_game.shoot_blocking_rock(Point('b', 5))
-        self.assertEqual(self.board_game, BoardGame(Constants.SMALL_BOARD_SIZE, self.white_amazons, self.black_amazons,
+        self.assertEqual(self.board_game, BoardGame(Constants.SMALL_BOARD_SIZE,
+                                                    True,
+                                                    self.white_amazons,
+                                                    self.black_amazons,
                                                     self.blocking_lst))
 
     def test_not_equal_when_there_is_no_correlation_between_them(self):
@@ -1619,7 +1612,7 @@ class ConfigurationToSmallBoardTests(unittest.TestCase):
         self.board_game.update_move(Point('a', 4), Point('a', 6), "BLACK")
         self.board_game.shoot_blocking_rock(Point('b', 5))
         self.assertNotEqual(self.board_game,
-                            BoardGame(Constants.SMALL_BOARD_SIZE, self.white_amazons, self.black_amazons,
+                            BoardGame(Constants.SMALL_BOARD_SIZE, True, self.white_amazons, self.black_amazons,
                                       self.blocking_lst))
 
 
@@ -1650,207 +1643,210 @@ class Configuration_To_Large_Board_Tests(unittest.TestCase):
         self.board_game.shoot_blocking_rock(Point('d', 9))
         self.board_game.update_move(Point('g', 10), Point('c', 6), "BLACK")
         self.board_game.shoot_blocking_rock(Point('b', 5))
-        self.assertEqual(self.board_game, BoardGame(Constants.LARGE_BOARD_SIZE, self.white_amazons, self.black_amazons,
+        self.assertEqual(self.board_game, BoardGame(Constants.LARGE_BOARD_SIZE,
+                                                    True,
+                                                    self.white_amazons,
+                                                    self.black_amazons,
                                                     self.blocking_lst))
 
-class AiGameNodeHeuristicTests(unittest.TestCase):
-    def setUp(self):
-        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        self.turn_validator = TurnValidator()
-        self.available_steps_manager = AvailableStepsManger()
-        self.is_black_player = False
+# class AiGameNodeHeuristicTests(unittest.TestCase):
+#     def setUp(self):
+#         self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+#         self.turn_validator = TurnValidator()
+#         self.available_steps_manager = AvailableStepsManger()
+#         self.is_black_player = False
+#
+#     def test_calculation_of_move_count_heuristic_in_initial_state_for_white_player(self):
+#         curr_game_node = GameNode(self.board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#
+#         self.assertEqual(curr_game_node.scores_arr[2], 0)
+#
+#     def test_calculation_of_move_count_heuristic_in_initial_state_for_black_player(self):
+#         self.is_black_player = True
+#         curr_game_node = GameNode(self.board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#
+#         self.assertEqual(curr_game_node.scores_arr[2], 0)
+#
+#     def test_calculation_of_move_count_heuristic_when_black_is_completly_blocked(self):
+#         white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertEqual(curr_game_node.get_scores_arr()[2], 61)
+#
+#     def test_winner_determination_white_plays_and_wins(self):
+#         white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertTrue(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "WHITE")
+#
+#     def test_winner_determination_white_plays_and_loses(self):
+#         black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertTrue(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "BLACK")
+#
+#     def test_determination_of_winner_when_white_plays_and_game_is_not_over(self):
+#         curr_game_node = GameNode(self.board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#
+#         self.assertFalse(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "")
+#
+#     def test_determination_of_winner_when_blcak_plays_and_game_is_not_over(self):
+#         self.is_black_player = True
+#         curr_game_node = GameNode(self.board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#
+#         self.assertFalse(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "")
+#
+#     def test_winner_determination_black_should_lose_black_plays(self):
+#         self.is_black_player = True
+#         white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertTrue(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "WHITE")
+#
+#     def test_winner_determination_black_wins_and_plays(self):
+#         self.is_black_player = True
+#         black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertTrue(curr_game_node.is_game_over)
+#         self.assertEqual(curr_game_node.winner, "BLACK")
+#
+#     def test_mobility_heuristic_calculation_when_black_player_has_no_any_movement_option(self):
+#         self.is_black_player = True
+#         white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertEqual(curr_game_node.get_scores_arr()[1], 0)
+#
+#     def test_mobility_heuristic_calculation_when_white_player_has_no_any_movement_option(self):
+#         black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
+#         white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
+#         blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
+#                         Point('d', 7), Point('d', 4),
+#                         Point('e', 7), Point('e', 4),
+#                         Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         self.assertEqual(curr_game_node.get_scores_arr()[1], 0)
+#
+#     def test_mobility_and_move_count_heuristics_from_wiki_example(self):
+#         white_pos = [Point('e', 2), Point('f', 7), Point('j', 7), Point('c', 8)]
+#         black_pos = [Point('d', 1), Point('g', 1), Point('e', 5), Point('d', 10)]
+#         blocking_lst = [Point('A', 10), Point('A', 8), Point('A', 3), Point('A', 2),
+#                         Point('B', 9), Point('B', 8), Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2),
+#                         Point('C', 9), Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 1),
+#                         Point('D', 9), Point('D', 8), Point('D', 7), Point('D', 5), Point('D', 3), Point('D', 2),
+#                         Point('E', 10), Point('E', 8), Point('E', 7), Point('E', 6), Point('E', 3), Point('E', 1),
+#                         Point('F', 9), Point('F', 8), Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3),
+#                         Point('F', 2), Point('F', 1),
+#                         Point('G', 8), Point('G', 6), Point('G', 4), Point('G', 3), Point('G', 2),
+#                         Point('H', 10), Point('H', 8), Point('H', 6), Point('H', 5), Point('H', 3),
+#                         Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6),
+#                         Point('J', 8), Point('J', 6), Point('J', 1)]
+#
+#         board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_lst)
+#         curr_game_node = GameNode(board_game,
+#                                   self.turn_validator,
+#                                   self.available_steps_manager,
+#                                   self.is_black_player)
+#         # because number of amazons white can move now is 2
+#         self.assertEqual(curr_game_node.get_scores_arr()[1], 2)
+#         self.assertEqual(curr_game_node.get_scores_arr()[2], -9)
 
-    def test_calculation_of_move_count_heuristic_in_initial_state_for_white_player(self):
-        curr_game_node = GameNode(self.board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
 
-        self.assertEqual(curr_game_node.scores_arr[2], 0)
-
-    def test_calculation_of_move_count_heuristic_in_initial_state_for_black_player(self):
-        self.is_black_player = True
-        curr_game_node = GameNode(self.board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-
-        self.assertEqual(curr_game_node.scores_arr[2], 0)
-
-    def test_calculation_of_move_count_heuristic_when_black_is_completly_blocked(self):
-        white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertEqual(curr_game_node.get_scores_arr()[2], 61)
-
-    def test_winner_determination_white_plays_and_wins(self):
-        white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertTrue(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "WHITE")
-
-    def test_winner_determination_white_plays_and_loses(self):
-        black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertTrue(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "BLACK")
-
-    def test_determination_of_winner_when_white_plays_and_game_is_not_over(self):
-        curr_game_node = GameNode(self.board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-
-        self.assertFalse(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "")
-
-    def test_determination_of_winner_when_blcak_plays_and_game_is_not_over(self):
-        self.is_black_player = True
-        curr_game_node = GameNode(self.board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-
-        self.assertFalse(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "")
-
-    def test_winner_determination_black_should_lose_black_plays(self):
-        self.is_black_player = True
-        white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertTrue(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "WHITE")
-
-    def test_winner_determination_black_wins_and_plays(self):
-        self.is_black_player = True
-        black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertTrue(curr_game_node.is_game_over)
-        self.assertEqual(curr_game_node.winner, "BLACK")
-
-    def test_mobility_heuristic_calculation_when_black_player_has_no_any_movement_option(self):
-        self.is_black_player = True
-        white_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        black_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertEqual(curr_game_node.get_scores_arr()[1], 0)
-
-    def test_mobility_heuristic_calculation_when_white_player_has_no_any_movement_option(self):
-        black_pos = [Point('a', 6), Point('d', 10), Point('j', 6), Point('d', 1)]
-        white_pos = [Point('d', 6), Point('e', 6), Point('d', 5), Point('e', 5)]
-        blocking_pos = [Point('c', 7), Point('c', 6), Point('c', 5), Point('c', 4),
-                        Point('d', 7), Point('d', 4),
-                        Point('e', 7), Point('e', 4),
-                        Point('f', 7), Point('f', 6), Point('f', 5), Point('f', 4)]
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_pos)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        self.assertEqual(curr_game_node.get_scores_arr()[1], 0)
-
-    def test_mobility_and_move_count_heuristics_from_wiki_example(self):
-        white_pos = [Point('e', 2), Point('f', 7), Point('j', 7), Point('c', 8)]
-        black_pos = [Point('d', 1), Point('g', 1), Point('e', 5), Point('d', 10)]
-        blocking_lst = [Point('A', 10), Point('A', 8), Point('A', 3), Point('A', 2),
-                        Point('B', 9), Point('B', 8), Point('B', 5), Point('B', 4), Point('B', 3), Point('B', 2),
-                        Point('C', 9), Point('C', 7), Point('C', 6), Point('C', 5), Point('C', 4), Point('C', 1),
-                        Point('D', 9), Point('D', 8), Point('D', 7), Point('D', 5), Point('D', 3), Point('D', 2),
-                        Point('E', 10), Point('E', 8), Point('E', 7), Point('E', 6), Point('E', 3), Point('E', 1),
-                        Point('F', 9), Point('F', 8), Point('F', 6), Point('F', 5), Point('F', 4), Point('F', 3),
-                        Point('F', 2), Point('F', 1),
-                        Point('G', 8), Point('G', 6), Point('G', 4), Point('G', 3), Point('G', 2),
-                        Point('H', 10), Point('H', 8), Point('H', 6), Point('H', 5), Point('H', 3),
-                        Point('I', 9), Point('I', 8), Point('I', 7), Point('I', 6),
-                        Point('J', 8), Point('J', 6), Point('J', 1)]
-
-        board_game = BoardGame(Constants.LARGE_BOARD_SIZE, white_pos, black_pos, blocking_lst)
-        curr_game_node = GameNode(board_game,
-                                  self.turn_validator,
-                                  self.available_steps_manager,
-                                  self.is_black_player)
-        # because number of amazons white can move now is 2
-        self.assertEqual(curr_game_node.get_scores_arr()[1], 2)
-        self.assertEqual(curr_game_node.get_scores_arr()[2], -9)
-
-
-class AiPlayerLargeBoardTests(unittest.TestCase):
-    # This test class will demonstrate AI player minds
-    # It will implement the following tests
-    # 1. Get all possible states for amazona in large board in specific distance
-    # (for specific move includes throwing blocking rock)
-    # 2. Build next state tree, for the player plays against us
-    # 3. Run minimax with AlphaBetaPurning on the tree and eliminate non-relevant results.
-    # 4. Being able to get next move successfully
-    def setUp(self):
-        self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
-        self.turn_validator = TurnValidator()
-        self.available_steps_manager = AvailableStepsManger()
-        self.searching_distance = 9
-        self.blocking_rocks_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.turn_validator)
-        self.searching_depth = 1  # means the search tree will have 2 levels, AI turn, opponent
-        self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.blocking_rocks_manager,
-                                        self.searching_depth, self.turn_validator)
-
-    def test_generating_next_step_for_black_player(self):
-        print("Board game black gets to decide")
-        self.board_game.print_board()
-        bla = self.ai_player.make_move(self.board_game)
-        print("Black chose to play like that")
-        bla.current_board.print_board()
-        self.assertEqual(self.board_game.get_players_positions("WHITE"), bla.white_amazons_pos)
+# class AiPlayerLargeBoardTests(unittest.TestCase):
+#     # This test class will demonstrate AI player minds
+#     # It will implement the following tests
+#     # 1. Get all possible states for amazona in large board in specific distance
+#     # (for specific move includes throwing blocking rock)
+#     # 2. Build next state tree, for the player plays against us
+#     # 3. Run minimax with AlphaBetaPurning on the tree and eliminate non-relevant results.
+#     # 4. Being able to get next move successfully
+#     def setUp(self):
+#         self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
+#         self.turn_validator = TurnValidator()
+#         self.available_steps_manager = AvailableStepsManger()
+#         self.searching_distance = 9
+#         self.blocking_rocks_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.turn_validator)
+#         self.searching_depth = 1  # means the search tree will have 2 levels, AI turn, opponent
+#         self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.blocking_rocks_manager,
+#                                         self.searching_depth, self.turn_validator)
+#
+#     def test_generating_next_step_for_black_player(self):
+#         print("Board game black gets to decide")
+#         self.board_game.print_board()
+#         bla = self.ai_player.make_move(self.board_game)
+#         print("Black chose to play like that")
+#         bla.current_board.print_board()
+#         self.assertEqual(self.board_game.get_players_positions("WHITE"), bla.white_amazons_pos)
 
 
 # class AIPlayerSmallBoardTests(unittest.TestCase):

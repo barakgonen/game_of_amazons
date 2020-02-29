@@ -260,9 +260,7 @@ class AvailableStepsManger:
 
         return list(uniq_moves_for_amazona)
 
-    def get_number_of_available_mooves_for_player(self, current_board_game, player_color):
-        # print("============================================== player color is: " + player_color)
-        queens_coordinates = current_board_game.get_players_positions(player_color)
+    def get_number_of_available_moves_for_player(self, current_board_game, queens_coordinates):
         total_available_mooves = set()
         for queen_pos in queens_coordinates:
             total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, queen_pos))
@@ -286,15 +284,9 @@ class AvailableStepsManger:
     #     return total_available_mooves
     #
 
-    def get_available_mooves_in_distance(self, current_board_game, player_color, distance):
-        players_position = current_board_game.get_players_positions(player_color)
+    def get_available_moves_in_distance(self, current_board_game, queens_pos, distance):
         total_moves_in_distance = set()
-        for amazona in players_position:
+        for amazona in queens_pos:
             total_moves_in_distance.update(
                 self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
         return total_moves_in_distance
-
-    def get_number_of_available_mooves(self, current_board_game):
-        black_available_moves = self.get_number_of_available_mooves_for_player(current_board_game, "BLACK")
-        white_available_moves = self.get_number_of_available_mooves_for_player(current_board_game, "WHITE")
-        return black_available_moves + white_available_moves

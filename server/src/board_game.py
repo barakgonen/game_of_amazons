@@ -7,7 +7,7 @@ from server.src.common_funcs import get_col_index, get_raw_index
 
 
 class BoardGame:
-    def __init__(self, size, white_amazons=None, black_amazons=None, blockers_pos=None):
+    def __init__(self, size, points_ctor=False, white_amazons=None, black_amazons=None, blockers_pos=None):
         self.size = size
         self.board = numpy.zeros((self.size, self.size), dtype=numpy.int)
 
@@ -33,10 +33,10 @@ class BoardGame:
                 print(err)
         else:
             logging.info("<BoardGame::BoardGame()> setting the board for us")
-            if isinstance(white_amazons, list) and isinstance(black_amazons, list) and isinstance(blockers_pos, list):
-                self.__set_from_tuples(white_amazons, black_amazons, blockers_pos)
-            else:
+            if points_ctor:
                 self.__set_from_points(white_amazons, black_amazons, blockers_pos)
+            else:
+                self.__set_from_tuples(white_amazons, black_amazons, blockers_pos)
 
     def __set_from_tuples(self, white_amazons, black_amazons, blockers_pos):
         for white_amazon in white_amazons:
