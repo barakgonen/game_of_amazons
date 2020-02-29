@@ -117,3 +117,17 @@ class BoardGame:
 
     def get_blocking_rocks(self):
         return list(zip(*numpy.where(self.board == Constants.BLOCKED_CELL_VAL)))
+
+    def preform_temporary_block(self, tmp_blocked_cell):
+        self.board[tmp_blocked_cell[0]][tmp_blocked_cell[1]] = Constants.BLOCKED_CELL_VAL
+
+    def undo_temporary_block(self, tmp_blocked_cell):
+        self.board[tmp_blocked_cell[0]][tmp_blocked_cell[1]] = Constants.EMPTY_CELL_VAL
+
+    def preform_temporary_movement_for_amazon(self, tmp_move_from, tmp_move_to):
+        self.board[tmp_move_to[0]][tmp_move_to[1]] = self.board[tmp_move_from[0]][tmp_move_from[1]]
+        self.board[tmp_move_from[0]][tmp_move_from[1]] = Constants.EMPTY_CELL_VAL
+
+    def undo_temporary_movement_for_amazon(self, tmp_move_from, tmp_move_to):
+        self.board[tmp_move_from[0]][tmp_move_from[1]] = self.board[tmp_move_to[0]][tmp_move_to[1]]
+        self.board[tmp_move_to[0]][tmp_move_to[1]] = Constants.EMPTY_CELL_VAL

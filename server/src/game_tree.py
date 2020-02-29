@@ -31,12 +31,10 @@ class GameTree:
         self.searching_depth = searching_depth
         self.available_steps_manager = available_steps_manager
         self.turn_validator = turn_validator
-        self.root = GameNode(current_board_game.get_players_positions("WHITE"),
-                             current_board_game.get_players_positions("BLACK"),
-                             current_board_game.get_blocking_rocks(),
-                             self.is_black_player)
+        self.root = GameNode(current_board_game,
+                             self.is_black_player,
+                             self.available_steps_manager)
                              # self.turn_validator,
-                             # self.available_steps_manager,
                              # self.is_black_player)
         # Generate all possible moves for me and blocking rock shots
         self.generate_my_amazons_next_possible_move_and_shot()
@@ -71,10 +69,10 @@ class GameTree:
 
         # I know how to reduce calculations of avalable steps for player, doing it by saving list of tuples of available movements for amazons [(from, [to])] and each time move just one key, from, and calculate for it.. you are king
         #         We must normalize received results
-        for c in range(0, 15):
-            self.__print_board(random.randrange(0, len(self.root.children), 1))
+        # for c in range(0, 15):
+        #     self.__print_board(random.randrange(0, len(self.root.children), 1))
 
-        self.normalize_results(.25, 1, 1)
+        # self.normalize_results(.25, 1, 1)
         self.root.children = self.get_best_n_moves(10)
 
         end_time = int(round(time.time() * 1000))
