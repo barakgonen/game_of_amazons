@@ -2,7 +2,7 @@ from server.src.common_funcs import get_raw_index, get_col_index
 from server.src.point import Point
 
 
-class AvailableStepsManger:
+class AvailableMovementsManger:
     def __init__(self):
         pass
 
@@ -232,39 +232,29 @@ class AvailableStepsManger:
         return available_moves
 
     def get_available_moves_set_for_amazon(self, current_board_game, amazona, distance=None):
-        uniq_moves_for_amazona = set()
-        available_moves_for_amazona = self.__get_available_moves_to_the_north(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_the_south(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_the_east(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_the_west(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_NE(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_NW(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_SE(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-        available_moves_for_amazona = self.__get_available_moves_to_SW(current_board_game, amazona, distance)
-        for move in available_moves_for_amazona:
-            uniq_moves_for_amazona.add(move)
-
-        return list(uniq_moves_for_amazona)
+        uniq_moves_for_amazona = []
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_the_north(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_the_south(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_the_east(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_the_west(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_NE(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_NW(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_SE(current_board_game, amazona, distance))
+        uniq_moves_for_amazona.extend(self.__get_available_moves_to_SW(current_board_game, amazona, distance))
+        return sorted(set(uniq_moves_for_amazona))
 
     def get_number_of_available_moves_for_player(self, current_board_game, queens_coordinates):
         total_available_mooves = set()
         for queen_pos in queens_coordinates:
             total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, queen_pos))
         return len(total_available_mooves)
+
+    def get_available_moves_in_distance(self, current_board_game, queens_pos, distance):
+        total_moves_in_distance = set()
+        for amazona in queens_pos:
+            total_moves_in_distance.update(
+                self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
+        return total_moves_in_distance
 
     # def get_available_mooves_for_player(self, current_board_game, player_color):
     #     players_position = current_board_game.get_players_positions(player_color)
@@ -283,10 +273,3 @@ class AvailableStepsManger:
     #     del current_board_game
     #     return total_available_mooves
     #
-
-    def get_available_moves_in_distance(self, current_board_game, queens_pos, distance):
-        total_moves_in_distance = set()
-        for amazona in queens_pos:
-            total_moves_in_distance.update(
-                self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
-        return total_moves_in_distance
