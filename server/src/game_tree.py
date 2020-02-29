@@ -17,33 +17,21 @@ class GameTree:
     """
 
     def __init__(self,
-                 white_amazons_position,
-                 black_amazons_position,
-                 blocking_rocks_position,
-                 board_size,
-                 player_color,
-                 searching_distance,
+                 current_board_game,
+                 is_black_player,
                  blocking_rocks_manager,
                  searching_depth,
                  available_steps_manager,
                  turn_validator):
-        self.white_amazons_position = white_amazons_position
-        self.black_amazons_position = black_amazons_position
-        self.blocking_rocks_position = blocking_rocks_position
-        self.board_size = board_size
-        self.playing_player_color = player_color
-        self.searching_distance = searching_distance
+        self.is_black_player = is_black_player
         self.blocking_rocks_manager = blocking_rocks_manager
         self.searching_depth = searching_depth
         self.available_steps_manager = available_steps_manager
         self.turn_validator = turn_validator
-        self.root = GameNode(self.board_size,
+        self.root = GameNode(current_board_game,
                              self.turn_validator,
-                             self.white_amazons_position,
-                             self.black_amazons_position,
-                             self.blocking_rocks_position,
                              self.available_steps_manager,
-                             self.playing_player_color == "BLACK")
+                             self.is_black_player)
         # Generate all possible moves for me and blocking rock shots
         self.generate_my_amazons_next_possible_move_and_shot()
 
@@ -52,76 +40,57 @@ class GameTree:
         available_playing_states = []
         playing_player_amazons = []
         oponents_amazons = []
+        origin_number_of_root_childs = 0
 
         start_time = int(round(time.time() * 1000))
-        if self.playing_player_color == "WHITE":
-            playing_player_amazons = self.white_amazons_position
-            oponents_amazons = self.black_amazons_position
+        if self.is_black_player:
+            playing_player_amazons = self.root.get_black_amazons()
+            oponents_amazons = self.root.get_white_amazons()
         else:
-            playing_player_amazons = self.black_amazons_position
-            oponents_amazons = self.white_amazons_position
+            playing_player_amazons = self.root.get_white_amazons()
+            oponents_amazons = self.root.get_black_amazons()
 
         for amazona in playing_player_amazons:
-            available_playing_states = generate_possible_board_states_for_amazona(self.board_size,
+            available_playing_states = generate_possible_board_states_for_amazona(self.root,
                                                                                   amazona,
-                                                                                  self.playing_player_color,
-                                                                                  self.white_amazons_position,
-                                                                                  self.black_amazons_position,
-                                                                                  self.blocking_rocks_position,
-                                                                                  self.available_steps_manager,
                                                                                   self.blocking_rocks_manager,
+                                                                                  self.available_steps_manager,
                                                                                   self.turn_validator)
             for state in available_playing_states:
                 self.root.addChildNode(state)
+                origin_number_of_root_childs += 1
             del available_playing_states
 
-        origin_number_of_root_childs = len(self.root.children)
-
-        # We must normalize received results
+        # I know how to reduce calculations of avalable steps for player, doing it by saving list of tuples of available movements for amazons [(from, [to])] and each time move just one key, from, and calculate for it.. you are king
+        #         We must normalize received results
         self.normalize_results(.25, 1, 1)
         self.root.children = self.get_best_n_moves(10)
 
-        end_time = int(round(time.time() * 1000))
-        total_time_milliseconds = end_time - start_time
-        logging.info("<generate_my_amazons_next_possible_move_and_shot()> TOOK JUST: ", str(total_time_milliseconds))
-
         # counter = 0
-        is_maximizer = not is_maximizer
         # Recalculating
         results_lst = []
+
         for move in self.root.children:
             move.remove_score()
-            if self.playing_player_color == "WHITE":
-                # CALL MINIMAX WITH THIS STATE
-                evaluated_state = EvaluationThread(origin_number_of_root_childs,
-                                                   move,
-                                                   True,
-                                                   is_maximizer,
-                                                   self.searching_depth,
-                                                   "BLACK",
-                                                   self.blocking_rocks_manager)
-                calculated_score = evaluated_state.execute_evaluation()
-                results_lst.append(calculated_score)
-            elif self.playing_player_color == "BLACK":
-                # CALL MINIMAX WITH THIS STATE
-                evaluated_state = EvaluationThread(origin_number_of_root_childs,
-                                                   move,
-                                                   False,
-                                                   is_maximizer,
-                                                   self.searching_depth,
-                                                   "WHITE",
-                                                   self.blocking_rocks_manager)
-                calculated_score = evaluated_state.execute_evaluation()
-                results_lst.append(calculated_score)
-
+            # CALL MINIMAX WITH THIS STATE
+            evaluated_state = EvaluationThread(origin_number_of_root_childs,
+                                               move,
+                                               not self.is_black_player,
+                                               not is_maximizer,
+                                               self.searching_depth,
+                                               self.blocking_rocks_manager,
+                                               self.available_steps_manager,
+                                               self.turn_validator)
+            calculated_score = evaluated_state.execute_evaluation()
+            results_lst.append(calculated_score)
         for i in range(0, len(self.root.children)):
-            if ((results_lst[i])[0])[1].black_amazons_pos != self.root.children[i].black_amazons_pos:
+            if ((results_lst[i])[0])[1].get_black_amazons() != self.root.children[i].get_black_amazons():
                 logging.error("<generate_my_amazons_next_possible_move_and_shot()> Incosistant index")
             else:
                 self.root.children[i].calculated_result = ((results_lst[i])[0])[0]
-        logging.info("<generate_my_amazons_next_possible_move_and_shot()> "
-                     "Finished calculating oponents min moves, now need to return my max of min")
-
+        logging.info(
+            "<generate_my_amazons_next_possible_move_and_shot()> Finished calculating oponents min moves, "
+            "now need to return my max of min")
         end_time = int(round(time.time() * 1000))
         total_time_milliseconds = end_time - start_time
         logging.info("<generate_my_amazons_next_possible_move_and_shot()> TOOK JUST: ", str(total_time_milliseconds))

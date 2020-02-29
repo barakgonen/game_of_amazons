@@ -18,27 +18,22 @@ class Player:
         return self.color
 
 
-# This class implements my AI Functionality, it has it's own implementation of make_move func, which calculates the next best move to do
+# This class implements my AI Functionality, it has it's own implementation of make_move func,
+# which calculates the next best move to do
 class ComputerPlayer(Player):
-    def __init__(self, name, color, available_steps_manager, searching_distance, blocking_rocks_manager,
+    def __init__(self, name, color, available_steps_manager, blocking_rocks_manager,
                  searching_depth, turn_validator):
         self.name = name
-        self.color = color
+        self.is_black_player = (color == "BLACK")
         self.available_steps_manager = available_steps_manager
-        self.searching_distance = searching_distance
         self.blocking_rocks_manager = blocking_rocks_manager
         self.searching_depth = searching_depth
         self.turn_validator = turn_validator
 
     def make_move(self, current_board_game):
         # Building GameTree from current board, each level below level 1 represents game state
-
-        game_tree = GameTree(current_board_game.get_players_positions("WHITE"),
-                             current_board_game.get_players_positions("BLACK"),
-                             current_board_game.get_blocking_rocks(),
-                             current_board_game.get_size(),
-                             self.color,
-                             self.searching_distance,
+        game_tree = GameTree(current_board_game,
+                             self.is_black_player,
                              self.blocking_rocks_manager,
                              self.searching_depth,
                              self.available_steps_manager,

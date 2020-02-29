@@ -33,6 +33,20 @@ class BoardGame:
                 print(err)
         else:
             logging.info("<BoardGame::BoardGame()> setting the board for us")
+            if isinstance(white_amazons, list) and isinstance(black_amazons, list) and isinstance(blockers_pos, list):
+                self.__set_from_tuples(white_amazons, black_amazons, blockers_pos)
+            else:
+                self.__set_from_points(white_amazons, black_amazons, blockers_pos)
+
+    def __set_from_tuples(self, white_amazons, black_amazons, blockers_pos):
+        for white_amazon in white_amazons:
+            self.board[white_amazon[0]][white_amazon[1]] = Constants.WHITE_AMAZON_VAL
+        for black_amazon in black_amazons:
+            self.board[black_amazon[0]][black_amazon[1]] = Constants.BLACK_AMAZON_VAL
+        for blocker_pos in blockers_pos:
+            self.board[blocker_pos[0]][blocker_pos[1]] = Constants.BLOCKED_CELL_VAL
+
+    def __set_from_points(self, white_amazons, black_amazons, blockers_pos):
             for white_amazon in white_amazons:
                 self.board[get_raw_index(white_amazon.y, self.size)][
                     get_col_index(white_amazon.x, self.size)] = Constants.WHITE_AMAZON_VAL
@@ -99,7 +113,7 @@ class BoardGame:
 
     def get_players_positions(self, player_color):
         cell_state = Constants.WHITE_AMAZON_VAL if player_color == "WHITE" else Constants.BLACK_AMAZON_VAL
-        return tuple(zip(*numpy.where(self.board == cell_state)))
+        return list(zip(*numpy.where(self.board == cell_state)))
 
     def get_blocking_rocks(self):
-        return numpy.where(Constants.BLOCKED_CELL_VAL)
+        return list(zip(*numpy.where(self.board == Constants.BLOCKED_CELL_VAL)))
