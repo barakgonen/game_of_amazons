@@ -1,4 +1,4 @@
-from server.src.next_state_generation_utils import generate_possible_states_for_amazona_from_game_node
+from server.src.next_state_generation_utils import generate_possible_board_states_for_amazona
 from server.src.point import Point
 import random
 
@@ -13,7 +13,7 @@ class EvaluationThread:
                  max_depth,
                  blocking_rocks_manager,
                  available_steps_manager,
-                 turn_validator):
+                 board_size):
         self.origin_number_of_nodes_from_root = origin_number_of_nodes_from_root
         self.current_game_state = current_board_game
         self.is_black_player = is_black_player
@@ -21,7 +21,7 @@ class EvaluationThread:
         self.max_depth = max_depth
         self.blocking_rocks_manager = blocking_rocks_manager
         self.available_steps_manager = available_steps_manager
-        self.turn_validator = turn_validator
+        self.board_size = board_size
 
     def run_minimax(self):
         return self.__minimax(self.current_game_state, self.is_maximizer, 0)
@@ -58,19 +58,18 @@ class EvaluationThread:
 
     def __get_max(self, depth):
         best_move = (float("-inf"), self.current_game_state)
-
+        depth += 1
         for move in self.generate_my_amazons_next_possible_move_and_shot():
             calculated_move = self.__minimax(move, False, depth)
             if best_move[0] <= calculated_move[0]:
                 best_move = calculated_move
+                best_move[1].current_board.print_board()
         return best_move
 
     def __get_min(self, depth):
         worst_move = (float("inf"), self.current_game_state)
         depth += 1
-        my_counter = 0
         for move in self.generate_my_amazons_next_possible_move_and_shot():
-            my_counter += 1
             score = self.__minimax(move, True, depth)
             if score[0] <= worst_move[0]:
                 worst_move = score
@@ -82,14 +81,18 @@ class EvaluationThread:
 
         if self.is_black_player:
             playing_player_amazons = self.current_game_state.get_black_amazons()
+            amazons_moves_dictionary = self.current_game_state.black_available_moves
         else:
             playing_player_amazons = self.current_game_state.get_white_amazons()
+            amazons_moves_dictionary = self.current_game_state.white_available_moves
+
         for amazona in playing_player_amazons:
-            available_playing_states = generate_possible_states_for_amazona_from_game_node(self.current_game_state,
-                                                                                           amazona,
-                                                                                           self.blocking_rocks_manager,
-                                                                                           self.available_steps_manager,
-                                                                                           self.turn_validator)
+            available_playing_states = generate_possible_board_states_for_amazona(self.board_size,
+                                                                                  self.current_game_state,
+                                                                                  amazona,
+                                                                                  amazons_moves_dictionary[amazona],
+                                                                                  self.blocking_rocks_manager,
+                                                                                  self.available_steps_manager)
             available_playing_states_to_return.extend(available_playing_states)
         return available_playing_states_to_return
 

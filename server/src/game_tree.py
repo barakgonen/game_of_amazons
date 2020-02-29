@@ -60,8 +60,7 @@ class GameTree:
                                                                                   amazona,
                                                                                   self.available_steps_manager.get_available_moves_set_for_amazon(self.current_board_game, amazona),
                                                                                   self.blocking_rocks_manager,
-                                                                                  self.available_steps_manager,
-                                                                                  self.turn_validator)
+                                                                                  self.available_steps_manager)
             for state in available_playing_states:
                 self.root.addChildNode(state)
                 origin_number_of_root_childs += 1
@@ -73,6 +72,10 @@ class GameTree:
         #     self.__print_board(random.randrange(0, len(self.root.children), 1))
 
         # self.normalize_results(.25, 1, 1)
+
+        # for i in range(0, 15):
+        #     self.__print_board(random.randrange(0, len(self.root.children)))
+
         self.root.children = self.get_best_n_moves(10)
 
         end_time = int(round(time.time() * 1000))
@@ -93,7 +96,7 @@ class GameTree:
                                                self.searching_depth,
                                                self.blocking_rocks_manager,
                                                self.available_steps_manager,
-                                               self.turn_validator)
+                                               self.current_board_game.get_size())
             calculated_score = evaluated_state.execute_evaluation()
             results_lst.append(calculated_score)
         for i in range(0, len(self.root.children)):

@@ -14,14 +14,18 @@ class GameNode:
                  board_game,
                  is_black_player,
                  available_steps_manager):
-        self.current_board = copy.copy(board_game)
+        self.current_board = copy.deepcopy(board_game)
         self.white_amazons = self.current_board.get_players_positions("WHITE")
         self.black_amazons = self.current_board.get_players_positions("BLACK")
         self.blocking_rocks = self.current_board.get_blocking_rocks()
         self.is_black_player = is_black_player
         self.available_steps_manager = available_steps_manager
-        # self.turn_validator = turn_validator
+        self.white_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
+                                                                                                 self.white_amazons)
+        self.black_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
+                                                                                                 self.black_amazons)
         self.children = []
+        self.calculated_result = 0
         # self.winner = ""
         # self.is_game_over = False
         self.calculate_heuristics()
@@ -44,13 +48,9 @@ class GameNode:
         return self.blocking_rocks
 
     def get_calculated_result(self):
-        sum = 0.0
-        for res in self.scores_arr:
-            sum += res
-        return sum
+        return self.self.calculated_result
 
     def remove_score(self):
-        self.scores_arr = []
         self.calculated_result = 0
 
     def reset_results(self):
@@ -68,32 +68,35 @@ class GameNode:
         return self._calculate_moves_differences()
 
     def _calculate_moves_differences(self):
-        return 5
-        # white_steps = self.available_steps_manager.get_number_of_available_moves_for_player(self.current_board,
-        #                                                                                     self.white_amazons)
-        # black_steps = self.available_steps_manager.get_number_of_available_moves_for_player(self.current_board,
-        #                                                                                     self.black_amazons)
-        # if self.is_black_player:
-        #     # BLACK PLAYER PLAYS, means opponent is white
-        #     oponent_available_steps = white_steps * -1
-        #     num_of_available_steps_for_me = black_steps
-        #     if oponent_available_steps == 0 and num_of_available_steps_for_me != 0:
-        #         self.winner = "BLACK"
-        #         self.is_game_over = True
-        #     elif oponent_available_steps != 0 and num_of_available_steps_for_me == 0:
-        #         self.winner = "WHITE"
-        #         self.is_game_over = True
-        # else:
-        #     # WHITE PLAYER PLAYS, means opponent is black
-        #     oponent_available_steps = black_steps * -1
-        #     num_of_available_steps_for_me = white_steps
-        #     if oponent_available_steps != 0 and num_of_available_steps_for_me == 0:
-        #         self.winner = "BLACK"
-        #         self.is_game_over = True
-        #     elif oponent_available_steps == 0 and num_of_available_steps_for_me != 0:
-        #         self.winner = "WHITE"
-        #         self.is_game_over = True
-        # return num_of_available_steps_for_me + oponent_available_steps
+        white_steps = 0
+        for direction in self.white_available_moves:
+            white_steps += len(direction)
+
+        black_steps = 0
+        for direction in self.black_amazons:
+            black_steps += len(direction)
+
+        if self.is_black_player:
+            # BLACK PLAYER PLAYS, means opponent is white
+            oponent_available_steps = white_steps * -1
+            num_of_available_steps_for_me = black_steps
+            if oponent_available_steps == 0 and num_of_available_steps_for_me != 0:
+                self.winner = "BLACK"
+                self.is_game_over = True
+            elif oponent_available_steps != 0 and num_of_available_steps_for_me == 0:
+                self.winner = "WHITE"
+                self.is_game_over = True
+        else:
+            # WHITE PLAYER PLAYS, means opponent is black
+            oponent_available_steps = black_steps * -1
+            num_of_available_steps_for_me = white_steps
+            if oponent_available_steps != 0 and num_of_available_steps_for_me == 0:
+                self.winner = "BLACK"
+                self.is_game_over = True
+            elif oponent_available_steps == 0 and num_of_available_steps_for_me != 0:
+                self.winner = "WHITE"
+                self.is_game_over = True
+        return num_of_available_steps_for_me + oponent_available_steps
 
     def calculate_mobility_heuristic(self):
         return self.__calculate_mobility()
@@ -107,7 +110,3 @@ class GameNode:
             return black_available_moves + -1 * white_available_moves
         else:
             return -1 * black_available_moves + white_available_moves
-
-    # def get_available_steps_for_amazona(self, amazona):
-    #     return self.available_steps_manager.get_available_moves_set_for_amazon(self.current_board, amazona)
-    #

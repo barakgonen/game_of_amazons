@@ -249,27 +249,15 @@ class AvailableMovementsManger:
             total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, queen_pos))
         return len(total_available_mooves)
 
+    def get_available_moves_for_player(self, current_board_game, queens_coordinates):
+        total_available_mooves = {}
+        for queen_pos in queens_coordinates:
+            total_available_mooves[queen_pos] = self.get_available_moves_set_for_amazon(current_board_game, queen_pos)
+        return total_available_mooves
+
     def get_available_moves_in_distance(self, current_board_game, queens_pos, distance):
         total_moves_in_distance = set()
         for amazona in queens_pos:
             total_moves_in_distance.update(
                 self.get_available_moves_set_for_amazon(current_board_game, amazona, distance))
         return total_moves_in_distance
-
-    # def get_available_mooves_for_player(self, current_board_game, player_color):
-    #     players_position = current_board_game.get_players_positions(player_color)
-    #     total_available_mooves = set()
-    #     for amazona in players_position:
-    #         total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
-    #     return len(total_available_mooves)
-
-    # def get_available_states_for_player(self, board_size, white_amazons_pos, black_amazons_pos, blocking_lst,
-    #                                     player_color):
-    #     current_board_game = BoardGame(board_size, white_amazons_pos, black_amazons_pos, blocking_lst)
-    #     players_position = current_board_game.get_players_positions(player_color)
-    #     total_available_mooves = set()
-    #     for amazona in players_position:
-    #         total_available_mooves.update(self.get_available_moves_set_for_amazon(current_board_game, amazona))
-    #     del current_board_game
-    #     return total_available_mooves
-    #
