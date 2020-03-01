@@ -20,15 +20,16 @@ class GameNode:
         self.blocking_rocks = self.current_board.get_blocking_rocks()
         self.is_black_player = is_black_player
         self.available_steps_manager = available_steps_manager
-        self.white_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
-                                                                                                 self.white_amazons)
-        self.black_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
-                                                                                                 self.black_amazons)
+        # self.white_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
+        #                                                                                          self.white_amazons)
+        # self.black_available_moves = self.available_steps_manager.get_available_moves_for_player(self.current_board,
+        #                                                                                          self.black_amazons)
         self.children = []
         self.calculated_result = 0
         self.winner = ""
         self.is_game_over = False
         self.calculate_heuristics()
+        # self.__generate_successors()
 
     """ Node within the game tree
     """
@@ -63,7 +64,24 @@ class GameNode:
         self.calculated_result = self.__calculate_random_heuristic() + \
                                  self.__calculate_mobility() + \
                                  self._calculate_moves_differences()
+        # print("FULLY EXPANDED THIS NODE")
 
+    def set_successors(self, successors):
+        self.children = successors
+    #     if self.is_black_player:
+    #         playing_player_amazons = self.root.get_black_amazons()
+    #     else:
+    #         playing_player_amazons = self.root.get_white_amazons()
+    #     for amazona in playing_player_amazons:
+    #         for optional_successor in generate_possible_board_states_for_amazona(self.current_board_game.get_size(),
+    #                                                                              self,
+    #                                                                              amazona,
+    #                                                                              self.available_steps_manager.get_available_moves_set_for_amazon(
+    #                                                                              self.current_board_game,
+    #                                                                              amazona),
+    #                                                                             self.blocking_rocks_manager,
+    #                                                                             self.available_steps_manager):
+    #             self.children.append(optional_successor)
     def __calculate_random_heuristic(self):
         return random.randrange(1, 10, 1)
 
@@ -71,8 +89,11 @@ class GameNode:
         return self._calculate_moves_differences()
 
     def _calculate_moves_differences(self):
-        white_steps = len(self.white_available_moves)
-        black_steps = len(self.black_available_moves)
+
+        white_steps = len(self.available_steps_manager.get_available_moves_for_player(self.current_board,
+                                                                    self.white_amazons))
+        black_steps = len(self.available_steps_manager.get_available_moves_for_player(self.current_board,
+                                                                                                 self.black_amazons))
         if self.is_black_player:
             # BLACK PLAYER PLAYS, means opponent is white
             oponent_available_steps = white_steps * -1

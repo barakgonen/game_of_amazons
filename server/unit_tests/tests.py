@@ -1826,19 +1826,18 @@ class AiPlayerLargeBoardTests(unittest.TestCase):
         self.board_game = BoardGame(Constants.LARGE_BOARD_SIZE)
         self.turn_validator = TurnValidator()
         self.available_steps_manager = AvailableMovementsManger()
-        self.searching_distance = 9
         self.blocking_rocks_manager = BlockingRocksManager(Constants.LARGE_BOARD_SIZE, self.available_steps_manager)
-        self.searching_depth = 1  # means the search tree will have 2 levels, AI turn, opponent
+        self.look_ahed = 2  # means the search tree will have 2 levels, AI turn, opponent
         self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.blocking_rocks_manager,
-                                        self.searching_depth, self.turn_validator)
+                                        self.look_ahed, self.turn_validator)
 
     def test_generating_next_step_for_black_player(self):
         print("Board game black gets to decide")
         self.board_game.print_board()
         bla = self.ai_player.make_move(self.board_game)
         print("Black chose to play like that")
-        bla.current_board.print_board()
-        self.assertEqual(self.board_game.get_players_positions("WHITE"), bla.get_white_amazons())
+        bla.print_board()
+        self.assertEqual(self.board_game.get_players_positions("WHITE"), bla.get_players_positions("WHITE"))
 
 
 class AIPlayerSmallBoardTests(unittest.TestCase):

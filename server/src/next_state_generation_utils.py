@@ -23,7 +23,6 @@ def generate_possible_board_states_for_amazona(game_size,
         available_throwing_rocks_options = blocking_rocks_manager. \
             generate_available_throwing_options(current_game_node.current_board, available_move)
 
-        # THIS IS THE FUCKING IDEA OF A B PRUNING!!! INSTEAD OF JUST CUTTING AS YOU DID BEFORE!
         for available_throwing_option in available_throwing_rocks_options:
             is_blocking_rock_ok = current_game_node.current_board.preform_temporary_block(available_throwing_option)
             # In order to prevent some board creations, ill modify the board, copy it to new game state and undo change
