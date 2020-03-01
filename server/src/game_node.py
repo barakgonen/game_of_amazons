@@ -83,7 +83,7 @@ class GameNode:
     #                                                                             self.available_steps_manager):
     #             self.children.append(optional_successor)
     def __calculate_random_heuristic(self):
-        return random.randrange(1, 10, 1)
+        return random.randrange(1, 25, 1)
 
     def calculate_move_count_heuristic(self):
         return self._calculate_moves_differences()

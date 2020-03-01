@@ -2,10 +2,17 @@ from server.src.available_steps_manager import AvailableMovementsManger
 from server.src.constants import Constants
 from server.src.board_game import BoardGame
 from server.src.game_manager import GameManager
+from server.src.game_node import GameNode
 from server.src.turn_validator import TurnValidator
 from server.src.player import ComputerPlayer, HumanPlayer
 from server.src.blocking_rocks_manager import BlockingRocksManager
+import multiprocessing
+import time
 
+def foo(n):
+    for i in range(10000 * n):
+        print ("Tick")
+        time.sleep(1)
 
 def __get_board_size():
     is_input_valid = False
@@ -74,6 +81,19 @@ def __get_number_of_repetting_games(second_time=False):
         return __get_desired_searching_depth()
 
 
+def __get_running_time_in_sec():
+    is_input_valid = False
+    while not is_input_valid:
+        try:
+            time_sec = int(input("Insert number of minutes to think"))
+        except Exception:
+            print("Your input is invalid.. please try again.")
+            continue
+        else:
+            is_input_valid = True
+            return time_sec * 60
+
+
 def main():
     print("=============================================")
     print("Welcome to my version of The Game of Amazons!")
@@ -90,11 +110,13 @@ def main():
     available_steps_manager = AvailableMovementsManger()
     blocking_rocks_manager = BlockingRocksManager(board_size, available_steps_manager)
     turn_validator = TurnValidator()
+    time_in_seconds = int(__get_running_time_in_sec())
+    current_game_node = GameNode(board_game, False, available_steps_manager)
 
     if playing_mode == Constants.OPONNENT_MODE:
         p1 = HumanPlayer("BARAK", "WHITE")
         p2 = ComputerPlayer("ALGORITHM", "BLACK", available_steps_manager, blocking_rocks_manager, searching_depth, turn_validator)
-        manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager, available_steps_manager)
+        manager = GameManager(p2, p1, turn_validator, current_game_node, blocking_rocks_manager, available_steps_manager)
         winner = manager.run_game()
     else:
         p1 = ComputerPlayer("ALGO-WHITE", "WHITE", available_steps_manager, blocking_rocks_manager, searching_depth, turn_validator)
@@ -105,14 +127,16 @@ def main():
         winners[0] = 0
         winners[1] = 0
         winners[2] = 0
-        for i in range(0, is_it_a_compatition):
-            manager = GameManager(p2, p1, turn_validator, board_game, blocking_rocks_manager, available_steps_manager)
+        for i in range(1, is_it_a_compatition+1):
+            print("--------------------------------GAME NUMBER: " + str(i) + "Started ----------------------------------")
+            manager = GameManager(p2, p1, turn_validator, current_game_node, blocking_rocks_manager, available_steps_manager)
             winner = int(manager.run_game())
             winners[winner] += 1
+            print("--------------------------------GAME NUMBER: " + str(i) + "Ended ----------------------------------")
         if winners[1] > winners[2]:
-            print("BLACK has won the tournament!")
+            print("BLACK has won the tournament!, score: " + str(winners[1]) + ":" + str(winners[2]))
         elif winners[2] > winners[1]:
-            print("WHITE won the tournament")
+            print("WHITE won the tournament! score: " + str(winners[1]) + ":" + str(winners[2]))
         else:
             print("THERE IS A TIE")
 

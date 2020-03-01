@@ -6,7 +6,7 @@ class GameManager:
         self.black_player = black_player
         self.white_player = white_player
         self.turn_validator = turn_validator
-        self.board_game = board_game
+        self.board_game = copy.deepcopy(board_game)
         self.blocking_manager = blocking_manager
         self.available_steps_manager = available_steps_manager
 
@@ -36,15 +36,15 @@ class GameManager:
             else:
                 logging.error("<run_single_turn()> Error. we decieded we can shoot blocking rock, but update failed")
         elif player.kind == "AI":
-            self.board_game = copy.deepcopy(player.make_move(self.board_game))
+            self.board_game = copy.deepcopy(player.make_move(self.board_game.current_board))
         else:
             raise RuntimeError("Un-recognized player plays")
 
 
     def is_there_reason_to_play(self, player):
         if self.blocking_manager.are_blocks_available():
-            players_amazons = self.board_game.get_players_positions(player.get_color())
-            moves_for_player = self.available_steps_manager.get_available_moves_for_player(self.board_game, players_amazons)
+            players_amazons = self.board_game.current_board.get_players_positions(player.get_color())
+            moves_for_player = self.available_steps_manager.get_available_moves_for_player(self.board_game.current_board, players_amazons)
             if len(moves_for_player) > 0:
                 return True
         return False
@@ -68,8 +68,8 @@ class GameManager:
             self.board_game.print_board()
             is_game_still_run = self.run_round()
         logging.info("<run_game()> game is over, according to board's state, need to define the winner")
-        number_of_possible_moves_for_white = self.available_steps_manager.get_available_moves_for_player(self.board_game, self.board_game.get_players_positions("WHITE"))
-        number_of_possible_moves_for_black = self.available_steps_manager.get_available_moves_for_player(self.board_game, self.board_game.get_players_positions("BLACK"))
+        number_of_possible_moves_for_white = self.available_steps_manager.get_available_moves_for_player(self.board_game.current_board, self.board_game.get_white_amazons())
+        number_of_possible_moves_for_black = self.available_steps_manager.get_available_moves_for_player(self.board_game.current_board, self.board_game.get_black_amazons())
         if number_of_possible_moves_for_white > number_of_possible_moves_for_black:
             print("<run_game()> White has won! Congrats")
             return 2

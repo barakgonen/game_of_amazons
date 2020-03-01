@@ -1851,14 +1851,19 @@ class AIPlayerSmallBoardTests(unittest.TestCase):
         self.board_game = BoardGame(Constants.SMALL_BOARD_SIZE)
         self.turn_validator = TurnValidator()
         self.available_steps_manager = AvailableMovementsManger()
-        self.blocking_rocks_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE, self.turn_validator)
+        self.blocking_rocks_manager = BlockingRocksManager(Constants.SMALL_BOARD_SIZE, self.available_steps_manager)
         self.searching_depth = 2 # means the search tree will have 2 levels, AI turn, opponent
-        self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.blocking_rocks_manager, self.searching_depth, self.turn_validator)
+        self.ai_player = ComputerPlayer("AI", "BLACK", self.available_steps_manager, self.blocking_rocks_manager,
+                                        self.searching_depth, self.turn_validator)
 
     def test_exploring_full_turn_includes_move_and_throwing_blocking_rock_from_initial_position(self):
-        self.ai_player.make_move(self.board_game)
-        # I mean this test will be shitty one since I will build each board and test it created as expected..
-        self.assertEqual(1, 1)
+        print("Board game black gets to decide")
+        self.board_game.print_board()
+        bla = self.ai_player.make_move(self.board_game)
+        print("Black chose to play like that")
+        bla.print_board()
+        self.assertEqual(self.board_game.get_players_positions("WHITE"), bla.get_players_positions("WHITE"))
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
