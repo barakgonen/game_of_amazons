@@ -6,8 +6,10 @@ from server.src.game_node import GameNode
 from server.src.turn_validator import TurnValidator
 from server.src.player import ComputerPlayer, HumanPlayer
 from server.src.blocking_rocks_manager import BlockingRocksManager
-import multiprocessing
 import time
+import subprocess
+import sys
+
 
 def foo(n):
     for i in range(10000 * n):
@@ -94,7 +96,13 @@ def __get_running_time_in_sec():
             return time_sec * 60
 
 
+def install_deps(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
 def main():
+    install_deps("numpy")
+    install_deps("pandas")
     print("=============================================")
     print("Welcome to my version of The Game of Amazons!")
     print("=============================================")
